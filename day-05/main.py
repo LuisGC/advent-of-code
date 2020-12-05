@@ -31,4 +31,12 @@ with open("day-05/example.txt") as f:
 
 with open("day-05/input.txt") as f:
     seats = [parse_seat(seat.strip()) for seat in f]
-    print ("Max seat number:", max(seat.id for seat in seats))
+    print ("Part 1\nMax seat number:", max(seat.id for seat in seats))
+
+    seat_ids = [seat.id for seat in seats]
+
+    lo = min(seat_ids)
+    hi = max(seat_ids)
+
+    print ("Part 2\nMissing seat number:",[x for x in range(lo, hi)
+        if x not in seat_ids][0])
