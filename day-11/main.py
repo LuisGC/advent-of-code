@@ -64,4 +64,4 @@ with open("day-11/example.txt") as f:
 
 with open("day-11/input.txt") as f:
     seat_layout = f.readlines()
-#    print("Part 1: The final occupancy is", final_occupancy(seat_layout))
+    print("Part 1: The final occupancy is", final_occupancy(seat_layout, SeatingRules(1,4)))
