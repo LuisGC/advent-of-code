@@ -46,12 +46,43 @@ def navigate (instructions : str):
 
     return x,y
 
+def waypoint_navigate (instructions : str):
+    waypoint_x = 10
+    waypoint_y = 1
+    x = 0
+    y = 0
+
+    for instruction in instructions:
+        action = instruction[0]
+        value = int(instruction[1:])
+
+        if action in ['N', 'S', 'E', 'W']:
+            waypoint_x, waypoint_y = move_ship(waypoint_x, waypoint_y, action, value)
+        elif action == 'L':
+            for _ in range(value // 90):
+                waypoint_x, waypoint_y = -waypoint_y, waypoint_x
+        elif action == 'R':
+            for _ in range(value // 90):
+                waypoint_x, waypoint_y = waypoint_y, -waypoint_x
+        elif action == 'F':
+            x += value * waypoint_x
+            y += value * waypoint_y
+
+    return x, y
+
+def manhattan_distance (x: int, y: int) -> int:
+    return abs(x) + abs(y)
+
 with open("day-12/example.txt") as f:
     instructions = f.readlines()
     x, y = navigate(instructions)
-    assert 25 == abs(x) + abs(y)
+    assert 25 == manhattan_distance(x,y)
+    x, y = waypoint_navigate(instructions)
+    assert 286 == manhattan_distance(x,y)
 
 with open("day-12/input.txt") as f:
     instructions = f.readlines()
     x, y = navigate(instructions)
-    print("Part 1: The final Manhattan distance is", abs(x) + abs(y))
+    print("Part 1: The final Manhattan distance is", manhattan_distance(x,y))
+    x, y = waypoint_navigate(instructions)
+    print("Part 2: The final Manhattan distance using waypoints is", manhattan_distance(x,y))
