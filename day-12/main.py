@@ -10,7 +10,10 @@ def rotate_ship(action, facing, degrees):
         else:
             return CLOCKWISE[CLOCKWISE.find(facing)+1]
     else:
-        return rotate_ship(action, facing, degrees-90)
+        if action == 'L':
+            return rotate_ship(action, ANTICLOCKWISE[ANTICLOCKWISE.find(facing)+1], degrees-90)
+        else:
+            return rotate_ship(action, CLOCKWISE[CLOCKWISE.find(facing)+1], degrees-90)
 
 def move_ship(current_x: int, current_y: int, direction: str, value: int):
 
@@ -41,7 +44,6 @@ def navigate (instructions : str):
         elif action == 'L' or action == 'R':
             facing = rotate_ship(action, facing, value)
 
-    print ("Final coords", x,y)
     return x,y
 
 with open("day-12/example.txt") as f:
