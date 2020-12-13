@@ -1,4 +1,7 @@
-def find_earliest_bus(departure, buses):
+from typing import List
+
+
+def find_earliest_bus(departure: int, buses: List[int]):
     earliest_bus = 999
     earliest_wait = 999
 
@@ -20,7 +23,6 @@ with open("day-13/example.txt") as f:
     buses = [int(x) for x in line2.split(",") if x != "x"]
     earliest_bus, wait_time = find_earliest_bus(departure, buses)
     assert 295 == earliest_bus * wait_time
-
 
 with open("day-13/input.txt") as f:
     notes = f.read()
