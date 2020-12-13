@@ -25,13 +25,15 @@ class Password_item:
 
         return Password_item(lo, hi, char, password)
 
+
 with open("day-02/example.txt") as f:
     passwords = [Password_item.line2Password(line) for line in f]
     assert 2 == sum(pw.is_valid() for pw in passwords)
 
+
 with open("day-02/input.txt") as f:
     passwords = [Password_item.line2Password(line) for line in f]
-    print ("Part 1:", sum(pw.is_valid() for pw in passwords))
+    print("Part 1:", sum(pw.is_valid() for pw in passwords))
 
 with open("day-02/example.txt") as f:
     passwords = [Password_item.line2Password(line) for line in f]
@@ -39,4 +41,4 @@ with open("day-02/example.txt") as f:
 
 with open("day-02/input.txt") as f:
     passwords = [Password_item.line2Password(line) for line in f]
-    print ("Part 2:", sum(pw.is_valid_2() for pw in passwords))
+    print("Part 2:", sum(pw.is_valid_2() for pw in passwords))

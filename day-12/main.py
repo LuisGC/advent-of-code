@@ -12,9 +12,13 @@ def rotate_ship(action, facing, degrees):
             return CLOCKWISE[CLOCKWISE.find(facing)+1]
     else:
         if action == 'L':
-            return rotate_ship(action, ANTICLOCKWISE[ANTICLOCKWISE.find(facing)+1], degrees-90)
+            return rotate_ship(action,
+                               ANTICLOCKWISE[ANTICLOCKWISE.find(facing)+1],
+                               degrees-90)
         else:
-            return rotate_ship(action, CLOCKWISE[CLOCKWISE.find(facing)+1], degrees-90)
+            return rotate_ship(action,
+                               CLOCKWISE[CLOCKWISE.find(facing)+1],
+                               degrees-90)
 
 
 def move_ship(current_x: int, current_y: int, direction: str, value: int):
@@ -31,7 +35,7 @@ def move_ship(current_x: int, current_y: int, direction: str, value: int):
     return current_x, current_y
 
 
-def navigate (instructions : str):
+def navigate(instructions: str):
     x = 0
     y = 0
     facing = 'E'
@@ -47,10 +51,10 @@ def navigate (instructions : str):
         elif action == 'L' or action == 'R':
             facing = rotate_ship(action, facing, value)
 
-    return x,y
+    return x, y
 
 
-def waypoint_navigate (instructions : str):
+def waypoint_navigate(instructions: str):
     waypoint_x = 10
     waypoint_y = 1
     x = 0
@@ -61,7 +65,10 @@ def waypoint_navigate (instructions : str):
         value = int(instruction[1:])
 
         if action in ['N', 'S', 'E', 'W']:
-            waypoint_x, waypoint_y = move_ship(waypoint_x, waypoint_y, action, value)
+            waypoint_x, waypoint_y = move_ship(waypoint_x,
+                                               waypoint_y,
+                                               action,
+                                               value)
         elif action == 'L':
             for _ in range(value // 90):
                 waypoint_x, waypoint_y = -waypoint_y, waypoint_x
@@ -75,7 +82,7 @@ def waypoint_navigate (instructions : str):
     return x, y
 
 
-def manhattan_distance (x: int, y: int) -> int:
+def manhattan_distance(x: int, y: int) -> int:
     return abs(x) + abs(y)
 
 
@@ -91,4 +98,5 @@ with open("day-12/input.txt") as f:
     x, y = navigate(instructions)
     print("Part 1: The final Manhattan distance is", manhattan_distance(x, y))
     x, y = waypoint_navigate(instructions)
-    print("Part 2: The final Manhattan distance using waypoints is", manhattan_distance(x, y))
+    print("Part 2: The final Manhattan distance using waypoints is",
+          manhattan_distance(x, y))

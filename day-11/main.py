@@ -2,9 +2,11 @@ from typing import List
 from collections import Counter
 from typing import NamedTuple
 
+
 class SeatingRules (NamedTuple):
     adjacent: bool
     neighbour_limit: int
+
 
 Grid = List[List[str]]
 
@@ -12,17 +14,22 @@ neighbors = [(-1, 0), (-1, -1), (-1, +1),
              ( 0,-1),           ( 0, +1),
              ( 1, 1), (1,  0),  (1, - 1)]
 
+
 def count_adjacent_neighbours(seat_layout: Grid, row: int, col: int) -> str:
     num_rows = len(seat_layout)
     num_cols = len(seat_layout[0])
 
-    occupied_neighbours = Counter(seat_layout[row + dr][col + dc]
+    occupied_neighbours = Counter(
+        seat_layout[row + dr][col + dc]
         for dr, dc in neighbors
         if 0 <= row + dr < num_rows and 0 <= col + dc < num_cols)
 
     return occupied_neighbours["#"]
 
-def first_occupied(seat_layout: Grid, row: int, col: int, dr: int, dc: int) -> str:
+
+def first_occupied(seat_layout: Grid, row: int, col: int, dr: int,
+                   dc: int) -> str:
+
     num_rows = len(seat_layout)
     num_cols = len(seat_layout[0])
 
@@ -37,13 +44,16 @@ def first_occupied(seat_layout: Grid, row: int, col: int, dr: int, dc: int) -> s
         else:
             return '.'
 
+
 def count_visible_neighbours(seat_layout: Grid, row: int, col: int) -> str:
     occupied_neighbours = Counter(first_occupied(seat_layout, row, col, dr, dc)
-        for dr, dc in neighbors)
+                                  for dr, dc in neighbors)
 
     return occupied_neighbours["#"]
 
-def next_value(seat_layout: Grid, row: int, col: int, rules: SeatingRules) -> str:
+
+def next_value(seat_layout: Grid, row: int, col: int,
+               rules: SeatingRules) -> str:
     seat_status = seat_layout[row][col]
 
     if rules.adjacent:
@@ -58,6 +68,7 @@ def next_value(seat_layout: Grid, row: int, col: int, rules: SeatingRules) -> st
     else:
         return seat_status
 
+
 def apply_round(seat_layout: Grid, rules: SeatingRules) -> Grid:
     return [
         [
@@ -67,10 +78,12 @@ def apply_round(seat_layout: Grid, rules: SeatingRules) -> Grid:
         for i, row in enumerate(seat_layout)
     ]
 
-def count_occupied (seat_layout: Grid) -> int:
+
+def count_occupied(seat_layout: Grid) -> int:
     return sum(c == '#' for row in seat_layout for c in row)
 
-def final_occupancy (seat_layout: Grid, rules: SeatingRules) -> int:
+
+def final_occupancy(seat_layout: Grid, rules: SeatingRules) -> int:
 
     while True:
         next_seat_layout = apply_round(seat_layout, rules)
@@ -81,12 +94,16 @@ def final_occupancy (seat_layout: Grid, rules: SeatingRules) -> int:
 
     return count_occupied(seat_layout)
 
+
 with open("day-11/example.txt") as f:
     seat_layout = f.readlines()
-    assert 37 == final_occupancy(seat_layout, SeatingRules(1,4))
-    assert 26 == final_occupancy(seat_layout, SeatingRules(0,5))
+    assert 37 == final_occupancy(seat_layout, SeatingRules(1, 4))
+    assert 26 == final_occupancy(seat_layout, SeatingRules(0, 5))
+
 
 with open("day-11/input.txt") as f:
     seat_layout = f.readlines()
-    print("Part 1: The final occupancy is", final_occupancy(seat_layout, SeatingRules(1,4)))
-    print("Part 2: The final occupancy with the new rules is", final_occupancy(seat_layout, SeatingRules(0,5)))
+    print("Part 1: The final occupancy is",
+          final_occupancy(seat_layout, SeatingRules(1, 4)))
+    print("Part 2: The final occupancy with the new rules is",
+          final_occupancy(seat_layout, SeatingRules(0, 5)))

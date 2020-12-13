@@ -13,9 +13,11 @@ def traverse(forest, delta_x, delta_y) -> int:
 
     return num_trees
 
+
 with open("day-03/example.txt") as f:
     forest = f.readlines()
     assert 7 == traverse(forest, 3, 1)
+
 
 with open("day-03/input.txt") as f:
     forest = f.readlines()
@@ -45,4 +47,5 @@ with open("day-03/input.txt") as f:
     print("Number of trees with 5,1:", traverse_3)
     print("Number of trees with 7,1:", traverse_4)
     print("Number of trees with 1,2:", traverse_5)
-    print("The product is", traverse_1 * traverse_2 * traverse_3 * traverse_4 * traverse_5)
+    print("The product is",
+          traverse_1 * traverse_2 * traverse_3 * traverse_4 * traverse_5)

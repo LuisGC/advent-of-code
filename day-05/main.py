@@ -1,5 +1,6 @@
 from typing import NamedTuple
 
+
 class Seat(NamedTuple):
     row: int
     col: int
@@ -7,6 +8,7 @@ class Seat(NamedTuple):
     @property
     def id(self) -> int:
         return self.row * 8 + self.col
+
 
 def parse_seat(boarding_pass: str) -> Seat:
     row = 0
@@ -22,21 +24,22 @@ def parse_seat(boarding_pass: str) -> Seat:
         include = 1 if c == 'R' else 0
         col += multiplier * include
 
-    return Seat(row,col)
+    return Seat(row, col)
+
 
 with open("day-05/example.txt") as f:
     seats = [parse_seat(seat.strip()) for seat in f]
-    print("Parsed List", seats)
     assert 820 == max(seat.id for seat in seats)
+
 
 with open("day-05/input.txt") as f:
     seats = [parse_seat(seat.strip()) for seat in f]
-    print ("Part 1\nMax seat number:", max(seat.id for seat in seats))
+    print("Part 1\nMax seat number:", max(seat.id for seat in seats))
 
     seat_ids = [seat.id for seat in seats]
 
     lo = min(seat_ids)
     hi = max(seat_ids)
 
-    print ("Part 2\nMissing seat number:",[x for x in range(lo, hi)
-        if x not in seat_ids][0])
+    print("Part 2\nMissing seat number:", [x for x in range(lo, hi)
+                                           if x not in seat_ids][0])

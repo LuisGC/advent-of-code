@@ -1,16 +1,18 @@
 from typing import List
 
-def parse_adapters(input : str) -> List[int]:
+
+def parse_adapters(input: str) -> List[int]:
     adapters = []
     for line in input:
         adapters.append(int(line))
 
-    adapters.append(max(adapters)+3) # the built-in adapter
+    adapters.append(max(adapters)+3)  # the built-in adapter
 
     adapters.sort()
     return adapters
 
-def find_yolt_gaps (adapters: List[int]) -> [int, int]:
+
+def find_yolt_gaps(adapters: List[int]) -> [int, int]:
 
     yolts = 0
     gaps_1 = 0
@@ -25,6 +27,7 @@ def find_yolt_gaps (adapters: List[int]) -> [int, int]:
         yolts = item
 
     return gaps_1, gaps_3
+
 
 def count_arrangements(adapters: List[int]) -> int:
 
@@ -49,11 +52,13 @@ def count_arrangements(adapters: List[int]) -> int:
 
     return arrangements[output]
 
+
 with open("day-10/example.txt") as f:
     adapters = parse_adapters(f.readlines())
     gaps_1, gaps_3 = find_yolt_gaps(adapters)
     assert 35 == gaps_1 * gaps_3
     assert 8 == count_arrangements(adapters)
+
 
 with open("day-10/large-example.txt") as f:
     adapters = parse_adapters(f.readlines())
@@ -61,8 +66,10 @@ with open("day-10/large-example.txt") as f:
     assert 220 == gaps_1 * gaps_3
     assert 19208 == count_arrangements(adapters)
 
+
 with open("day-10/input.txt") as f:
     adapters = parse_adapters(f.readlines())
     gaps_1, gaps_3 = find_yolt_gaps(adapters)
     print("Part 1: The 1&3 yolt gaps multiplied is", gaps_1 * gaps_3)
-    print("Part 2: The number of distinct arrangements is", count_arrangements(adapters))
+    print("Part 2: The number of distinct arrangements is",
+          count_arrangements(adapters))

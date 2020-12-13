@@ -1,7 +1,8 @@
 from typing import List
 from collections import deque
 
-def first_encoding_error (numbers: List[int], lookback) -> int:
+
+def first_encoding_error(numbers: List[int], lookback) -> int:
     q = deque()
     result = 0
 
@@ -21,6 +22,7 @@ def first_encoding_error (numbers: List[int], lookback) -> int:
 
     return result
 
+
 def find_encryption_weakness(numbers: List[int], encoding_error: int) -> int:
 
     range = []
@@ -39,16 +41,19 @@ def find_encryption_weakness(numbers: List[int], encoding_error: int) -> int:
 
     return min(range) + max(range)
 
+
 with open("day-09/example.txt") as f:
     raw = f.read().strip()
     numbers = [int(x) for x in raw.split("\n")]
-    encoding_error = first_encoding_error(numbers,5)
+    encoding_error = first_encoding_error(numbers, 5)
     assert 127 == encoding_error
     assert 62 == find_encryption_weakness(numbers, encoding_error)
+
 
 with open("day-09/input.txt") as f:
     raw = f.read().strip()
     numbers = [int(x) for x in raw.split("\n")]
-    encoding_error = first_encoding_error(numbers,25)
+    encoding_error = first_encoding_error(numbers, 25)
     print("Part 1: The first encoding error is", encoding_error)
-    print("Part 2: The encryption weakness is", find_encryption_weakness(numbers,encoding_error))
+    print("Part 2: The encryption weakness is",
+          find_encryption_weakness(numbers, encoding_error))
