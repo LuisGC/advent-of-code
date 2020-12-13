@@ -1,6 +1,7 @@
 CLOCKWISE = "NESWN"
 ANTICLOCKWISE = "NWSEN"
 
+
 def rotate_ship(action, facing, degrees):
     if degrees == 0:
         return facing
@@ -15,6 +16,7 @@ def rotate_ship(action, facing, degrees):
         else:
             return rotate_ship(action, CLOCKWISE[CLOCKWISE.find(facing)+1], degrees-90)
 
+
 def move_ship(current_x: int, current_y: int, direction: str, value: int):
 
     if direction == 'N':
@@ -27,6 +29,7 @@ def move_ship(current_x: int, current_y: int, direction: str, value: int):
         current_x -= value
 
     return current_x, current_y
+
 
 def navigate (instructions : str):
     x = 0
@@ -45,6 +48,7 @@ def navigate (instructions : str):
             facing = rotate_ship(action, facing, value)
 
     return x,y
+
 
 def waypoint_navigate (instructions : str):
     waypoint_x = 10
@@ -70,19 +74,21 @@ def waypoint_navigate (instructions : str):
 
     return x, y
 
+
 def manhattan_distance (x: int, y: int) -> int:
     return abs(x) + abs(y)
+
 
 with open("day-12/example.txt") as f:
     instructions = f.readlines()
     x, y = navigate(instructions)
-    assert 25 == manhattan_distance(x,y)
+    assert 25 == manhattan_distance(x, y)
     x, y = waypoint_navigate(instructions)
-    assert 286 == manhattan_distance(x,y)
+    assert 286 == manhattan_distance(x, y)
 
 with open("day-12/input.txt") as f:
     instructions = f.readlines()
     x, y = navigate(instructions)
-    print("Part 1: The final Manhattan distance is", manhattan_distance(x,y))
+    print("Part 1: The final Manhattan distance is", manhattan_distance(x, y))
     x, y = waypoint_navigate(instructions)
-    print("Part 2: The final Manhattan distance using waypoints is", manhattan_distance(x,y))
+    print("Part 2: The final Manhattan distance using waypoints is", manhattan_distance(x, y))
