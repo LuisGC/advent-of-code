@@ -11,36 +11,20 @@ def to_binary(value: int, num_digits: int = 36) -> List[int]:
     return list(reversed(digits))
 
 
-def apply_mask2(value: int, mask: str) -> int:
-    digits = to_binary(value)
-
-    for i, (digit, m) in enumerate(zip(digits, mask)):
-        if m == '1':
-            digits[i] = 1
-        elif m == '0':
-            digits[i] = 0
-
-    return sum(digit * (2 ** i) for i, digit in enumerate(reversed(digits)))
-
-
-def initialize(program: List[str], mode: str) -> Dict[int, int]:
+def initialize_decoder(program: List[str]) -> Dict[int, int]:
     memory = defaultdict(int)
     mask = None
 
     for line in program:
         if line.startswith("mask"):
-            mask = line.split(" = ")[-1]
+            mask = line.split()[-1]
         else:
             mem, value_s = line.split(" = ")
             value = int(value_s)
             pos = int(mem[4:-1])
 
-            if mode == 'mask':
-                value = apply_mask2(value, mask)
-                memory[pos] = value
-            else:
-                for pos2 in apply_multi_mask(pos, mask):
-                    memory[pos2] = value
+            for pos2 in apply_multi_mask(pos, mask):
+                memory[pos2] = value
 
     return memory
 
@@ -61,26 +45,58 @@ def apply_multi_mask(value: int, mask: str) -> Iterator[int]:
             else:
                 new_digits[i] = next(it)
 
-        yield sum(digit * (2 ** i) for i, digit in enumerate(reversed(new_digits)))
+        yield sum(digit * (2 ** i)
+                  for i, digit in enumerate(reversed(new_digits)))
+
+
+def initialize_memory(instructions):
+    memory = defaultdict(int)
+    mask = ''
+
+    for ins in instructions:
+        if ins.startswith("mask"):
+            mask = ins.split()[-1]
+            continue
+
+        mem, value_s = ins.split(" = ")
+        addr = int(mem[4:-1])
+        val = int(value_s)
+
+        binary_value = bin(val)[2:]
+        binary_value = '0' * (len(mask) - len(binary_value)) + binary_value
+        bin_len = len(binary_value)
+        final = []
+
+        for bin_pos in range(-1, -bin_len-1, -1):
+            if mask[bin_pos] == 'X':
+                final.append(binary_value[bin_pos])
+            else:
+                final.append(mask[bin_pos])
+
+        rev = ''.join(list(final)[::-1])
+
+        memory[addr] = int(rev, 2)
+
+    return memory
 
 
 with open("day-14/example.txt") as f:
     program = f.readlines()
-    memory = initialize(program, 'mask')
+    memory = initialize_memory(program)
     assert 165 == sum(memory.values())
 
 
 with open("day-14/decoder-example.txt") as f:
     program = f.readlines()
-    memory = initialize(program, 'decoder')
+    memory = initialize_decoder(program)
     assert 208 == sum(memory.values())
 
 
 with open("day-14/input.txt") as f:
     program = f.readlines()
-    memory = initialize(program, 'mask')
+    memory = initialize_memory(program)
     print("Part 1: The sum of all values in memory is:",
           sum(memory.values()))
-    memory = initialize(program, 'decoder')
+    memory = initialize_decoder(program)
     print("Part 2: The sum of all values in memory with version 2 is:",
           sum(memory.values()))
