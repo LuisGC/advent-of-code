@@ -1,5 +1,6 @@
-from typing import Dict, List
+from typing import Dict, List, Iterator
 from collections import defaultdict
+import itertools
 
 
 def to_binary(value: int, num_digits: int = 36) -> List[int]:
@@ -22,7 +23,7 @@ def apply_mask2(value: int, mask: str) -> int:
     return sum(digit * (2 ** i) for i, digit in enumerate(reversed(digits)))
 
 
-def initialize(program: List[str]) -> Dict[int, int]:
+def initialize(program: List[str], mode: str) -> Dict[int, int]:
     memory = defaultdict(int)
     mask = None
 
@@ -34,20 +35,52 @@ def initialize(program: List[str]) -> Dict[int, int]:
             value = int(value_s)
             pos = int(mem[4:-1])
 
-            value = apply_mask2(value, mask)
-
-            memory[pos] = value
+            if mode == 'mask':
+                value = apply_mask2(value, mask)
+                memory[pos] = value
+            else:
+                for pos2 in apply_multi_mask(pos, mask):
+                    memory[pos2] = value
 
     return memory
 
 
+def apply_multi_mask(value: int, mask: str) -> Iterator[int]:
+    digits = to_binary(value)
+
+    xs = [i for i, c in enumerate(mask) if c == 'X']
+    sub_values = [[0, 1] for _ in xs]
+    for choice in itertools.product(*sub_values):
+        new_digits = digits[:]
+        it = iter(choice)
+        for i, (digit, m) in enumerate(zip(digits, mask)):
+            if m == '0':
+                pass  # leave the digit as is
+            elif m == '1':
+                new_digits[i] = 1
+            else:
+                new_digits[i] = next(it)
+
+        yield sum(digit * (2 ** i) for i, digit in enumerate(reversed(new_digits)))
+
+
 with open("day-14/example.txt") as f:
     program = f.readlines()
-    memory = initialize(program)
+    memory = initialize(program, 'mask')
     assert 165 == sum(memory.values())
+
+
+with open("day-14/decoder-example.txt") as f:
+    program = f.readlines()
+    memory = initialize(program, 'decoder')
+    assert 208 == sum(memory.values())
 
 
 with open("day-14/input.txt") as f:
     program = f.readlines()
-    memory = initialize(program)
-    print("Part 1: The sum of all values in memory is:", sum(memory.values()))
+    memory = initialize(program, 'mask')
+    print("Part 1: The sum of all values in memory is:",
+          sum(memory.values()))
+    memory = initialize(program, 'decoder')
+    print("Part 2: The sum of all values in memory with version 2 is:",
+          sum(memory.values()))
