@@ -56,7 +56,7 @@ def apply_multi_mask(value: int, mask: str) -> Iterator[int]:
 
 def initialize_memory(instructions):
     memory = defaultdict(int)
-    mask = ''
+    mask = None
 
     for line in instructions:
         if line.startswith("mask"):
