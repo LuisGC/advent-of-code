@@ -11,20 +11,25 @@ def to_binary(value: int, num_digits: int = 36) -> List[int]:
     return list(reversed(digits))
 
 
-def initialize_decoder(program: List[str]) -> Dict[int, int]:
+def parse_instruction(instruction: str):
+    mem, value_s = instruction.split(" = ")
+    value = int(value_s)
+    address = int(mem[4:-1])
+    return address, value
+
+
+def initialize_decoder(instructions: List[str]) -> Dict[int, int]:
     memory = defaultdict(int)
     mask = None
 
-    for line in program:
+    for line in instructions:
         if line.startswith("mask"):
             mask = line.split()[-1]
         else:
-            mem, value_s = line.split(" = ")
-            value = int(value_s)
-            pos = int(mem[4:-1])
+            address, value = parse_instruction(line)
 
-            for pos2 in apply_multi_mask(pos, mask):
-                memory[pos2] = value
+            for pos in apply_multi_mask(address, mask):
+                memory[pos] = value
 
     return memory
 
@@ -39,11 +44,11 @@ def apply_multi_mask(value: int, mask: str) -> Iterator[int]:
         it = iter(choice)
         for i, (digit, m) in enumerate(zip(digits, mask)):
             if m == '0':
-                pass  # leave the digit as is
+                pass  # leave unchanged
             elif m == '1':
-                new_digits[i] = 1
+                new_digits[i] = 1  # overwrite with 1
             else:
-                new_digits[i] = next(it)
+                new_digits[i] = next(it)  # wildcard iteration
 
         yield sum(digit * (2 ** i)
                   for i, digit in enumerate(reversed(new_digits)))
@@ -53,16 +58,14 @@ def initialize_memory(instructions):
     memory = defaultdict(int)
     mask = ''
 
-    for ins in instructions:
-        if ins.startswith("mask"):
-            mask = ins.split()[-1]
+    for line in instructions:
+        if line.startswith("mask"):
+            mask = line.split()[-1]
             continue
 
-        mem, value_s = ins.split(" = ")
-        addr = int(mem[4:-1])
-        val = int(value_s)
+        address, value = parse_instruction(line)
 
-        binary_value = bin(val)[2:]
+        binary_value = bin(value)[2:]
         binary_value = '0' * (len(mask) - len(binary_value)) + binary_value
         bin_len = len(binary_value)
         final = []
@@ -75,7 +78,7 @@ def initialize_memory(instructions):
 
         rev = ''.join(list(final)[::-1])
 
-        memory[addr] = int(rev, 2)
+        memory[address] = int(rev, 2)
 
     return memory
 
@@ -98,5 +101,5 @@ with open("day-14/input.txt") as f:
     print("Part 1: The sum of all values in memory is:",
           sum(memory.values()))
     memory = initialize_decoder(program)
-    print("Part 2: The sum of all values in memory with version 2 is:",
+    print("Part 2: The sum of all values in memory with decoder is:",
           sum(memory.values()))
