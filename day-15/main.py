@@ -29,6 +29,9 @@ with open("day-15/example.txt") as f:
     input_numbers = f.read().strip().split(",")
     numbers = [int(numeric_string) for numeric_string in input_numbers]
     assert 436 == recitate(numbers, 2020)
+    assert 1 == recitate([1, 3, 2], 2020)
+    assert 10 == recitate([2, 1, 3], 2020)
+    assert 27 == recitate([1, 2, 3], 2020)
     assert 175594 == recitate(numbers, 30000000)
 
 
