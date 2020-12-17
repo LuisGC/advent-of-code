@@ -17,7 +17,10 @@ def parse_rule(raw_rule: str) -> List[int]:
     name, ranges = raw_rule.split(": ")
     r1, r2 = ranges.split(" or ")
 
-    return [create_range(r1), create_range(r2)]
+    return Rule(
+                name=name,
+                ranges=[create_range(r1), create_range(r2)]
+                )
 
 
 def parse_ticket(raw_ticket: str) -> List[int]:
@@ -37,8 +40,8 @@ def parse_input(notes: str):
 
 
 def is_valid_value(value: int, rule: Rule) -> bool:
-    return (rule[0][0] <= value <= abs(rule[0][1])
-            or rule[1][0] <= value <= rule[1][1])
+    return (rule.ranges[0][0] <= value <= abs(rule.ranges[0][1])
+            or rule.ranges[1][0] <= value <= rule.ranges[1][1])
 
 
 def error_rate(rules: List[Rule], tickets: List[int]) -> int:
