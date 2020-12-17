@@ -79,7 +79,9 @@ def get_valid_tickets(rules: List[Rule], tickets: List[Ticket]) -> List[int]:
     return valid_tickets
 
 
-def remove_position_from_other_keys(rules, rule_to_keep, position_to_remove):
+def remove_position_from_other_keys(rules: List[Rule],
+                                    rule_to_keep: Rule,
+                                    position_to_remove: int):
     for rule in rules:
         if (rule.name != rule_to_keep.name and
                 position_to_remove in rule.position and
@@ -87,7 +89,7 @@ def remove_position_from_other_keys(rules, rule_to_keep, position_to_remove):
             rule.position.remove(position_to_remove)
 
 
-def get_departure_fields(rules: List[int],
+def get_departure_fields(rules: List[Rule],
                          my_ticket: Ticket,
                          nearby_tickets: List[Ticket]):
     valid_tickets = get_valid_tickets(rules, nearby_tickets)
