@@ -4,12 +4,13 @@ from collections import deque
 
 
 def tokenize(expression: str):
-    ops = {"+": add, "*": mul}
     for char in expression:
         if char.isdigit():
             yield int(char)
-        elif char in ops:
-            yield ops[char]
+        elif char == "+":
+            yield add
+        elif char == "*":
+            yield mul
         elif char in "()":
             yield char
 
