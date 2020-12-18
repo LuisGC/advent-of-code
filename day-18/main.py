@@ -14,12 +14,12 @@ def tokenize(expression: str):
             yield char
 
 
-def evaluate_expression(tokens: str) -> int:
+def evaluate_left_precedence(tokens: str) -> int:
     memory = deque()
 
     for token in tokens:
         if token == "(":
-            memory.append(evaluate_expression(tokens))
+            memory.append(evaluate_left_precedence(tokens))
         elif token == ")":
             break
         else:
@@ -32,27 +32,63 @@ def evaluate_expression(tokens: str) -> int:
     return memory.popleft()
 
 
-def calculate_by_precedence(lines: List[str], precendence: str) -> List[int]:
-    results = []
+def evaluate_mixed_precedence(tokens: str) -> int:
+    memory = deque()
 
+    for token in tokens:
+        if token == "(":
+            memory.append(evaluate_mixed_precedence(tokens))
+        elif token == ")":
+            break
+        else:
+            memory.append(token)
+
+        if len(memory) > 2:
+            if memory[-2] == add:
+                right, op, left = memory.pop(), memory.pop(), memory.pop()
+                memory.append(op(left, right))
+
+    while len(memory) > 1:
+        left, op, right = memory.popleft(), memory.popleft(), memory.popleft()
+        memory.appendleft(op(left, right))
+
+    return memory.popleft()
+
+
+def calculate_by_precedence(lines: List[str], precendence: str) -> List[int]:
+
+    results = []
     for line in lines:
         if precendence == 'left':
-            res = evaluate_expression(tokenize(line))
+            res = evaluate_left_precedence(tokenize(line))
+        else:
+            res = evaluate_mixed_precedence(tokenize(line))
         results.append(res)
 
     return results
 
 
 with open("day-18/example.txt") as f:
-    results = calculate_by_precedence(f.readlines(), "left")
+    input = f.readlines()
+    results = calculate_by_precedence(input, "left")
     assert 71 == results[0]
     assert 51 == results[1]
     assert 26 == results[2]
     assert 437 == results[3]
     assert 12240 == results[4]
     assert 13632 == results[5]
+    results = calculate_by_precedence(input, "mixed")
+    assert 231 == results[0]
+    assert 51 == results[1]
+    assert 46 == results[2]
+    assert 1445 == results[3]
+    assert 669060 == results[4]
+    assert 23340 == results[5]
 
 
 with open("day-18/input.txt") as f:
-    results = calculate_by_precedence(f.readlines(), "left")
-    print("Part 1: Sum of evaluated values is: ", sum(results))
+    input = f.readlines()
+    results = calculate_by_precedence(input, "left")
+    print("Part 1: Sum by left preference evaluation is: ", sum(results))
+    results = calculate_by_precedence(input, "mixed")
+    print("Part 2: Sum by mixed preference evaluation is: ", sum(results))
