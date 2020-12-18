@@ -32,18 +32,19 @@ def evaluate_expression(tokens: str) -> int:
     return memory.popleft()
 
 
-def calculate_with_left_precedence(lines: List[str]) -> List[int]:
+def calculate_by_precedence(lines: List[str], precendence: str) -> List[int]:
     results = []
 
     for line in lines:
-        res = evaluate_expression(tokenize(line))
+        if precendence == 'left':
+            res = evaluate_expression(tokenize(line))
         results.append(res)
 
     return results
 
 
 with open("day-18/example.txt") as f:
-    results = calculate_with_left_precedence(f.readlines())
+    results = calculate_by_precedence(f.readlines(), "left")
     assert 71 == results[0]
     assert 51 == results[1]
     assert 26 == results[2]
@@ -53,5 +54,5 @@ with open("day-18/example.txt") as f:
 
 
 with open("day-18/input.txt") as f:
-    results = calculate_with_left_precedence(f.readlines())
+    results = calculate_by_precedence(f.readlines(), "left")
     print("Part 1: Sum of evaluated values is: ", sum(results))
