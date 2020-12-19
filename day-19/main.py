@@ -26,9 +26,9 @@ class Rule(NamedTuple):
 
 def parse_input(input: str):
     part_1, part_2 = input.split("\n\n")
-    rules = [Rule.parse(rule) for rule in part_1.split("\n")]
     rules_dict = {}
-    for rule in rules:
+    for rule_str in part_1.split("\n"):
+        rule = Rule.parse(rule_str)
         rules_dict[rule.id] = rule
     return rules_dict, part_2.strip().split("\n")
 
