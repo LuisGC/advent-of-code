@@ -33,36 +33,49 @@ def extract_ingredients_per_allergen(menuItems: List[MenuItem]) -> Dict[str, Set
 
     while keep_going:
         keep_going = False
-        known = {allergen: cands for allergen, cands in ingredients_per_allergen.items()
+        known = {allergen: cands
+                 for allergen, cands in ingredients_per_allergen.items()
                  if len(cands) == 1}
-        taken_ingredients = {ingredient for ingredients in known.values() for ingredient in ingredients}
+        taken_ingredients = {ingredient
+                             for ingredients in known.values()
+                             for ingredient in ingredients}
 
         for allergen in allergens:
-            # if this has multiple choices
             if allergen not in known and (ingredients_per_allergen[allergen] & taken_ingredients):
-                keep_going = True
                 ingredients_per_allergen[allergen] = ingredients_per_allergen[allergen] - taken_ingredients
+                keep_going = True
 
     return ingredients_per_allergen
 
 
 def no_allergens(menuItems: List[MenuItem]) -> int:
     ingredients_per_allergen = extract_ingredients_per_allergen(menuItems)
-    ingredients_with_allergen = {ingredient for ingredients_per_allergen in ingredients_per_allergen.values() for ingredient in ingredients_per_allergen}
+    ingredients_with_allergen = {ingredient
+                                 for ingredients_per_allergen in ingredients_per_allergen.values()
+                                 for ingredient in ingredients_per_allergen}
 
     return sum(ingredient not in ingredients_with_allergen
                for menuItem in menuItems
                for ingredient in menuItem.ingredients)
 
 
+def arrange(ingredients_per_allergen: Dict[str, Set[str]]) -> str:
+    return ",".join(next(iter(ingredients))
+                    for allergen, ingredients in sorted(ingredients_per_allergen.items()))
+
+
 with open("day-21/example.txt") as f:
     menu_list = [MenuItem.parse(line) for line in f.readlines()]
     free_of_allergens = no_allergens(menu_list)
     assert 5 == free_of_allergens
-
+    ingredients_per_allergen = extract_ingredients_per_allergen(menu_list)
+    assert "mxmxvkd,sqjhc,fvjkl" == arrange(ingredients_per_allergen)
 
 with open("day-21/input.txt") as f:
     menu_list = [MenuItem.parse(line) for line in f.readlines()]
     free_of_allergens = no_allergens(menu_list)
     print("Part 1: The ingredients free of allergens appear (times): ",
           free_of_allergens)
+    ingredients_per_allergen = extract_ingredients_per_allergen(menu_list)
+    print("Part 2: The canonical dangerous ingredient list is: ",
+          arrange(ingredients_per_allergen))
