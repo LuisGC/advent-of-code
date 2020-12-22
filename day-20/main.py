@@ -338,7 +338,6 @@ def assemble_image(tiles: List[Tile]) -> Image:
             if found_one:
                 break
 
-    print_image(image)
     return image
 
 
