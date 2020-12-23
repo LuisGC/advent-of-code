@@ -53,7 +53,7 @@ def read_labels(cup_labels: List[int]) -> int:
 def play_crab_cups_dict(input: str,
                         rounds: int,
                         max_value: int) -> List[int]:
-                        
+
     cups_with_successor = {}
 
     for x, label in enumerate(input):
@@ -62,16 +62,17 @@ def play_crab_cups_dict(input: str,
 
     cups_with_successor[int(input[-1])] = 10
 
-    for x in range(10, 10**6):
+    for x in range(10, max_value):
         cups_with_successor[x] = x+1
 
-    cups_with_successor[10**6] = int(input[0])
+    cups_with_successor[max_value] = int(input[0])
 
     n = len(cups_with_successor)
 
     current = int(input[0])
 
     for _ in range(rounds):
+        # Player picks up three cups after the current cups
         a = cups_with_successor[current]
         b = cups_with_successor[a]
         c = cups_with_successor[b]
@@ -81,13 +82,18 @@ def play_crab_cups_dict(input: str,
 
         cups_with_successor[current] = d
 
+        # Player selects the destination cup, by default the value minus one
         destination = ((current-2) % n) + 1
 
+        # now we rotate the queue until destination appears
         while destination in moving:
             destination = ((destination-2) % n) + 1
 
+        # then we place the picked up cups after the destination
         cups_with_successor[c] = cups_with_successor[destination]
         cups_with_successor[destination] = a
+
+        # and finally we rotate to the cup after current
         current = cups_with_successor[current]
 
     return cups_with_successor[1], cups_with_successor[cups_with_successor[1]]
@@ -104,7 +110,6 @@ print("Part 1: The labels after 100 rounds are: ",
       read_labels(final_positions))
 
 next, next_2 = play_crab_cups_dict("389125467", 10000000, 1000000)
-print(next, next_2)
 assert 934001 == next
 assert 159792 == next_2
 assert 149245887792 == next * next_2
