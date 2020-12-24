@@ -28,12 +28,16 @@ def flip_tiles(transitions: List[str]) -> Dict:
     return layout
 
 
+def count_black_tiles(layout: Dict) -> int:
+    return sum(v == 1 for v in layout.values())
+
+
 with open("day-24/example.txt") as f:
     tile_layout = flip_tiles(f.readlines())
-    assert 10 == sum(v == 1 for v in tile_layout.values())
+    assert 10 == count_black_tiles(tile_layout)
 
 
 with open("day-24/input.txt") as f:
     tile_layout = flip_tiles(f.readlines())
     print("Part 1: The amount of tiles with the black side up is: ",
-          sum(v == 1 for v in tile_layout.values()))
+          count_black_tiles(tile_layout))
