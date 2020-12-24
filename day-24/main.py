@@ -28,6 +28,29 @@ def flip_tiles(transitions: List[str]) -> Dict:
     return layout
 
 
+def artistic_flip(layout: Dict, times: int) -> Dict:
+
+    for _ in range(times):
+        opts = set((x + dx, y + dy)
+                   for x, y in layout.keys()
+                   for dx, dy in directions.values())
+        new_state = defaultdict(int)
+        for x, y in opts:
+            old = layout[(x, y)]
+            adj = sum(layout[x + dx, y + dy]
+                      for dx, dy in directions.values())
+            if old == 1 and adj not in [1, 2]:
+                new_state[x, y] = 0
+            elif old == 0 and adj == 2:
+                new_state[x, y] = 1
+            else:
+                new_state[x, y] = old
+
+        layout = new_state
+
+    return layout
+
+
 def count_black_tiles(layout: Dict) -> int:
     return sum(v == 1 for v in layout.values())
 
@@ -35,9 +58,19 @@ def count_black_tiles(layout: Dict) -> int:
 with open("day-24/example.txt") as f:
     tile_layout = flip_tiles(f.readlines())
     assert 10 == count_black_tiles(tile_layout)
+    assert 15 == count_black_tiles(artistic_flip(tile_layout, 1))
+    assert 12 == count_black_tiles(artistic_flip(tile_layout, 2))
+    assert 25 == count_black_tiles(artistic_flip(tile_layout, 3))
+    assert 23 == count_black_tiles(artistic_flip(tile_layout, 5))
+    assert 37 == count_black_tiles(artistic_flip(tile_layout, 10))
+    assert 566 == count_black_tiles(artistic_flip(tile_layout, 50))
+    assert 2208 == count_black_tiles(artistic_flip(tile_layout, 100))
 
 
 with open("day-24/input.txt") as f:
     tile_layout = flip_tiles(f.readlines())
     print("Part 1: The amount of tiles with the black side up is: ",
           count_black_tiles(tile_layout))
+    print('''Part 2: The amount of tiles with the black side up
+            after 100 days of artistic flips is: ''',
+          count_black_tiles(artistic_flip(tile_layout, 100)))
