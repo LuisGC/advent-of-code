@@ -3,8 +3,7 @@ def count_increase(inputs):
     count = 0
 
     for x in range(0, len(inputs)-1):
-        if inputs[x] < inputs[x+1]:
-            count = count + 1
+        count += (inputs[x] < inputs[x+1])
 
     return count
 
@@ -23,8 +22,7 @@ def count_increase_window(inputs):
     count = 0
 
     for x in range(0, len(inputs)-3):
-        if inputs[x] + inputs[x+1] + inputs[x+2] < inputs[x+1] + inputs[x+2] + inputs[x+3]:
-            count = count + 1
+        count += inputs[x] + inputs[x+1] + inputs[x+2] < inputs[x+1] + inputs[x+2] + inputs[x+3]
 
     return count
 
