@@ -83,19 +83,19 @@ def initialize_memory(instructions):
     return memory
 
 
-with open("day-14/example.txt") as f:
+with open("2020/day-14/example.txt") as f:
     program = f.readlines()
     memory = initialize_memory(program)
     assert 165 == sum(memory.values())
 
 
-with open("day-14/decoder-example.txt") as f:
+with open("2020/day-14/decoder-example.txt") as f:
     program = f.readlines()
     memory = initialize_decoder(program)
     assert 208 == sum(memory.values())
 
 
-with open("day-14/input.txt") as f:
+with open("2020/day-14/input.txt") as f:
     program = f.readlines()
     memory = initialize_memory(program)
     print("Part 1: The sum of all values in memory is:",

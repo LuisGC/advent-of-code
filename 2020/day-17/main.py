@@ -89,13 +89,13 @@ def apply_cicles_4D(initial_state: List[str], repeats: int) -> int:
     return len(active)
 
 
-with open("day-17/example.txt") as f:
+with open("2020/day-17/example.txt") as f:
     initial_state = parse_input(f.readlines())
     assert 112 == apply_cicles(initial_state, 6)
     assert 848 == apply_cicles_4D(initial_state, 6)
 
 
-with open("day-17/input.txt") as f:
+with open("2020/day-17/input.txt") as f:
     initial_state = parse_input(f.readlines())
     print("Part 1: The active cubes after 6 repeats are:",
           apply_cicles(initial_state, 6))

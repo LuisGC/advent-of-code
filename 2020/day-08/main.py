@@ -56,14 +56,14 @@ def run_removing_loops(instructions: List[Instruction]) -> int:
     return accumulator
 
 
-with open("day-08/example.txt") as f:
+with open("2020/day-08/example.txt") as f:
     code = f.read().strip()
     instructions = [Instruction.parse(line) for line in code.split("\n")]
     assert 5 == run_until_loop(instructions)[0]
     assert 8 == run_removing_loops(instructions)
 
 
-with open("day-08/input.txt") as f:
+with open("2020/day-08/input.txt") as f:
     code = f.read().strip()
     instructions = [Instruction.parse(line) for line in code.split("\n")]
     print("Part 1: Accumulator is", run_until_loop(instructions)[0])

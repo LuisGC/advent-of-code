@@ -14,18 +14,18 @@ def traverse(forest, delta_x, delta_y) -> int:
     return num_trees
 
 
-with open("day-03/example.txt") as f:
+with open("2020/day-03/example.txt") as f:
     forest = f.readlines()
     assert 7 == traverse(forest, 3, 1)
 
 
-with open("day-03/input.txt") as f:
+with open("2020/day-03/input.txt") as f:
     forest = f.readlines()
     print("Part 1, Number of trees:", traverse(forest, 3, 1))
 
 # PART 2
 
-with open("day-03/example.txt") as f:
+with open("2020/day-03/example.txt") as f:
     forest = f.readlines()
     assert 2 == traverse(forest, 1, 1)
     assert 7 == traverse(forest, 3, 1)
@@ -33,7 +33,7 @@ with open("day-03/example.txt") as f:
     assert 4 == traverse(forest, 7, 1)
     assert 2 == traverse(forest, 1, 2)
 
-with open("day-03/input.txt") as f:
+with open("2020/day-03/input.txt") as f:
     forest = f.readlines()
     print("Part 2")
     traverse_1 = traverse(forest, 1, 1)

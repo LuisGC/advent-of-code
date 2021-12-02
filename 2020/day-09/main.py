@@ -42,7 +42,7 @@ def find_encryption_weakness(numbers: List[int], encoding_error: int) -> int:
     return min(range) + max(range)
 
 
-with open("day-09/example.txt") as f:
+with open("2020/day-09/example.txt") as f:
     raw = f.read().strip()
     numbers = [int(x) for x in raw.split("\n")]
     encoding_error = first_encoding_error(numbers, 5)
@@ -50,7 +50,7 @@ with open("day-09/example.txt") as f:
     assert 62 == find_encryption_weakness(numbers, encoding_error)
 
 
-with open("day-09/input.txt") as f:
+with open("2020/day-09/input.txt") as f:
     raw = f.read().strip()
     numbers = [int(x) for x in raw.split("\n")]
     encoding_error = first_encoding_error(numbers, 25)

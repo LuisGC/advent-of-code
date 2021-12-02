@@ -25,7 +25,7 @@ def recitate(initial_numbers, times):
     return prev
 
 
-with open("day-15/example.txt") as f:
+with open("2020/day-15/example.txt") as f:
     input_numbers = f.read().strip().split(",")
     numbers = [int(numeric_string) for numeric_string in input_numbers]
     assert 436 == recitate(numbers, 2020)
@@ -35,7 +35,7 @@ with open("day-15/example.txt") as f:
     assert 175594 == recitate(numbers, 30000000)
 
 
-with open("day-15/input.txt") as f:
+with open("2020/day-15/input.txt") as f:
     input_numbers = f.read().strip().split(",")
     numbers = [int(numeric_string) for numeric_string in input_numbers]
     print("Part 1: The 2020th recitated number is",

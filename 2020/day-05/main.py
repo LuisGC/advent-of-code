@@ -27,12 +27,12 @@ def parse_seat(boarding_pass: str) -> Seat:
     return Seat(row, col)
 
 
-with open("day-05/example.txt") as f:
+with open("2020/day-05/example.txt") as f:
     seats = [parse_seat(seat.strip()) for seat in f]
     assert 820 == max(seat.id for seat in seats)
 
 
-with open("day-05/input.txt") as f:
+with open("2020/day-05/input.txt") as f:
     seats = [parse_seat(seat.strip()) for seat in f]
     print("Part 1\nMax seat number:", max(seat.id for seat in seats))
 

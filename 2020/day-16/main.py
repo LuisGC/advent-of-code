@@ -124,11 +124,11 @@ def get_departure_fields(rules: List[Rule],
     return val
 
 
-with open("day-16/example.txt") as f:
+with open("2020/day-16/example.txt") as f:
     rules, my_ticket, nearby_tickets = parse_input(f.read())
     assert 71 == error_rate(rules, nearby_tickets)
 
-with open("day-16/input.txt") as f:
+with open("2020/day-16/input.txt") as f:
     rules, my_ticket, nearby_tickets = parse_input(f.read())
     print("Part 1: Error rate is: ", error_rate(rules, nearby_tickets))
     print("Part 2: The departure values multiplied is: ",

@@ -67,13 +67,13 @@ def bags_inside(bags: List[Bag], color: str) -> int:
     return bags_inside
 
 
-with open("day-07/example.txt") as f:
+with open("2020/day-07/example.txt") as f:
     bags = parse_bags(f.read().strip())
     assert 4 == len(contain_color(bags, "shiny gold"))
     assert 32 == bags_inside(bags, "shiny gold")
 
 
-with open("day-07/input.txt") as f:
+with open("2020/day-07/input.txt") as f:
     bags = parse_bags(f.read().strip())
     print("Part 1:", len(contain_color(bags, "shiny gold")),
           "bags can contain a shiny gold bag")

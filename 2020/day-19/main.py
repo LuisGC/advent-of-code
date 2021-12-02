@@ -63,13 +63,13 @@ def matching_messages(rules: dict[Rule], messages: List[str]) -> List[bool]:
     return [check(rules, mess) for mess in messages]
 
 
-with open("day-19/example.txt") as f:
+with open("2020/day-19/example.txt") as f:
     rules, messages = parse_input(f.read())
     matches = matching_messages(rules, messages)
     assert 2 == sum(matches)
 
 
-with open("day-19/long-example.txt") as f:
+with open("2020/day-19/long-example.txt") as f:
     rules, messages = parse_input(f.read())
     matches = matching_messages(rules, messages)
     assert 3 == sum(matches)
@@ -81,7 +81,7 @@ with open("day-19/long-example.txt") as f:
     assert 12 == sum(matches)
 
 
-with open("day-19/input.txt") as f:
+with open("2020/day-19/input.txt") as f:
     rules, messages = parse_input(f.read())
     matches = matching_messages(rules, messages)
     print("Part 1: Sum of messages that match the 0 rule is: ",

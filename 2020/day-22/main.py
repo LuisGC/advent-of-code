@@ -70,7 +70,7 @@ def play_recursive_game(p1_cards: List[int],
     return (p1_cards, p2_cards)
 
 
-with open("day-22/example.txt") as f:
+with open("2020/day-22/example.txt") as f:
     p1_cards, p2_cards = parse_input(f.read())
     p1_end_cards, p2_end_cards = play_space_cards(p1_cards, p2_cards)
     assert len(p1_cards) + len(p2_cards) == len(p1_end_cards) + len(p2_end_cards)
@@ -82,7 +82,7 @@ with open("day-22/example.txt") as f:
     assert 291 == scoring(p1_end_cards, p2_end_cards)
 
 
-with open("day-22/input.txt") as f:
+with open("2020/day-22/input.txt") as f:
     p1_cards, p2_cards = parse_input(f.read())
     p1_end_cards, p2_end_cards = play_space_cards(p1_cards, p2_cards)
     assert len(p1_cards) + len(p2_cards) == len(p1_end_cards) + len(p2_end_cards)

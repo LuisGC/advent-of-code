@@ -423,7 +423,7 @@ def get_terrain_not_monster(tiles: List[Tile]) -> int:
     return roughness
 
 
-with open("day-20/example.txt") as f:
+with open("2020/day-20/example.txt") as f:
     tiles = parse_input(f.read())
     assembled_tiles, positions = assemble_tiles(tiles)
     corners = corner_tiles(assembled_tiles)
@@ -432,7 +432,7 @@ with open("day-20/example.txt") as f:
     assert 273 == get_terrain_not_monster(tiles)
 
 
-with open("day-20/input.txt") as f:
+with open("2020/day-20/input.txt") as f:
     tiles = parse_input(f.read())
     assembled_tiles, positions = assemble_tiles(tiles)
     corners = corner_tiles(assembled_tiles)
