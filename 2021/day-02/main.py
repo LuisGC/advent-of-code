@@ -58,5 +58,3 @@ with open("2021/day-02/input.txt") as f:
     commands = [Command.parse(line) for line in code.split("\n")]
     print("Part 1: distance * depth is", run_commands(commands))
     print("Part 2: distance * depth with aim is", run_commands_aim(commands))
-#    print("Part 2: Removing loops, accumulator is",
-#          run_removing_loops(instructions))
