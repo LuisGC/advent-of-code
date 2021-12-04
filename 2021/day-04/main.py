@@ -11,8 +11,8 @@ def card_score(draws: Sequence[int], card: BingoCard) -> int:
     drawn = [False] * 25
     draw_set = set(draws)
 
-    for i, board_num in enumerate(card.numbers):
-        if board_num in draw_set:
+    for i, card_num in enumerate(card.numbers):
+        if card_num in draw_set:
             drawn[i] = True
 
     bingo = False
@@ -31,7 +31,7 @@ def card_score(draws: Sequence[int], card: BingoCard) -> int:
     return s * draws[len(draws)-1]
 
 
-def play_bingo (draws, cards):
+def play_to_win (draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
 
     for i in range(len(draws)):
         for card in cards:
@@ -42,10 +42,23 @@ def play_bingo (draws, cards):
     return 0
 
 
+def play_to_lose (draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
+
+    winners: Set[int] = set()
+    for i in range(len(draws)):
+        for card_num, card in enumerate(cards):
+            score = card_score(draws[:i], card)
+            if score != 0 and card_num not in winners:
+                if len(winners) == len(cards) - 1:
+                    return score
+                winners.add(card_num)
+
+    return 0
+
+
 def parse_input (input):
 
     chunks = "\n".join(input).split("\n\n")
-
     draws = tuple(map(int, chunks[0].split(",")))
     cards = [BingoCard(tuple(int(i) for i in card.split())) for card in chunks[1:]]
 
@@ -56,11 +69,12 @@ with open("2021/day-04/example.txt") as f:
     input = [str(line.strip()) for line in f]
     draws, cards = parse_input(input)
 
-    assert 4512 == play_bingo(draws,cards)
+    assert 4512 == play_to_win(draws,cards)
+    assert 1924 == play_to_lose(draws,cards)
 
 
 with open("2021/day-04/input.txt") as f:
     input = [str(line.strip()) for line in f]
     draws, cards = parse_input(input)
-    print("Part 1: Bingo winner score is", play_bingo(draws,cards))
-#    print("Part 2: distance * depth with aim is", run_commands_aim(commands))
+    print("Part 1: Bingo winner score is", play_to_win(draws,cards))
+    print("Part 2: Bingo loser score is", play_to_lose(draws,cards))
