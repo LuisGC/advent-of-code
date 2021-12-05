@@ -1,5 +1,3 @@
-
-
 def parse_input(input):
     return [[(line.split()[0]).split(','), (line.split()[2]).split(',')] for line in input]
 
