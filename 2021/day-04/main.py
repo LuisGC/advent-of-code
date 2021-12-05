@@ -1,4 +1,4 @@
-from typing import NamedTuple, Sequence
+from typing import NamedTuple, Sequence, Set
 
 
 class BingoCard (NamedTuple):
@@ -30,7 +30,7 @@ def card_score(draws: Sequence[int], card: BingoCard) -> int:
     return s * draws[len(draws)-1]
 
 
-def play_to_win (draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
+def play_to_win(draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
 
     for i in range(len(draws)):
         for card in cards:
@@ -41,7 +41,7 @@ def play_to_win (draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
     return 0
 
 
-def play_to_lose (draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
+def play_to_lose(draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
 
     winners: Set[int] = set()
     for i in range(len(draws)):
@@ -55,7 +55,7 @@ def play_to_lose (draws: Sequence[int], cards: Sequence[BingoCard]) -> int:
     return 0
 
 
-def parse_input (input):
+def parse_input(input):
 
     chunks = "\n".join(input).split("\n\n")
     draws = tuple(map(int, chunks[0].split(",")))
@@ -68,12 +68,12 @@ with open("2021/day-04/example.txt") as f:
     input = [str(line.strip()) for line in f]
     draws, cards = parse_input(input)
 
-    assert 4512 == play_to_win(draws,cards)
-    assert 1924 == play_to_lose(draws,cards)
+    assert 4512 == play_to_win(draws, cards)
+    assert 1924 == play_to_lose(draws, cards)
 
 
 with open("2021/day-04/input.txt") as f:
     input = [str(line.strip()) for line in f]
     draws, cards = parse_input(input)
-    print("Part 1: Bingo winner score is", play_to_win(draws,cards))
-    print("Part 2: Bingo loser score is", play_to_lose(draws,cards))
+    print("Part 1: Bingo winner score is", play_to_win(draws, cards))
+    print("Part 2: Bingo loser score is", play_to_lose(draws, cards))
