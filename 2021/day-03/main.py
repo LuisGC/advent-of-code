@@ -11,7 +11,7 @@ def calculate_gamma_epsilon(bits, length):
     gamma_rate_str = ''.join(gamma_rate)
     epsilon_rate_str = ''.join(epsilon_rate)
 
-    return int(gamma_rate_str,2) * int(epsilon_rate_str,2)
+    return int(gamma_rate_str, 2) * int(epsilon_rate_str, 2)
 
 
 def calculate_power(inputs):
