@@ -7,7 +7,7 @@ def consumption(baseline: int, pos: int) -> int:
 
 def incremental_consumption(baseline: int, pos: int) -> int:
     distance = abs(baseline - pos)
-    return int(distance * (distance+1) / 2)
+    return int(distance * (distance + 1) / 2)
 
 
 def align_crabs(positions: List[int], constant_rate: bool) -> int:
