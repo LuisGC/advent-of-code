@@ -10,31 +10,34 @@ def incremental_consumption(baseline: int, pos: int) -> int:
     return int(distance * (distance + 1) / 2)
 
 
-def align_crabs(positions: List[int], constant_rate: bool) -> int:
+def align_crabs(positions: List[int]) -> (int, int):
 
-    fuel = 10**10
+    fuel_constant = 10**10
+    fuel_incremental = 10**10
 
     for baseline in range(min(positions), max(positions)):
-        current_fuel = 0
+        current_fuel_constant = 0
+        current_fuel_incremental = 0
         for pos in positions:
-            if constant_rate:
-                current_fuel += consumption(baseline, pos)
-            else:
-                current_fuel += incremental_consumption(baseline, pos)
+            current_fuel_constant += consumption(baseline, pos)
+            current_fuel_incremental += incremental_consumption(baseline, pos)
 
-        fuel = min(fuel, current_fuel)
+        fuel_constant = min(fuel_constant, current_fuel_constant)
+        fuel_incremental = min(fuel_incremental, current_fuel_incremental)
 
-    return fuel
+    return fuel_constant, fuel_incremental
 
 
 with open("2021/day-07/example.txt") as f:
     input = [int(num) for num in f.readline().strip().split(',')]
-    assert 37 == align_crabs(input, True)
-    assert 168 == align_crabs(input, False)
+    fuel_constant, fuel_incremental = align_crabs(input)
+    assert 37 == fuel_constant
+    assert 168 == fuel_incremental
 
 
 with open("2021/day-07/input.txt") as f:
     input = [int(num) for num in f.readline().strip().split(',')]
 
-    print("Part 1: The amount of fuel is", align_crabs(input, True))
-    print("Part 2: The amount of fuel is", align_crabs(input, False))
+    fuel_constant, fuel_incremental = align_crabs(input)
+    print("Part 1: The amount of fuel is", fuel_constant)
+    print("Part 2: The amount of fuel is", fuel_incremental)
