@@ -60,7 +60,6 @@ def obtain_possibilities(nums: List[str]) -> List[str]:
 
 
 def obtain_solution(nums: List[str], possibilities: List[str]) -> List[str]:
-    solution = []
 
     for pos in possibilities:
         possible_solution = [""] * 10
@@ -74,33 +73,30 @@ def obtain_solution(nums: List[str], possibilities: List[str]) -> List[str]:
                 possible_solution[4] = num
             elif len(num) == 7:
                 possible_solution[8] = num
-            elif len(num) == 6:             # 0, 6 or 9
-                if pos[3] not in num:       # 0
+            elif len(num) == 6:                                 # 0, 6 or 9
+                if pos[3] not in num:                           # 0
                     possible_solution[0] = num
-                elif pos[2] not in num:     # 6
+                elif pos[2] not in num:                         # 6
                     possible_solution[6] = num
-                elif pos[4] not in num:     # 9
+                elif pos[4] not in num:                         # 9
                     possible_solution[9] = num
-            elif len(num) == 5:             # 2, 3 or 5
-                if pos[5] not in num:       # 2
+            elif len(num) == 5:                                 # 2, 3 or 5
+                if pos[5] not in num:                           # 2
                     possible_solution[2] = num
-                elif pos[1] not in num and pos[4] not in num:     # 3
+                elif pos[1] not in num and pos[4] not in num:   # 3
                     possible_solution[3] = num
-                elif pos[2] not in num:       # 5
+                elif pos[2] not in num:                         # 5
                     possible_solution[5] = num
 
         if "" not in possible_solution:
-            solution = possible_solution
-            break
-
-    return solution
+            return possible_solution
 
 
 def count_output(output: List[str], solution: List[str]) -> int:
     output_decoded = ''
     for number in output:
         for i in range(len(solution)):
-            if set(number) == set(solution[i]):
+            if sorted(number) == sorted(solution[i]):
                 output_decoded += str(i)
 
     return int(output_decoded)
