@@ -30,7 +30,7 @@ def parse_input(input: List[str]) -> TransparentPaper:
     folds = []
     for line in input:
         if line == "\n" or line == "":
-            print("LETS FOLD")
+            pass
         elif line.startswith("fold"):
             folds.append(line.split(" ")[2].split("="))
         else:
@@ -63,9 +63,9 @@ def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> in
 
     paper = transparent_paper.paper
 
-    for folds in transparent_paper.fold_instructions[:folds]:
-        axis = folds[0]
-        coordinate = int(folds[1])
+    for fold in transparent_paper.fold_instructions[:folds]:
+        axis = fold[0]
+        coordinate = int(fold[1])
         if axis == "x":
             for line in paper:
                 for i in range(transparent_paper.max_x - coordinate + 1):
