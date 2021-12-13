@@ -12,15 +12,14 @@ class TransparentPaper:
 
     def __str__(self):
         string = ''
-        for line in self.paper:
+        for i in range(len(self.paper)):
             new_line = ''
-            for dot in line:
-                new_line += str(dot)
-
+            for j in self.paper[i]:
+                if j == 0:
+                    new_line += " "
+                else:
+                    new_line += "#"
             string += new_line + '\n'
-
-        for fold in self.fold_instructions:
-            string += fold[0] + "=" + fold[1] + "\n"
 
         return string
 
@@ -59,16 +58,6 @@ def count_dots(paper: List[int]) -> int:
     return _sum
 
 
-def print_paper(paper: list) -> None:
-    for i in range(len(paper)):
-        for j in paper[i]:
-            if j == 0:
-                print(" ", end="")
-            else:
-                print("#", end="")
-        print("")
-
-
 def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> int:
 
     paper = transparent_paper.paper
@@ -93,8 +82,10 @@ def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> in
                         pass
             paper = paper[:coordinate]
 
+
     if (folds != 1):
-        print_paper(paper)
+        transparent_paper.paper = paper
+        print(transparent_paper)
     return count_dots(paper)
 
 
