@@ -59,7 +59,7 @@ def count_dots(paper: List[int]) -> int:
     return _sum
 
 
-def count_dots_after_fold(transparent_paper: TransparentPaper, folds = 1) -> int:
+def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> int:
 
     paper = transparent_paper.paper
 
