@@ -59,6 +59,16 @@ def count_dots(paper: List[int]) -> int:
     return _sum
 
 
+def print_paper(paper: list) -> None:
+    for i in range(len(paper)):
+        for j in paper[i]:
+            if j == 0:
+                print(" ", end="")
+            else:
+                print("#", end="")
+        print("")
+
+
 def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> int:
 
     paper = transparent_paper.paper
@@ -69,16 +79,22 @@ def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> in
         if axis == "x":
             for line in paper:
                 for i in range(transparent_paper.max_x - coordinate + 1):
-                    line[coordinate - i] |= line[coordinate + i]
-                # cut/fold paper
+                    try:
+                        line[coordinate - i] |= line[coordinate + i]
+                    except:
+                        pass
                 paper[paper.index(line)] = line[:coordinate]
         if axis == "y":
             for c in range(len(paper[0])):
                 for i in range(transparent_paper.max_y - coordinate + 1):
-                    paper[coordinate - i][c] |= paper[coordinate + i][c]
-            # cut fold paper
+                    try:
+                        paper[coordinate - i][c] |= paper[coordinate + i][c]
+                    except:
+                        pass
             paper = paper[:coordinate]
 
+    if (folds != 1):
+        print_paper(paper)
     return count_dots(paper)
 
 
@@ -89,4 +105,5 @@ with open("2021/day-13/example.txt") as f:
 with open("2021/day-13/input.txt") as f:
     paper  = parse_input([line.strip() for line in f])
     print("Part 1: Total dots in 1 fold are : ", count_dots_after_fold(paper, 1))
-    # print("Part 2: Total dots after folds are : ", count_dots_after_fold(paper, len(paper.fold_instructions) - 1))
+    print("Part 2: The alphanumeric code is : ")
+    count_dots_after_fold(paper, len(paper.fold_instructions))
