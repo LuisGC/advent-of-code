@@ -9,7 +9,6 @@ class TransparentPaper:
         self.max_x = max_x
         self.max_y = max_y
 
-
     def __str__(self):
         string = ''
         for i in range(len(self.paper)):
@@ -81,7 +80,6 @@ def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> in
                     except:
                         pass
             paper = paper[:coordinate]
-
 
     if (folds != 1):
         transparent_paper.paper = paper
