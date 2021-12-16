@@ -59,32 +59,28 @@ class Packet:
             raise Exception("unknown type ID", self.type)
 
 
-def count_versions(packet : Packet) -> int:
-    return packet.version + sum(count_versions(subpacket) for subpacket in packet.subpackets)
-
-
 def text_to_packet(message: str) -> int:
     message_bin = bin(int("1" + message, 16))[3:]
     return Packet(message_bin)
 
 
-with open("2021/day-16/example.txt") as f:
-    lines = [line.strip() for line in f]
-    assert 16 == count_versions(text_to_packet(lines[0]))
-    assert 12 == count_versions(text_to_packet(lines[1]))
-    assert 23 == count_versions(text_to_packet(lines[2]))
-    assert 31 == count_versions(text_to_packet(lines[3]))
+def count_versions(packet : Packet) -> int:
+    return packet.version + sum(count_versions(subpacket) for subpacket in packet.subpackets)
 
-with open("2021/day-16/example-eval.txt") as f:
-    lines = [line.strip() for line in f]
-    assert 3 == text_to_packet(lines[0]).value
-    assert 54 == text_to_packet(lines[1]).value
-    assert 7 == text_to_packet(lines[2]).value
-    assert 9 == text_to_packet(lines[3]).value
-    assert 1 == text_to_packet(lines[4]).value
-    assert 0 == text_to_packet(lines[5]).value
-    assert 0 == text_to_packet(lines[6]).value
-    assert 1 == text_to_packet(lines[7]).value
+
+assert 16 == count_versions(text_to_packet("8A004A801A8002F478"))
+assert 12 == count_versions(text_to_packet("620080001611562C8802118E34"))
+assert 23 == count_versions(text_to_packet("C0015000016115A2E0802F182340"))
+assert 31 == count_versions(text_to_packet("A0016C880162017C3686B18A3D4780"))
+
+assert 3 == text_to_packet("C200B40A82").value
+assert 54 == text_to_packet("04005AC33890").value
+assert 7 == text_to_packet("880086C3E88112").value
+assert 9 == text_to_packet("CE00C43D881120").value
+assert 1 == text_to_packet("D8005AC2A8F0").value
+assert 0 == text_to_packet("F600BC2D8F").value
+assert 0 == text_to_packet("9C005AC2F8F0").value
+assert 1 == text_to_packet("9C0141080250320F1802104A08").value
 
 with open("2021/day-16/input.txt") as f:
     lines = [line.strip() for line in f]
