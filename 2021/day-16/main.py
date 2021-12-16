@@ -36,6 +36,7 @@ class Packet:
                     self.length += subpacket.length
             else:
                 raise Exception("unknown length_type", length_type)
+            self.value = self.evaluate()
 
     def evaluate(self) -> int:
         if self.type == 4: # literal
@@ -62,37 +63,31 @@ def count_versions(packet : Packet) -> int:
     return packet.version + sum(count_versions(subpacket) for subpacket in packet.subpackets)
 
 
-def solve_part_1(message: str) -> int:
+def text_to_packet(message: str) -> int:
     message_bin = bin(int("1" + message, 16))[3:]
-    return count_versions(Packet(message_bin))
-
-
-def solve_part_2(message: str) -> int:
-    message_bin = bin(int("1" + message, 16))[3:]
-    return Packet(message_bin).evaluate()
+    return Packet(message_bin)
 
 
 with open("2021/day-16/example.txt") as f:
     lines = [line.strip() for line in f]
-    assert 16 == solve_part_1(lines[0])
-    assert 12 == solve_part_1(lines[1])
-    assert 23 == solve_part_1(lines[2])
-    assert 31 == solve_part_1(lines[3])
+    assert 16 == count_versions(text_to_packet(lines[0]))
+    assert 12 == count_versions(text_to_packet(lines[1]))
+    assert 23 == count_versions(text_to_packet(lines[2]))
+    assert 31 == count_versions(text_to_packet(lines[3]))
 
 with open("2021/day-16/example-eval.txt") as f:
     lines = [line.strip() for line in f]
-    assert 3 == solve_part_2(lines[0])
-    assert 54 == solve_part_2(lines[1])
-    assert 7 == solve_part_2(lines[2])
-    assert 9 == solve_part_2(lines[3])
-    assert 1 == solve_part_2(lines[4])
-    assert 0 == solve_part_2(lines[5])
-    assert 0 == solve_part_2(lines[6])
-    assert 1 == solve_part_2(lines[7])
+    assert 3 == text_to_packet(lines[0]).value
+    assert 54 == text_to_packet(lines[1]).value
+    assert 7 == text_to_packet(lines[2]).value
+    assert 9 == text_to_packet(lines[3]).value
+    assert 1 == text_to_packet(lines[4]).value
+    assert 0 == text_to_packet(lines[5]).value
+    assert 0 == text_to_packet(lines[6]).value
+    assert 1 == text_to_packet(lines[7]).value
 
 with open("2021/day-16/input.txt") as f:
     lines = [line.strip() for line in f]
-    message = bin(int("1" + lines[0], 16))[3:]
-    packet = Packet(message)
+    packet = text_to_packet(lines[0])
     print("Part 1: Sum of all versions is:", count_versions(packet))
-    print("Part 2: Result after evaluating is:", packet.evaluate())
+    print("Part 2: Result after evaluating is:", packet.value)
