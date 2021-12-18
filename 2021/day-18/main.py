@@ -42,7 +42,6 @@ def add(a: SnailfishNumber, b: SnailfishNumber) -> SnailfishNumber:
 
 def reduce(root: SnailfishNumber):
 
-    # Do a DFS through the tree
     stack = [(root, 0)]
 
     done = True
