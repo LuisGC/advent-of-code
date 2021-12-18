@@ -47,16 +47,16 @@ def reduce(root: SnailfishNumber):
 
     done = True
     while len(stack) > 0:
-        number, depth = stack.pop()
+        node, depth = stack.pop()
 
-        if number == None:
+        if node == None:
             continue
 
-        condition = (number.left == None and number.right == None) or (number.left.value != None and number.right.value != None)
+        condition = (node.left == None and node.right == None) or (node.left.value != None and node.right.value != None)
 
-        if depth >= 4 and number.value == None and condition:
-            prev_node = number.left
-            cur_node = number
+        if depth >= 4 and node.value == None and condition:
+            prev_node = node.left
+            cur_node = node
             while cur_node != None and (cur_node.left == prev_node or cur_node.left == None):
                 prev_node = cur_node
                 cur_node = cur_node.parent
@@ -69,10 +69,10 @@ def reduce(root: SnailfishNumber):
                     else:
                         cur_node = cur_node.left
 
-                cur_node.value += number.left.value
+                cur_node.value += node.left.value
 
-            prev_node = number.right
-            cur_node = number
+            prev_node = node.right
+            cur_node = node
             while cur_node != None and (cur_node.right == prev_node or cur_node.right == None):
                 prev_node = cur_node
                 cur_node = cur_node.parent
@@ -85,17 +85,17 @@ def reduce(root: SnailfishNumber):
                     else:
                         cur_node = cur_node.right
 
-                cur_node.value += number.right.value
+                cur_node.value += node.right.value
 
-            number.value = 0
-            number.left = None
-            number.right = None
+            node.value = 0
+            node.left = None
+            node.right = None
 
             done = False
             break
 
-        stack.append((number.right, depth + 1))
-        stack.append((number.left, depth + 1))
+        stack.append((node.right, depth + 1))
+        stack.append((node.left, depth + 1))
 
     if not done:
         reduce(root)
@@ -103,24 +103,24 @@ def reduce(root: SnailfishNumber):
 
     stack = [root]
     while len(stack) > 0:
-        number = stack.pop()
-        if number == None:
+        node = stack.pop()
+        if node == None:
             continue
 
-        if number.value:
-            assert not number.left and not number.right
-            if number.value >= 10:
-                number.left = SnailfishNumber(number.value//2)
-                number.left.parent = number
-                number.right = SnailfishNumber(number.value - (number.value//2))
-                number.right.parent = number
-                number.value = None
+        if node.value:
+            assert not node.left and not node.right
+            if node.value >= 10:
+                node.left = SnailfishNumber(node.value//2)
+                node.left.parent = node
+                node.right = SnailfishNumber(node.value - (node.value//2))
+                node.right.parent = node
+                node.value = None
 
                 done = False
                 break
 
-        stack.append(number.right)
-        stack.append(number.left)
+        stack.append(node.right)
+        stack.append(node.left)
 
     if not done:
         reduce(root)
@@ -131,7 +131,6 @@ def add_and_reduce(snailfish_numbers: List) -> SnailfishNumber:
 
     for index in range (1, len(snailfish_numbers)):
         root = add(root, parse(snailfish_numbers[index]))
-        # reduce(root)
 
     return root
 
