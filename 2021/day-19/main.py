@@ -66,7 +66,9 @@ def count_beacons(coords: dict) -> int:
 def max_distance(scanners: List[Scanner]) -> int:
     max_d = 0
     for s1, s2 in permutations(scanners, 2):
-        distance = abs(s1.position[0] - s2.position[0]) + abs(s1.position[1] - s2.position[1]) + abs(s1.position[2] - s2.position[2])
+        distance = 0
+        for p1, p2 in zip(s1.position, s2.position):
+            distance += abs(p1 - p2)
         max_d = max(max_d, distance)
     return max_d
 
