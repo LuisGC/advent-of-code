@@ -1,6 +1,7 @@
 from typing import List
 from itertools import permutations, product
 from collections import Counter
+from numpy import abs
 
 class Scanner:
     def __init__(self, block: str):
@@ -55,24 +56,29 @@ def locate_objects(scanners: List[Scanner]) -> List:
                             coords[diff] = "S"
                             scanner.position = diff
 
-    return coords
+    return coords, scanners
 
 
 def count_beacons(coords: dict) -> int:
     return sum(c == "B" for c in coords.values())
 
 
-def max_distance(coords: dict) -> int:
-    return 1
+def max_distance(scanners: List[Scanner]) -> int:
+    max_d = 0
+    for s1, s2 in permutations(scanners, 2):
+        distance = abs(s1.position[0] - s2.position[0]) + abs(s1.position[1] - s2.position[1]) + abs(s1.position[2] - s2.position[2])
+        max_d = max(max_d, distance)
+    return max_d
 
 
 with open("2021/day-19/example.txt") as f:
     scanners = parse_input(f.read().split("\n\n"))
-    coords = locate_objects(scanners)
+    coords, scanners = locate_objects(scanners)
     assert 79 == count_beacons(coords)
+    assert 3621 == max_distance(scanners)
 
 with open("2021/day-19/input.txt") as f:
     scanners = parse_input(f.read().split("\n\n"))
-    coords = locate_objects(scanners)
+    coords, scanners = locate_objects(scanners)
     print("Part 1: The amount of beacons is:", count_beacons(coords))
-#     print("Part 2: Largest magnitude of any sum is:", largest_magnitude(snailfish_numbers))
+    print("Part 2: Max distance between any two scanners is:", max_distance(scanners))
