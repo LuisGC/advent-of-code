@@ -15,9 +15,9 @@ def parse_input(input: str) -> (str, dict):
 
 def enhance(algorithm: str, image: dict) -> dict:
     enhanced_image = np.zeros([len(image) - 2, len(image[0]) - 2])
-    for r, row in enumerate(enhanced_image):
+    for r in range(len(enhanced_image)):
         r_old = r + 1
-        for c, val in enumerate(row):
+        for c in range(len(enhanced_image[0])):
             c_old = c + 1
             bin_code = ''
             for y in range(r_old - 1, r_old + 2):
