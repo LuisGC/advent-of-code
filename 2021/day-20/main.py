@@ -1,7 +1,7 @@
 from typing import List
 import numpy as np
 
-def parse_input(input: str) -> (str, dict):
+def parse_input(input: str) -> (str, List):
     algorithm, input_image = input.split("\n\n")
     input_image = input_image.strip().split("\n")
     image = np.zeros([len(input_image), len(input_image[0])])
@@ -13,7 +13,7 @@ def parse_input(input: str) -> (str, dict):
     return algorithm, np.pad(image, 3)
 
 
-def enhance(algorithm: str, image: dict) -> dict:
+def enhance(algorithm: str, image: List) -> List:
     enhanced_image = np.zeros([len(image) - 2, len(image[0]) - 2])
     for r in range(len(enhanced_image)):
         r_old = r + 1
