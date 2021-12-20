@@ -3,6 +3,9 @@ from itertools import permutations, product
 from collections import Counter
 from numpy import abs
 
+BEACON = "B"
+SCANNER = "S"
+
 class Scanner:
     def __init__(self, block: str):
         lines = block.splitlines()
@@ -36,8 +39,8 @@ def parse_input(blocks: List) -> List:
 def locate_objects(scanners: List[Scanner]) -> List:
 
     scanners[0].position = [0,0,0]
-    coords = {(x,y,z):"B" for x,y,z in scanners[0].coords}
-    coords[(0,0,0)] = "S"
+    coords = {(x,y,z):BEACON for x,y,z in scanners[0].coords}
+    coords[(0,0,0)] = SCANNER
 
     while any(s.position is None for s in scanners):
         for scanner in scanners:
@@ -52,15 +55,15 @@ def locate_objects(scanners: List[Scanner]) -> List:
                     if any(d >= 12 for d in diffs.values()):
                         diff = next(d for d in diffs if diffs[d] >= 12)
                         for x,y,z in map(reorient, scanner.coords):
-                            coords[x+diff[0],y+diff[1],z+diff[2]] = "B"
-                            coords[diff] = "S"
+                            coords[x+diff[0],y+diff[1],z+diff[2]] = BEACON
+                            coords[diff] = SCANNER
                             scanner.position = diff
 
     return coords, scanners
 
 
 def count_beacons(coords: dict) -> int:
-    return sum(c == "B" for c in coords.values())
+    return sum(c == BEACON for c in coords.values())
 
 
 def max_distance(scanners: List[Scanner]) -> int:
