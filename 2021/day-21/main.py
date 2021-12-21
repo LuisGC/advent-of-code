@@ -4,12 +4,10 @@ class DeterministicDie():
         self.next = 1
         self.numRolls = 0
 
-    def roll(self, times: int):
-        result = 0
-        for _ in range(times):
-            result = self.next
-            self.next = (self.next + 1 ) % self.numSides
-            self.numRolls += 1
+    def roll(self):
+        result = self.next
+        self.next = (self.next + 1 ) % self.numSides
+        self.numRolls += 1
         return result
 
 class DiracDiceGame():
@@ -19,8 +17,9 @@ class DiracDiceGame():
         self.score = [0, 0]
         self.die = DeterministicDie(dieSides)
 
+
     def move(self, pos):
-        rolled_dies = self.die.roll(1) + self.die.roll(1) + self.die.roll(1)
+        rolled_dies = self.die.roll() + self.die.roll() + self.die.roll()
         new_pos = pos + rolled_dies
         while new_pos > 10:
             new_pos -= 10
@@ -39,13 +38,12 @@ class DiracDiceGame():
                 self.score[1] += self.player2_pos
                 if max(self.score) >= win_score:
                     done = True
-        print(f"Final Score: {self.score} Num Rolls {self.die.numRolls}")
+        # print(f"Final Score: {self.score} Num Rolls {self.die.numRolls}")
         return min(self.score), self.die.numRolls
 
 
 def parse_input(input: str) -> (int, int):
     player1, player2 = input.strip().split("\n")
-
     return int(player1[-1]), int(player2[-1])
 
 
