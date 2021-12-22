@@ -34,6 +34,11 @@ with open("2021/day-22/larger-example.txt") as f:
     grid = setGrid(steps)
     assert 590784 == len(grid)
 
+with open("2021/day-22/largest-example.txt") as f:
+    steps = parse_input([str(line.strip()) for line in f])
+    grid = setGrid(steps)
+    assert 474140 == len(grid)
+
 with open("2021/day-22/input.txt") as f:
     steps = parse_input([str(line.strip()) for line in f])
     grid = setGrid(steps)
