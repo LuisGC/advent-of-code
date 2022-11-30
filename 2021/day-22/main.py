@@ -1,144 +1,114 @@
-from typing import List
+import numpy as np
 
-class Range():
-    def __init__(self, minimum, maximum):
-        self.minimum = int(minimum)
-        self.maximum = int(maximum)
+def part1(input_cuboids):
+    cube_map = np.array([[[0 for z in range(101)] for y in range(101)] for x in range(101)])
+    for mode, coordinates in input_cuboids:
+        if mode == "on":
+            val = 1
+        else:
+            val = 0
+        x_range, y_range, z_range = coordinates
+        if not (-50 <= x_range[0] <= x_range[1] <= 50) or \
+        not (-50 <= y_range[0] <= y_range[1] <= 50) or \
+        not (-50 <= z_range[0] <= z_range[1] <= 50):   
+            continue    
+        cube_map[x_range[0]+50:x_range[1]+51, y_range[0]+50:y_range[1]+51, z_range[0]+50:z_range[1]+51] = val
+    return np.sum(cube_map)
 
-    def intersection(self, other):
-        minimum = max(self.minimum, other.minimum)
-        maximum = min(self.maximum, other.maximum)
-        return Range(minimum, maximum) if minimum <= maximum else None
-
-    def has_overlap(self, other):
-        return self.intersection(other) is not None
-
-    def differences(self, other):
-        if not self.has_overlap(other):
-            return [self]
-        diff = []
-        if self.minimum < other.minimum:
-            diff.append(Range(self.minimum, other.minimum - 1))
-        if self.maximum > other.maximum:
-            diff.append(Range(other.maximum + 1, self.maximum))
-        return diff
-
-    def __len__(self):
-        return self.maximum - self.minimum + 1
-
-    def __str__(self):
-        return "<" + str(self.minimum) + ".." + str(self.maximum) + ">"
-
-
-class Cuboid():
-    def __init__(self, status: str, rangex: Range, rangey: Range, rangez: Range):
-        self.value = 1 if status == "on" else 0
-        self.rangex = rangex
-        self.rangey = rangey
-        self.rangez = rangez
-
-    def total_value(self):
-        return self.value * len(self.rangex) * len(self.rangey) * len(self.rangez)
-
-    def has_overlap(self, other):
-        return self.rangex.has_overlap(other.rangex) and self.rangey.has_overlap(other.rangey) and self.rangez.has_overlap(other.rangez)
-
-    def differences(self, other):
-        if not self.has_overlap(other):
-            return [self]
-
-        diff = []
-        for d_x in self.rangex.differences(other.rangex):
-            diff.append(Cuboid(self.value, d_x, self.rangey, self.rangez))
-        remaining_x = self.rangex.intersection(other.rangex)
-
-        for d_y in self.rangey.differences(other.rangey):
-            diff.append(Cuboid(self.value, remaining_x, d_y, self.rangez))
-        remaining_y = self.rangey.intersection(other.rangey)
-
-        for d_z in self.rangez.differences(other.rangez):
-            diff.append(Cuboid(self.value, remaining_x, remaining_y, d_z))
-
-        print("Differences:", len(diff))
-        return diff
-
-    def __str__(self):
-        string = "Status: " + str(self.value)
-        string += " X=" + str(self.rangex)
-        string += " Y=" + str(self.rangey)
-        string += " Z=" + str(self.rangez)
-        return(string)
-
-
-def parse_input(input: List[str]) -> List:
+def part2(input_cuboids):
     cuboids = []
-    for line in input:
-        status, coords = line.split(" ")
-        cuboid = [c.split('=')[1].split('..') for c in coords.split(',')]
-        cuboids.append(Cuboid(status, Range(cuboid[0][0], cuboid[0][1]), Range(cuboid[1][0], cuboid[1][1]), Range(cuboid[2][0],cuboid[2][1])))
+    for mode, coordinates in input_cuboids:
+        cuboids_to_add = [(mode,coordinates)]
+        while cuboids_to_add:
+            cuboid_to_add = cuboids_to_add.pop(0)
+            overlaps = False
 
-    return cuboids
+            for i in range(len(cuboids)):
+                cuboid = cuboids[i]
+                if overlap(cuboid[1], cuboid_to_add[1]):
+                    overlaps = True
+                    del cuboids[i]
+                    # non-overlapping subcuboids
+                    cuboids_to_add += subcuboids(cuboid, cuboid_to_add)
+                    break
+            if not overlaps:
+                cuboids.append(cuboid_to_add)
 
-
-def useLimitedGrid(cuboids: List[Cuboid], region_limit: int) -> set:
-    grid = set()
+    cubes_on = 0
     for cuboid in cuboids:
-        for x in range(max(cuboid.rangex.minimum, -region_limit), min(cuboid.rangex.maximum, region_limit)+1):
-            for y in range(max(cuboid.rangey.minimum, -region_limit), min(cuboid.rangey.maximum, region_limit)+1):
-                for z in range(max(cuboid.rangez.minimum, -region_limit), min(cuboid.rangez.maximum, region_limit)+1):
-                    if cuboid.value:
-                        grid.add((x, y, z))
-                    elif (x, y, z) in grid:
-                        grid.remove((x, y, z))
-    return grid
+        if cuboid[0] == 'on':
+            cubes_on += volume(cuboid[1])
+    return cubes_on
+
+def volume(cuboid):
+    x, y, z = cuboid
+    return (x[1]-x[0])*(y[1]-y[0])*(z[1]-z[0])
+
+def overlap(coord_a, coord_b):
+    x_a, y_a, z_a = coord_a
+    x_b, y_b, z_b = coord_b
+    if x_a[1] > x_b[0] and x_b[1] > x_a[0]: #overlap x-coord
+        if y_a[1] > y_b[0] and y_b[1] > y_a[0]: #overlap y-coord
+            if z_a[1] > z_b[0] and z_b[1] > z_a[0]: #overlap z-coord
+                return True
+    return False
+
+def subcuboids(cuboid_a, cuboid_b):
+    new_cuboids = []
+    x_a, y_a, z_a = cuboid_a[1]
+    x_b, y_b, z_b = cuboid_b[1]
+    if x_a[0] < x_b[0]:
+        new_cuboids.append((cuboid_a[0], ([x_a[0], x_b[0]],y_a.copy(),z_a.copy())))
+        x_a[0] = x_b[0]
+    if x_a[1] > x_b[1]:
+        new_cuboids.append((cuboid_a[0], ([x_b[1], x_a[1]],y_a.copy(),z_a.copy())))
+        x_a[1] = x_b[1]
+    if y_a[0] < y_b[0]:
+        new_cuboids.append((cuboid_a[0], (x_a.copy(),[y_a[0], y_b[0]],z_a.copy())))
+        y_a[0] = y_b[0]
+    if y_a[1] > y_b[1]:
+        new_cuboids.append((cuboid_a[0], (x_a.copy(),[y_b[1], y_a[1]],z_a.copy())))
+        y_a[1] = y_b[1]
+    if z_a[0] < z_b[0]:
+        new_cuboids.append((cuboid_a[0], (x_a.copy(),y_a.copy(),[z_a[0], z_b[0]])))
+        z_a[0] = z_b[0]
+    if z_a[1] > z_b[1]:
+        new_cuboids.append((cuboid_a[0], (x_a.copy(),y_a.copy(),[z_b[1], z_a[1]])))
+        z_a[1] = z_b[1]
+    new_cuboids.append(cuboid_b)
+    return new_cuboids
 
 
-def combine(cuboids: List[Cuboid], new_cuboid: Cuboid) -> List[Cuboid]:
-    remaining = []
-    print("Combining:", new_cuboid)
-    for cuboid in cuboids:
-        remaining += cuboid.differences(new_cuboid)
-        print("Remaining:", len(remaining))
-
-    return remaining + [new_cuboid]
-
-
-def useUnlimitedGrid(cuboids: List[Cuboid]) -> List[Cuboid]:
-    combinedCuboids = []
-    for cuboid in cuboids:
-        print("Current value PRE:", sum([cub.total_value() for cub in combinedCuboids]))
-        combinedCuboids = combine(combinedCuboids, cuboid)
-        print("Current value POS:", sum([cub.total_value() for cub in combinedCuboids]))
-
-    return combinedCuboids
+def process_input(data, p2=False):
+    reboot_steps = []
+    for line in data:
+        mode, coord = line.split()
+        coord = coord.replace('x=','').replace(',y','').replace(',z','')
+        coord = [[int(y) for y in x.split('..')] for x in coord.split('=')]
+        if p2:
+            coord[0][1] += 1
+            coord[1][1] += 1
+            coord[2][1] += 1
+        reboot_steps.append((mode, coord))
+    return reboot_steps
 
 
 with open("2021/day-22/example.txt") as f:
-    cuboids = parse_input([str(line.strip()) for line in f])
-    grid = useLimitedGrid(cuboids, 50)
-    assert 39 == len(grid)
-    cuboids = useUnlimitedGrid(cuboids)
-    total_value = sum([cuboid.total_value() for cuboid in cuboids])
-    print("Total value:", total_value)
-    assert 39 == total_value
+    cuboids = process_input([str(line.strip()) for line in f])
+    assert 39 == part1(cuboids)
 
 with open("2021/day-22/larger-example.txt") as f:
-    cuboids = parse_input([str(line.strip()) for line in f])
-    grid = useLimitedGrid(cuboids, 50)
-    assert 590784 == len(grid)
+    cuboids = process_input([str(line.strip()) for line in f])
+    assert 590784 == part1(cuboids)
 
 with open("2021/day-22/largest-example.txt") as f:
-    cuboids = parse_input([str(line.strip()) for line in f])
-    grid = useLimitedGrid(cuboids, 50)
-    assert 474140 == len(grid)
+    input_array = [str(line.strip()) for line in f]
+    assert 474140 == part1(process_input(input_array))
 
-    cuboids = useUnlimitedGrid(cuboids)
-    total_value = sum([cuboid.total_value() for cuboid in cuboids])
-    print("Total value:", total_value)
-    assert 2758514936282235 == total_value
+    cuboids = process_input(input_array, p2=True)
+    assert 2758514936282235 == part2(cuboids)
 
 with open("2021/day-22/input.txt") as f:
-    steps = parse_input([str(line.strip()) for line in f])
-    grid = useLimitedGrid(steps, 50)
-    print("Part 1: The amount of cubes is:", len(grid))
-#     print("Part 2: The amount of cubes is:", max(quantum_game.wins))
+    input_array = [str(line.strip()) for line in f]
+    print("Part 1: The amount of cubes is:", part1(process_input(input_array)))
+    print("Part 2: The amount of cubes is:", part2(process_input(input_array, p2=True)))
