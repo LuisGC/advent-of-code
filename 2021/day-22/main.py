@@ -12,7 +12,7 @@ def part1(input_cuboids):
         not (-50 <= y_range[0] <= y_range[1] <= 50) or \
         not (-50 <= z_range[0] <= z_range[1] <= 50):   
             continue    
-        cube_map[x_range[0]+50:x_range[1]+51, y_range[0]+50:y_range[1]+51, z_range[0]+50:z_range[1]+51] = val
+        cube_map[x_range[0] + 50:x_range[1] + 51, y_range[0] + 50:y_range[1] + 51, z_range[0] + 50:z_range[1] + 51] = val
     return np.sum(cube_map)
 
 def part2(input_cuboids):
@@ -23,8 +23,7 @@ def part2(input_cuboids):
             cuboid_to_add = cuboids_to_add.pop(0)
             overlaps = False
 
-            for i in range(len(cuboids)):
-                cuboid = cuboids[i]
+            for i, cuboid in enumerate(cuboids):
                 if overlap(cuboid[1], cuboid_to_add[1]):
                     overlaps = True
                     del cuboids[i]
@@ -58,22 +57,22 @@ def subcuboids(cuboid_a, cuboid_b):
     x_a, y_a, z_a = cuboid_a[1]
     x_b, y_b, z_b = cuboid_b[1]
     if x_a[0] < x_b[0]:
-        new_cuboids.append((cuboid_a[0], ([x_a[0], x_b[0]],y_a.copy(),z_a.copy())))
+        new_cuboids.append((cuboid_a[0], ([x_a[0], x_b[0]], y_a.copy(), z_a.copy())))
         x_a[0] = x_b[0]
     if x_a[1] > x_b[1]:
-        new_cuboids.append((cuboid_a[0], ([x_b[1], x_a[1]],y_a.copy(),z_a.copy())))
+        new_cuboids.append((cuboid_a[0], ([x_b[1], x_a[1]], y_a.copy(), z_a.copy())))
         x_a[1] = x_b[1]
     if y_a[0] < y_b[0]:
-        new_cuboids.append((cuboid_a[0], (x_a.copy(),[y_a[0], y_b[0]],z_a.copy())))
+        new_cuboids.append((cuboid_a[0], (x_a.copy(), [y_a[0], y_b[0]], z_a.copy())))
         y_a[0] = y_b[0]
     if y_a[1] > y_b[1]:
-        new_cuboids.append((cuboid_a[0], (x_a.copy(),[y_b[1], y_a[1]],z_a.copy())))
+        new_cuboids.append((cuboid_a[0], (x_a.copy(), [y_b[1], y_a[1]], z_a.copy())))
         y_a[1] = y_b[1]
     if z_a[0] < z_b[0]:
-        new_cuboids.append((cuboid_a[0], (x_a.copy(),y_a.copy(),[z_a[0], z_b[0]])))
+        new_cuboids.append((cuboid_a[0], (x_a.copy(), y_a.copy(), [z_a[0], z_b[0]])))
         z_a[0] = z_b[0]
     if z_a[1] > z_b[1]:
-        new_cuboids.append((cuboid_a[0], (x_a.copy(),y_a.copy(),[z_b[1], z_a[1]])))
+        new_cuboids.append((cuboid_a[0], (x_a.copy(), y_a.copy(), [z_b[1], z_a[1]])))
         z_a[1] = z_b[1]
     new_cuboids.append(cuboid_b)
     return new_cuboids
@@ -111,4 +110,4 @@ with open("2021/day-22/largest-example.txt") as f:
 with open("2021/day-22/input.txt") as f:
     input_array = [str(line.strip()) for line in f]
     print("Part 1: The amount of cubes is:", part1(process_input(input_array)))
-    print("Part 2: The amount of cubes is:", part2(process_input(input_array, p2=True)))
+    print("Part 2: The amount of cubes is:", part2(process_input(input_array, True)))
