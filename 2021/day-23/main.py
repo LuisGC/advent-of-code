@@ -4,16 +4,15 @@ from sys import maxsize
 COSTS = {'A': 1, 'B': 10, 'C': 100, 'D': 1000}
 
 class Burrow:
-    def __init__(self):
+    def __init__(self, room_size:int = 2):
         self.cavern = ['.'] * 11
-        self.room_size = 2
+        self.room_size = room_size
         self.goal = [
             '.', '.', 'A' * self.room_size, '.', 'B' * self.room_size, '.',
             'C' * self.room_size, '.', 'D' * self.room_size, '.', '.'
         ]
         self.dest = {'A': 2, 'B': 4, 'C': 6, 'D': 8}
         self.destination_set = set(self.dest.values())
-        # self.hallwaySet = set({0, 1, 3, 5, 7, 9, 10})
 
     def add_line(self, line:str):
         for pos, char in enumerate(line):
@@ -129,8 +128,8 @@ class Burrow:
         
         return states[tuple(self.goal)]
 
-def process_input(input_lines: List) -> Burrow:
-    burrow = Burrow()
+def process_input(input_lines: List, room_size: int = 2) -> Burrow:
+    burrow = Burrow(room_size)
     for line in input_lines:
         burrow.add_line(line)
 
@@ -145,4 +144,11 @@ with open("2021/day-23/example.txt") as f:
 with open("2021/day-23/input.txt") as f:
     burrow = process_input([line for line in f])
     print("Part 1: The minimum energy is:", burrow.solve())
-#     print("Part 2: The amount of cubes is:", part2(process_input(input_array, p2=True)))
+
+with open("2021/day-23/unfolded_example.txt") as f:
+    burrow = process_input([line for line in f], 4)
+    assert 44169 == burrow.solve()
+
+with open("2021/day-23/unfolded_input.txt") as f:
+    burrow = process_input([line for line in f], 4)
+    print("Part 2: The minimum energy is:", burrow.solve())
