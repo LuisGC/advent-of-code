@@ -17,7 +17,7 @@ def count_fish(input: str, days: int) -> int:
     return sum(counts)
 
 
-with open("2021/day-06/example.txt") as f:
+with open("2021/day-06/example.txt", encoding="utf-8") as f:
     input = f.readline()
 
     assert 26 == count_fish(input, 18)
@@ -25,7 +25,7 @@ with open("2021/day-06/example.txt") as f:
     assert 26984457539 == count_fish(input, 256)
 
 
-with open("2021/day-06/input.txt") as f:
+with open("2021/day-06/input.txt", encoding="utf-8") as f:
     input = f.readline()
     print("Part 1: The amount of lanternfish is", count_fish(input, 80))
     print("Part 2: The amount of lanternfish is", count_fish(input, 256))

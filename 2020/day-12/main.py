@@ -86,14 +86,14 @@ def manhattan_distance(x: int, y: int) -> int:
     return abs(x) + abs(y)
 
 
-with open("2020/day-12/example.txt") as f:
+with open("2020/day-12/example.txt", encoding="utf-8") as f:
     instructions = f.readlines()
     x, y = navigate(instructions)
     assert 25 == manhattan_distance(x, y)
     x, y = waypoint_navigate(instructions)
     assert 286 == manhattan_distance(x, y)
 
-with open("2020/day-12/input.txt") as f:
+with open("2020/day-12/input.txt", encoding="utf-8") as f:
     instructions = f.readlines()
     x, y = navigate(instructions)
     print("Part 1: The final Manhattan distance is", manhattan_distance(x, y))

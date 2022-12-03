@@ -160,18 +160,19 @@ assert "[[[[1,1],[2,2]],[3,3]],[4,4]]" == str(add_and_reduce(snailfish_numbers))
 snailfish_numbers = [eval("[1,1]"), eval("[2,2]"), eval("[3,3]"), eval("[4,4]"), eval("[5,5]")]
 assert "[[[[3,0],[5,3]],[4,4]],[5,5]]" == str(add_and_reduce(snailfish_numbers))
 
-with open("2021/day-18/example.txt") as f:
+
+with open("2021/day-18/example.txt", encoding="utf-8") as f:
     snailfish_numbers = [eval(line.strip()) for line in f]
     result = add_and_reduce(snailfish_numbers)
     assert 3488 == magnitude(result)
 
-with open("2021/day-18/homework.txt") as f:
+with open("2021/day-18/homework.txt", encoding="utf-8") as f:
     snailfish_numbers = [eval(line.strip()) for line in f]
     result = add_and_reduce(snailfish_numbers)
     assert 4140 == magnitude(result)
     assert 3993 == largest_magnitude(snailfish_numbers)
 
-with open("2021/day-18/input.txt") as f:
+with open("2021/day-18/input.txt", encoding="utf-8") as f:
     snailfish_numbers = [eval(line.strip()) for line in f]
     result = add_and_reduce(snailfish_numbers)
     print("Part 1: Magnitude of the result is:", magnitude(result))

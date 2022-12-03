@@ -28,14 +28,14 @@ def align_crabs(positions: List[int]) -> (int, int):
     return fuel_constant, fuel_incremental
 
 
-with open("2021/day-07/example.txt") as f:
+with open("2021/day-07/example.txt", encoding="utf-8") as f:
     input = [int(num) for num in f.readline().strip().split(',')]
     fuel_constant, fuel_incremental = align_crabs(input)
     assert 37 == fuel_constant
     assert 168 == fuel_incremental
 
 
-with open("2021/day-07/input.txt") as f:
+with open("2021/day-07/input.txt", encoding="utf-8") as f:
     input = [int(num) for num in f.readline().strip().split(',')]
 
     fuel_constant, fuel_incremental = align_crabs(input)

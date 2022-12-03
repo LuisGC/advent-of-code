@@ -78,13 +78,13 @@ def parse_input(input: str) -> (int, int, int, int):
     return min_x, max_x, min_y, max_y
 
 
-with open("2021/day-17/example.txt") as f:
+with open("2021/day-17/example.txt", encoding="utf-8") as f:
     x1, x2, y1, y2 = parse_input([line.strip() for line in f][0])
     highest, count = highest_trajectory(x1, x2, y1, y2)
     assert 45 == highest
     assert 112 == count
 
-with open("2021/day-17/input.txt") as f:
+with open("2021/day-17/input.txt", encoding="utf-8") as f:
     x1, x2, y1, y2 = parse_input([line.strip() for line in f][0])
     highest, count = highest_trajectory(x1, x2, y1, y2)
     print("Part 1: Highest height is:", highest)

@@ -138,18 +138,18 @@ def process_input(input_lines: List, room_size: int = 2) -> Burrow:
     return burrow
 
 
-with open("2021/day-23/example.txt") as f:
+with open("2021/day-23/example.txt", encoding="utf-8") as f:
     burrow = process_input([line for line in f])
     assert 12521 == burrow.solve()
 
-with open("2021/day-23/input.txt") as f:
+with open("2021/day-23/input.txt", encoding="utf-8") as f:
     burrow = process_input([line for line in f])
     print("Part 1: The minimum energy is:", burrow.solve())
 
-with open("2021/day-23/unfolded_example.txt") as f:
+with open("2021/day-23/unfolded_example.txt", encoding="utf-8") as f:
     burrow = process_input([line for line in f], 4)
     assert 44169 == burrow.solve()
 
-# with open("2021/day-23/unfolded_input.txt") as f:
-#     burrow = process_input([line for line in f], 4)
-#     print("Part 2: The minimum energy is:", burrow.solve())
+with open("2021/day-23/unfolded_input.txt", encoding="utf-8") as f:
+    burrow = process_input([line for line in f], 4)
+    print("Part 2: The minimum energy is:", burrow.solve())

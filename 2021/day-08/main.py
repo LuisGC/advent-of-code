@@ -119,14 +119,14 @@ def sum_all_outputs(list: List[str]) -> int:
     return sum
 
 
-with open("2021/day-08/example.txt") as f:
+with open("2021/day-08/example.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
 
     assert 26 == count_1478(input)
     assert 61229 == sum_all_outputs(input)
 
 
-with open("2021/day-08/input.txt") as f:
+with open("2021/day-08/input.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     print("Part 1: The amount of 1478 is", count_1478(input))
     print("Part 2: The sum of all outputs is", sum_all_outputs(input))

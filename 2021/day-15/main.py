@@ -47,14 +47,14 @@ class ChitonGrid:
         return string
 
 
-with open("2021/day-15/example.txt") as f:
+with open("2021/day-15/example.txt", encoding="utf-8") as f:
     lines = [line.strip() for line in f]
     grid  = ChitonGrid(lines, 1)
     assert 40 == grid.BreadthFirstSearch()
     grid  = ChitonGrid(lines, 5)
     assert 315 == grid.BreadthFirstSearch()
 
-with open("2021/day-15/input.txt") as f:
+with open("2021/day-15/input.txt", encoding="utf-8") as f:
     lines = [line.strip() for line in f]
     grid  = ChitonGrid(lines, 1)
     print("Part 1: Lowest total risk of any path is:", grid.BreadthFirstSearch())

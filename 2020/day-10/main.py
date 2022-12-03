@@ -53,21 +53,21 @@ def count_arrangements(adapters: List[int]) -> int:
     return arrangements[output]
 
 
-with open("2020/day-10/example.txt") as f:
+with open("2020/day-10/example.txt", encoding="utf-8") as f:
     adapters = parse_adapters(f.readlines())
     gaps_1, gaps_3 = find_yolt_gaps(adapters)
     assert 35 == gaps_1 * gaps_3
     assert 8 == count_arrangements(adapters)
 
 
-with open("2020/day-10/large-example.txt") as f:
+with open("2020/day-10/large-example.txt", encoding="utf-8") as f:
     adapters = parse_adapters(f.readlines())
     gaps_1, gaps_3 = find_yolt_gaps(adapters)
     assert 220 == gaps_1 * gaps_3
     assert 19208 == count_arrangements(adapters)
 
 
-with open("2020/day-10/input.txt") as f:
+with open("2020/day-10/input.txt", encoding="utf-8") as f:
     adapters = parse_adapters(f.readlines())
     gaps_1, gaps_3 = find_yolt_gaps(adapters)
     print("Part 1: The 1&3 yolt gaps multiplied is", gaps_1 * gaps_3)

@@ -43,14 +43,14 @@ def max_calories_by_3(input_lines):
     return max_calories
 
 
-with open("2022/day-01/example.txt") as f:
+with open("2022/day-01/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     assert 24000 == max_calories(input_lines)
     top_3 = max_calories_by_3(input_lines)
     assert 24000 == max(top_3)
     assert 45000 == sum(top_3)
 
-with open("2022/day-01/input.txt") as f:
+with open("2022/day-01/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     top_3 = max_calories_by_3(input_lines)
     print("Part 1:", max(top_3))

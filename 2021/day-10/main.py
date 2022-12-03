@@ -70,13 +70,13 @@ def calculate_total_syntax_score(lines: List[str]) -> (int, int):
     return sum_syntax_score, obtain_middle_score(completion_scores)
 
 
-with open("2021/day-10/example.txt") as f:
+with open("2021/day-10/example.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     syntax_score, completion_score = calculate_total_syntax_score(input)
     assert 26397 == syntax_score
     assert 288957 == completion_score
 
-with open("2021/day-10/input.txt") as f:
+with open("2021/day-10/input.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     syntax_score, completion_score = calculate_total_syntax_score(input)
     print("Part 1: Total syntax error score is: ", syntax_score)

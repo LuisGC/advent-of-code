@@ -116,7 +116,7 @@ def parse_input(input: str) -> (int, int):
     return int(player1[-1]), int(player2[-1])
 
 
-with open("2021/day-21/example.txt") as f:
+with open("2021/day-21/example.txt", encoding="utf-8") as f:
     player1, player2 = parse_input(f.read())
     game = DiracDiceGame(player1, player2, 100)
     loser_score, rolled_dices = game.play(1000)
@@ -125,7 +125,7 @@ with open("2021/day-21/example.txt") as f:
     quantum_game.play()
     assert 444356092776315 == max(quantum_game.wins)
 
-with open("2021/day-21/input.txt") as f:
+with open("2021/day-21/input.txt", encoding="utf-8") as f:
     player1, player2 = parse_input(f.read())
     game = DiracDiceGame(player1, player2, 100)
     loser_score, rolled_dices = game.play(1000)

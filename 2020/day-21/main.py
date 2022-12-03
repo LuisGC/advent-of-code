@@ -64,14 +64,14 @@ def arrange(ingredients_per_allergen: Dict[str, Set[str]]) -> str:
                     for allergen, ingredients in sorted(ingredients_per_allergen.items()))
 
 
-with open("2020/day-21/example.txt") as f:
+with open("2020/day-21/example.txt", encoding="utf-8") as f:
     menu_list = [MenuItem.parse(line) for line in f.readlines()]
     free_of_allergens = no_allergens(menu_list)
     assert 5 == free_of_allergens
     ingredients_per_allergen = extract_ingredients_per_allergen(menu_list)
     assert "mxmxvkd,sqjhc,fvjkl" == arrange(ingredients_per_allergen)
 
-with open("2020/day-21/input.txt") as f:
+with open("2020/day-21/input.txt", encoding="utf-8") as f:
     menu_list = [MenuItem.parse(line) for line in f.readlines()]
     free_of_allergens = no_allergens(menu_list)
     print("Part 1: The ingredients free of allergens appear (times): ",

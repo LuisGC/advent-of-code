@@ -46,14 +46,14 @@ def run_commands_aim(commands: List[Instruction]) -> int:
 
 
 
-with open("2021/day-02/example.txt") as f:
+with open("2021/day-02/example.txt", encoding="utf-8") as f:
     code = f.read().strip()
     commands = [Command.parse(line) for line in code.split("\n")]
     assert 150 == run_commands(commands)
     assert 900 == run_commands_aim(commands)
 
 
-with open("2021/day-02/input.txt") as f:
+with open("2021/day-02/input.txt", encoding="utf-8") as f:
     code = f.read().strip()
     commands = [Command.parse(line) for line in code.split("\n")]
     print("Part 1: distance * depth is", run_commands(commands))

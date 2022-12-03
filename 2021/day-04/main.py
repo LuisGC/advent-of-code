@@ -64,7 +64,7 @@ def parse_input(input):
     return draws, cards
 
 
-with open("2021/day-04/example.txt") as f:
+with open("2021/day-04/example.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     draws, cards = parse_input(input)
 
@@ -72,7 +72,7 @@ with open("2021/day-04/example.txt") as f:
     assert 1924 == play_to_lose(draws, cards)
 
 
-with open("2021/day-04/input.txt") as f:
+with open("2021/day-04/input.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     draws, cards = parse_input(input)
     print("Part 1: Bingo winner score is", play_to_win(draws, cards))

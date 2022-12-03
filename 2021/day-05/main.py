@@ -64,7 +64,7 @@ def overlaping_points(diagram_list: list, diagonal_counts: bool) -> int:
     return overlaping_points
 
 
-with open("2021/day-05/example.txt") as f:
+with open("2021/day-05/example.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     diagram = parse_input(input)
 
@@ -72,7 +72,7 @@ with open("2021/day-05/example.txt") as f:
     assert 12 == overlaping_points(diagram, True)
 
 
-with open("2021/day-05/input.txt") as f:
+with open("2021/day-05/input.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     diagram = parse_input(input)
     print("Part 1: The amount of overlaping points is", overlaping_points(diagram, False))

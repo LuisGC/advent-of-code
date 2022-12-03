@@ -96,7 +96,7 @@ def calculate_basin_sizes(numbers: List[int], cols : int, rows: int, low_points:
     return sizes
 
 
-with open("2021/day-09/example.txt") as f:
+with open("2021/day-09/example.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     numbers, cols, rows = parse_input(input)
     low_points = obtain_low_points(numbers, cols, rows)
@@ -107,7 +107,7 @@ with open("2021/day-09/example.txt") as f:
     assert 1134 == basin_sizes[-1] * basin_sizes[-2] * basin_sizes[-3]
 
 
-with open("2021/day-09/input.txt") as f:
+with open("2021/day-09/input.txt", encoding="utf-8") as f:
     input = [str(line.strip()) for line in f]
     numbers, cols, rows = parse_input(input)
     low_points = obtain_low_points(numbers, cols, rows)

@@ -62,24 +62,24 @@ def is_valid_and_correct(passport: Passport) -> bool:
     return is_valid(passport) and all(quality_checks)
 
 
-with open("2020/day-04/example.txt") as f:
+with open("2020/day-04/example.txt", encoding="utf-8") as f:
     passports = parse_list(f.read())
     assert 2 == sum(is_valid(passport) for passport in passports)
 
 
-with open("2020/day-04/invalid.txt") as f:
+with open("2020/day-04/invalid.txt", encoding="utf-8") as f:
     passports = parse_list(f.read())
     assert all(is_valid(passport) for passport in passports)
     assert not any(is_valid_and_correct(passport) for passport in passports)
 
 
-with open("2020/day-04/valid.txt") as f:
+with open("2020/day-04/valid.txt", encoding="utf-8") as f:
     passports = parse_list(f.read())
     assert all(is_valid(passport) for passport in passports)
     assert all(is_valid_and_correct(passport) for passport in passports)
 
 
-with open("2020/day-04/input.txt") as f:
+with open("2020/day-04/input.txt", encoding="utf-8") as f:
     passports = parse_list(f.read())
     print("Amount of Passports", len(passports))
     print("Part 1 - Valid Passports",

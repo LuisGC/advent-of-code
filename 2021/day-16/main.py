@@ -82,7 +82,8 @@ assert 0 == text_to_packet("F600BC2D8F").value
 assert 0 == text_to_packet("9C005AC2F8F0").value
 assert 1 == text_to_packet("9C0141080250320F1802104A08").value
 
-with open("2021/day-16/input.txt") as f:
+
+with open("2021/day-16/input.txt", encoding="utf-8") as f:
     lines = [line.strip() for line in f]
     packet = text_to_packet(lines[0])
     print("Part 1: Sum of all versions is:", count_versions(packet))

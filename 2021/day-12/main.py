@@ -38,22 +38,22 @@ def parse_input(input: List[str]) -> defaultdict:
     return cave_routes
 
 
-with open("2021/day-12/example.txt") as f:
+with open("2021/day-12/example.txt", encoding="utf-8") as f:
     cave_routes = parse_input([line.strip() for line in f])
     assert 10 == count_possible_paths(cave_routes, ['start'])
     assert 36 == count_possible_paths_repeating_once(cave_routes, ['start'], False)
 
-with open("2021/day-12/example-2.txt") as f:
+with open("2021/day-12/example-2.txt", encoding="utf-8") as f:
     cave_routes = parse_input([line.strip() for line in f])
     assert 19 == count_possible_paths(cave_routes, ['start'])
     assert 103 == count_possible_paths_repeating_once(cave_routes, ['start'], False)
 
-with open("2021/day-12/example-3.txt") as f:
+with open("2021/day-12/example-3.txt", encoding="utf-8") as f:
     cave_routes = parse_input([line.strip() for line in f])
     assert 226 == count_possible_paths(cave_routes, ['start'])
     assert 3509 == count_possible_paths_repeating_once(cave_routes, ['start'], False)
 
-with open("2021/day-12/input.txt") as f:
+with open("2021/day-12/input.txt", encoding="utf-8") as f:
     cave_routes = parse_input([line.strip() for line in f])
     print("Part 1: The total possible paths is: ", count_possible_paths(cave_routes, ['start']))
     print("Part 2: The total possible paths, repeating once, is: ", count_possible_paths_repeating_once(cave_routes, ['start'], False))

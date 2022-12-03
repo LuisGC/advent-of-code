@@ -87,11 +87,11 @@ def count_dots_after_fold(transparent_paper: TransparentPaper, folds: int) -> in
     return count_dots(paper)
 
 
-with open("2021/day-13/example.txt") as f:
+with open("2021/day-13/example.txt", encoding="utf-8") as f:
     paper  = parse_input([line.strip() for line in f])
     assert 17 == count_dots_after_fold(paper, 1)
 
-with open("2021/day-13/input.txt") as f:
+with open("2021/day-13/input.txt", encoding="utf-8") as f:
     paper  = parse_input([line.strip() for line in f])
     print("Part 1: Total dots in 1 fold are : ", count_dots_after_fold(paper, 1))
     print("Part 2: The alphanumeric code is : ")

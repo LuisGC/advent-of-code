@@ -76,13 +76,13 @@ def max_distance(scanners: List[Scanner]) -> int:
     return max_d
 
 
-with open("2021/day-19/example.txt") as f:
+with open("2021/day-19/example.txt", encoding="utf-8") as f:
     scanners = parse_input(f.read().split("\n\n"))
     coords, scanners = locate_objects(scanners)
     assert 79 == count_beacons(coords)
     assert 3621 == max_distance(scanners)
 
-with open("2021/day-19/input.txt") as f:
+with open("2021/day-19/input.txt", encoding="utf-8") as f:
     scanners = parse_input(f.read().split("\n\n"))
     coords, scanners = locate_objects(scanners)
     print("Part 1: The amount of beacons is:", count_beacons(coords))

@@ -43,7 +43,7 @@ def earliest_match(rawbuses: str):
     return time
 
 
-with open("2020/day-13/example.txt") as f:
+with open("2020/day-13/example.txt", encoding="utf-8") as f:
     notes = f.read()
     line1, line2 = notes.strip().split("\n")
     departure = int(line1)
@@ -53,7 +53,7 @@ with open("2020/day-13/example.txt") as f:
     assert 1068781 == earliest_match(line2)
 
 
-with open("2020/day-13/input.txt") as f:
+with open("2020/day-13/input.txt", encoding="utf-8") as f:
     notes = f.read()
     line1, line2 = notes.strip().split("\n")
     departure = int(line1)

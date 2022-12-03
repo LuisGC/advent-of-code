@@ -69,7 +69,7 @@ def calculate_by_precedence(lines: List[str], precendence: str) -> List[int]:
     return results
 
 
-with open("2020/day-18/example.txt") as f:
+with open("2020/day-18/example.txt", encoding="utf-8") as f:
     input = f.readlines()
     results = calculate_by_precedence(input, "left")
     assert 71 == results[0]
@@ -87,7 +87,7 @@ with open("2020/day-18/example.txt") as f:
     assert 23340 == results[5]
 
 
-with open("2020/day-18/input.txt") as f:
+with open("2020/day-18/input.txt", encoding="utf-8") as f:
     input = f.readlines()
     results = calculate_by_precedence(input, "left")
     print("Part 1: Sum by left preference evaluation is: ", sum(results))

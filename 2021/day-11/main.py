@@ -103,12 +103,12 @@ def parse_input(input: List[str]) -> Octopuses:
     return Octopuses(octopuses_array)
 
 
-with open("2021/day-11/example.txt") as f:
+with open("2021/day-11/example.txt", encoding="utf-8") as f:
     octopuses  = parse_input([line.strip() for line in f])
     assert 1656 == count_flashes_per_steps(octopuses, 100)
     assert 195 == first_synchronous_flash(octopuses)
 
-with open("2021/day-11/input.txt") as f:
+with open("2021/day-11/input.txt", encoding="utf-8") as f:
     octopuses  = parse_input([line.strip() for line in f])
     print("Part 1: Total flashes in 100 steps are : ", count_flashes_per_steps(octopuses, 100))
     print("Part 2: First synchronous flash is after (days): ", first_synchronous_flash(octopuses))

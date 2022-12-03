@@ -65,12 +65,12 @@ def calculate_life_support_rating(inputs):
     return oxygen * co2
 
 
-with open("2021/day-03/example.txt") as f:
+with open("2021/day-03/example.txt", encoding="utf-8") as f:
     inputs = [str(line.strip()) for line in f]
     assert 198 == calculate_power(inputs)
     assert 230 == calculate_life_support_rating(inputs)
 
-with open("2021/day-03/input.txt") as f:
+with open("2021/day-03/input.txt", encoding="utf-8") as f:
     inputs = [str(line.strip()) for line in f]
     print("Part 1:", calculate_power(inputs))
     print("Part 2:", calculate_life_support_rating(inputs))

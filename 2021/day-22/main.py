@@ -92,22 +92,22 @@ def process_input(data, p2=False):
     return reboot_steps
 
 
-with open("2021/day-22/example.txt") as f:
+with open("2021/day-22/example.txt", encoding="utf-8") as f:
     cuboids = process_input([str(line.strip()) for line in f])
     assert 39 == part1(cuboids)
 
-with open("2021/day-22/larger-example.txt") as f:
+with open("2021/day-22/larger-example.txt", encoding="utf-8") as f:
     cuboids = process_input([str(line.strip()) for line in f])
     assert 590784 == part1(cuboids)
 
-with open("2021/day-22/largest-example.txt") as f:
+with open("2021/day-22/largest-example.txt", encoding="utf-8") as f:
     input_array = [str(line.strip()) for line in f]
     assert 474140 == part1(process_input(input_array))
 
     cuboids = process_input(input_array, p2=True)
     assert 2758514936282235 == part2(cuboids)
 
-with open("2021/day-22/input.txt") as f:
+with open("2021/day-22/input.txt", encoding="utf-8") as f:
     input_array = [str(line.strip()) for line in f]
     print("Part 1: The amount of cubes is:", part1(process_input(input_array)))
     print("Part 2: The amount of cubes is:", part2(process_input(input_array, True)))

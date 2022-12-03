@@ -70,13 +70,13 @@ def count_replacements(template: str, rules: dict, steps: int) -> int:
     return max(c.values()) - min(c.values())
 
 
-with open("2021/day-14/example.txt") as f:
+with open("2021/day-14/example.txt", encoding="utf-8") as f:
     template, rules  = parse_input([line.strip() for line in f])
     assert 1588 == apply_insertion(template, rules, 10)
     assert 1588 == count_replacements(template, rules, 10)
     assert 2188189693529 == count_replacements(template, rules, 40)
 
-with open("2021/day-14/input.txt") as f:
+with open("2021/day-14/input.txt", encoding="utf-8") as f:
     template, rules  = parse_input([line.strip() for line in f])
     print("Part 1: Difference between max and min occurences:", apply_insertion(template, rules, 10))
     print("Part 2: With 40 steps, difference is:", count_replacements(template, rules, 40))

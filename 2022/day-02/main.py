@@ -44,7 +44,7 @@ def clean_input_lines(input_lines: List) -> List:
     return [line.replace('A', '1').replace('B', '2').replace('C', '3') for line in clean_lines]
 
 
-with open("2022/day-02/example.txt") as f:
+with open("2022/day-02/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     clean_plays = clean_input_lines(input_lines)
     assert 15 == calculate_score(clean_plays)
@@ -52,7 +52,7 @@ with open("2022/day-02/example.txt") as f:
     cheat_plays = decrypt_plays(clean_plays)
     assert 12 == calculate_score(cheat_plays)
 
-with open("2022/day-02/input.txt") as f:
+with open("2022/day-02/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     clean_plays = clean_input_lines(input_lines)
 

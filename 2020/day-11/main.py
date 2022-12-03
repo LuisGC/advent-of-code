@@ -95,13 +95,13 @@ def final_occupancy(seat_layout: Grid, rules: SeatingRules) -> int:
     return count_occupied(seat_layout)
 
 
-with open("2020/day-11/example.txt") as f:
+with open("2020/day-11/example.txt", encoding="utf-8") as f:
     seat_layout = f.readlines()
     assert 37 == final_occupancy(seat_layout, SeatingRules(1, 4))
     assert 26 == final_occupancy(seat_layout, SeatingRules(0, 5))
 
 
-with open("2020/day-11/input.txt") as f:
+with open("2020/day-11/input.txt", encoding="utf-8") as f:
     seat_layout = f.readlines()
     print("Part 1: The final occupancy is",
           final_occupancy(seat_layout, SeatingRules(1, 4)))

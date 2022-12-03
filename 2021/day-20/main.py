@@ -30,7 +30,7 @@ def enhance(algorithm: str, image: List) -> List:
     return enhanced_image
 
 
-with open("2021/day-20/example.txt") as f:
+with open("2021/day-20/example.txt", encoding="utf-8") as f:
     algorithm, image = parse_input(f.read())
     enhanced_image = enhance(algorithm, image)
     assert 24 == int(sum(sum(enhanced_image)))
@@ -40,7 +40,7 @@ with open("2021/day-20/example.txt") as f:
         enhanced_image = enhance(algorithm, enhanced_image)
     assert 3351 == int(sum(sum(enhanced_image)))
 
-with open("2021/day-20/input.txt") as f:
+with open("2021/day-20/input.txt", encoding="utf-8") as f:
     algorithm, image = parse_input(f.read())
     for _ in range(2):
         image = enhance(algorithm, image)
