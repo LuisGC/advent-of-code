@@ -5,9 +5,9 @@ def count_fully_contained(elven_pairs: List) -> int:
     fully_contained = 0
     for pair in elven_pairs:
         first, second = pair.split(",")
-        min_1, max_1 = first.split("-")
-        min_2, max_2 = second.split("-")
-        if int(max_1) <= int(max_2) and int(min_1) >= int(min_2) or int(max_1) >= int(max_2) and int(min_1) <= int(min_2):
+        min_1, max_1 = [int(x) for x in first.split("-")]
+        min_2, max_2 = [int(x) for x in second.split("-")]
+        if max_1 <= max_2 and min_1 >= min_2 or max_1 >= max_2 and min_1 <= min_2:
             fully_contained += 1
 
     return fully_contained
@@ -17,11 +17,11 @@ def count_overlapped(elven_pairs: List) -> int:
     overlapped = 0
     for pair in elven_pairs:
         first, second = pair.split(",")
-        min_1, max_1 = first.split("-")
-        min_2, max_2 = second.split("-")
+        min_1, max_1 = [int(x) for x in first.split("-")]
+        min_2, max_2 = [int(x) for x in second.split("-")]
         
-        sections_1 = set(list(range(int(min_1), int(max_1) + 1)))
-        sections_2 = set(list(range(int(min_2), int(max_2) + 1)))
+        sections_1 = set(list(range(min_1, max_1 + 1)))
+        sections_2 = set(list(range(min_2, max_2 + 1)))
         if len(sections_1 & sections_2):
             overlapped += 1
 
