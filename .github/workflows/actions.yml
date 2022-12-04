@@ -16,7 +16,7 @@ jobs:
 
       - uses: J0B10/aoc-badges-action@v3.0.0
         with:
-          userid: ${{ secrets.AOC_USER_ID }}                          # your user id, see setup on how to obtain
+          userid: ${{ secrets.AOC_USER_ID }}     # your user id, see setup on how to obtain
           session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
 
           # Optional inputs  
@@ -25,7 +25,7 @@ jobs:
           
       - uses: J0B10/aoc-badges-action@v3.0.0
         with:
-          userid: ${{ secrets.AOC_USER_ID }}                          # your user id, see setup on how to obtain
+          userid: ${{ secrets.AOC_USER_ID }}     # your user id, see setup on how to obtain
           session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
 
           # Optional inputs  
@@ -34,7 +34,7 @@ jobs:
           
       - uses: J0B10/aoc-badges-action@v3.0.0
         with:
-          userid: ${{ secrets.AOC_USER_ID }}                          # your user id, see setup on how to obtain
+          userid: ${{ secrets.AOC_USER_ID }}     # your user id, see setup on how to obtain
           session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
 
           # Optional inputs  
