@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/Stars%202020%20⭐-50-yellow)
 ![](https://img.shields.io/badge/Stars%202021%20⭐-50-yellow)
-![](https://img.shields.io/badge/Stars%202022%20⭐-8-yellow)
+![](https://img.shields.io/badge/Stars%202022%20⭐-9-yellow)
 ![](https://img.shields.io/badge/2022%20day%20📅-5-blue)
 ![](https://img.shields.io/badge/2022%20days%20completed-4-red)
 
