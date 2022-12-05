@@ -11,7 +11,7 @@ def execute_instructions(lines: List, crate_mover: int=9000) -> str:
 
     instructions = [[int(x) for x in line.replace("move ", "").replace(" from ", ",").replace(" to ", ",").split(",")] for line in lines[split_pos + 2:]]
 
-    for (amount, source, dest) in (instructions):
+    for (amount, source, dest) in instructions:
         # print(stacks)
         if crate_mover == 9000:
             for i in range(amount):
@@ -21,9 +21,9 @@ def execute_instructions(lines: List, crate_mover: int=9000) -> str:
             stacks[dest - 1].extend(stacks[source - 1][-amount:])
             stacks[source - 1] = stacks[source - 1][:-amount]
 
-
     # print(stacks)
     return "".join(stack[-1] for stack in stacks if stack)
+
 
 with open("2022/day-05/example.txt", encoding="utf-8") as f:
     lines = f.readlines()
