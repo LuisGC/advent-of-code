@@ -1,11 +1,11 @@
 name: Update AoC Badges
 on:
   schedule:                                        # run workflow based on schedule
-    - cron: '30 11 1-25 12 *'                       # from the 1. December till 25. December every day at 11:30am (avoid load at full hours)
+    - cron: '30 11 1-25 12 *'                      # from the 1. December till 25. December every day at 11:30am (avoid load at full hours)
 
   workflow_dispatch:                               # allow to manually start the workflow 
 
-  push:                                            #  Run on push, be carefull with this setting 
+#  push:                                            #  Run on push, be carefull with this setting 
                                                    # as the workflow should only be triggered at a rate lower than
                                                    # 4 times a hour to keep traffic on aoc site low 
 jobs:
@@ -14,24 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3                # clones your repo
 
-      - uses: J0B10/aoc-badges-action@v3.0.0
-        with:
-          userid: ${{ secrets.AOC_USER_ID }}     # your user id, see setup on how to obtain
-          session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
-
-          # Optional inputs  
-          year: 2020                                                                                   # The year for which stats should be retrieved
-          starsRegex: '(?<=https:\/\/img\.shields\.io\/badge\/Stars%202020%20⭐-)[0-9]+(?=-yellow)'    # Regular expression that finds the content of the stars badge in your file.
-          
-      - uses: J0B10/aoc-badges-action@v3.0.0
-        with:
-          userid: ${{ secrets.AOC_USER_ID }}     # your user id, see setup on how to obtain
-          session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
-
-          # Optional inputs  
-          year: 2021                                                                                  # The year for which stats should be retrieved
-          starsRegex: '(?<=https:\/\/img\.shields\.io\/badge\/Stars%202021%20⭐-)[0-9]+(?=-yellow)'   # Regular expression that finds the content of the stars badge in your file.
-          
       - uses: J0B10/aoc-badges-action@v3.0.0
         with:
           userid: ${{ secrets.AOC_USER_ID }}     # your user id, see setup on how to obtain
