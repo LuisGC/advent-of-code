@@ -29,16 +29,10 @@ class Password_item:
 with open("2020/day-02/example.txt", encoding="utf-8") as f:
     passwords = [Password_item.line2Password(line) for line in f]
     assert 2 == sum(pw.is_valid() for pw in passwords)
+    assert 1 == sum(pw.is_valid_2() for pw in passwords)
 
 
 with open("2020/day-02/input.txt", encoding="utf-8") as f:
     passwords = [Password_item.line2Password(line) for line in f]
     print("Part 1:", sum(pw.is_valid() for pw in passwords))
-
-with open("2020/day-02/example.txt", encoding="utf-8") as f:
-    passwords = [Password_item.line2Password(line) for line in f]
-    assert 1 == sum(pw.is_valid_2() for pw in passwords)
-
-with open("2020/day-02/input.txt", encoding="utf-8") as f:
-    passwords = [Password_item.line2Password(line) for line in f]
     print("Part 2:", sum(pw.is_valid_2() for pw in passwords))

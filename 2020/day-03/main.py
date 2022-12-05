@@ -1,4 +1,6 @@
-def traverse(forest, delta_x, delta_y) -> int:
+from typing import List
+
+def traverse(forest: List, delta_x: int, delta_y: int) -> int:
 
     x = 0
     y = 0
@@ -17,16 +19,7 @@ def traverse(forest, delta_x, delta_y) -> int:
 with open("2020/day-03/example.txt", encoding="utf-8") as f:
     forest = f.readlines()
     assert 7 == traverse(forest, 3, 1)
-
-
-with open("2020/day-03/input.txt", encoding="utf-8") as f:
-    forest = f.readlines()
-    print("Part 1, Number of trees:", traverse(forest, 3, 1))
-
-# PART 2
-
-with open("2020/day-03/example.txt", encoding="utf-8") as f:
-    forest = f.readlines()
+    # PART 2
     assert 2 == traverse(forest, 1, 1)
     assert 7 == traverse(forest, 3, 1)
     assert 3 == traverse(forest, 5, 1)
@@ -35,6 +28,8 @@ with open("2020/day-03/example.txt", encoding="utf-8") as f:
 
 with open("2020/day-03/input.txt", encoding="utf-8") as f:
     forest = f.readlines()
+    print("Part 1, Number of trees:", traverse(forest, 3, 1))
+
     print("Part 2")
     traverse_1 = traverse(forest, 1, 1)
     traverse_2 = traverse(forest, 3, 1)
