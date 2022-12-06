@@ -2,8 +2,8 @@ from typing import List
 
 def execute_instructions(lines: List, crate_mover: int=9000) -> str:
     split_pos = next(i for i, line in enumerate(lines) if "1" in line)
+    stacks= [[] for _ in range(int(lines[split_pos][-3]))]
 
-    stacks= [[], [], [], [], [], [], [], [], []]
     for line in reversed(lines[:split_pos]):
         for i, crate in enumerate(line[1::4]):
             if crate != " ":
