@@ -1,6 +1,6 @@
 def first_marker(packet: str, size: int) -> int:
 
-    return 1+next(i for i in range(size, len(packet)) if len(set(packet[i:i-size:-1])) == size)
+    return 1 + next(i for i in range(size, len(packet)) if len(set(packet[i : i-size : -1])) == size)
 
 with open("2022/day-06/input.txt", encoding="utf-8") as f:
     assert 7 == first_marker("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 4)
