@@ -1,11 +1,11 @@
 name: Update AoC Badges
 on:
-  schedule:                                        # run workflow based on schedule
-    - cron: '30 11 1-25 12 *'                      # from the 1. December till 25. December every day at 11:30am (avoid load at full hours)
+#  schedule:                                        # run workflow based on schedule
+#    - cron: '30 11 1-25 12 *'                      # from the 1. December till 25. December every day at 11:30am (avoid load at full hours)
 
   workflow_dispatch:                               # allow to manually start the workflow 
 
-#  push:                                            #  Run on push, be carefull with this setting 
+  push:                                            #  Run on push, be carefull with this setting 
                                                    # as the workflow should only be triggered at a rate lower than
                                                    # 4 times a hour to keep traffic on aoc site low 
 jobs:
