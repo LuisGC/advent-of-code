@@ -30,10 +30,10 @@ def count_files_under_threshold(filesystem: dict, threshold: int=100000) -> int:
 
     return count
 
-def find_optimal_dir_size(filesystem: dict) -> int:
-    to_be_deleted = 30000000 - (70000000 - filesystem.get("/"))
+def find_optimal_dir_size(filesystem: dict, total_disk: int = 70000000, space_needed: int=30000000) -> int:
+    min_to_be_deleted = space_needed - (total_disk - filesystem.get("/"))
     for dir_size in list(sorted(filesystem.values())):
-        if dir_size >= to_be_deleted:
+        if dir_size >= min_to_be_deleted:
             return dir_size
             break
 
