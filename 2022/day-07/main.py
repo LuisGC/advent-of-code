@@ -32,10 +32,8 @@ def count_files_under_threshold(filesystem: dict, threshold: int=100000) -> int:
 
 def find_optimal_dir_size(filesystem: dict) -> int:
     to_be_deleted = 30000000 - (70000000 - filesystem.get("/"))
-    print("To be deleted: ", to_be_deleted)
     for dir_size in list(sorted(filesystem.values())):
         if dir_size >= to_be_deleted:
-            print("selected dir: ", dir_size)
             return dir_size
             break
 
@@ -50,6 +48,6 @@ with open("2022/day-07/example.txt", encoding="utf-8") as f:
 with open("2022/day-07/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     filesystem = parse_input(input_lines)
-    
+
     print("Part 1: Count of files under threshold is:", count_files_under_threshold(filesystem))
     print("Part 2: Optimal dir size to be removed is ", find_optimal_dir_size(filesystem))
