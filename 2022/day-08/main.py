@@ -38,11 +38,13 @@ def highest_scenic_score(trees: np.ndarray) -> int:
 
 
 with open("2022/day-08/example.txt", encoding="utf-8") as f:
-    trees = [[int(x) for x in line.strip()] for line in f.readlines()]
-    assert 21 == count_visible_trees(np.array(trees))
-    assert 8 == highest_scenic_score(np.array(trees))
+    lines = [[int(x) for x in line.strip()] for line in f.readlines()]
+    trees = np.array(lines)
+    assert 21 == count_visible_trees(trees)
+    assert 8 == highest_scenic_score(trees)
 
 with open("2022/day-08/input.txt", encoding="utf-8") as f:
-    trees = [[int(x) for x in line.strip()] for line in f.readlines()]
-    print("Part 1: Count of visible trees is:", count_visible_trees(np.array(trees)))
-    print("Part 2: Highest scenic score is:", highest_scenic_score(np.array(trees)))
+    lines = [[int(x) for x in line.strip()] for line in f.readlines()]
+    trees = np.array(lines)
+    print("Part 1: Count of visible trees is:", count_visible_trees(trees))
+    print("Part 2: Highest scenic score is:", highest_scenic_score(trees))
