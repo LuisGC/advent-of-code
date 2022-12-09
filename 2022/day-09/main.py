@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 def parse_input(lines: List) -> List:
     movements = []
@@ -31,7 +31,7 @@ def move_tail(head: List[int], tail: List[int]):
         tail[0] += close_gap(head[0] - tail[0])
         tail[1] += close_gap(head[1] - tail[1])
 
-def count_tail_visited_positions(head_movements: List, knots_quantity: int=1) -> int:
+def count_tail_visited_positions(head_movements: List, knots_quantity: int = 1) -> int:
     knots: List[List[int]] = [[0, 0] for _ in range(knots_quantity + 1)]
     visited = {tuple(knots[-1])}
 
