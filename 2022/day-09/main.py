@@ -6,10 +6,9 @@ def parse_input(lines: List) -> List:
         direction, quantity = line.split()
         movements.append((direction, int(quantity)))
 
-    print("Movements:", movements)
     return movements
 
-def move_head(direction: str, head) -> tuple:
+def move_head(direction: str, head: tuple):
     if direction == "R":
         head[0] += 1
     elif direction == "L":
@@ -27,7 +26,7 @@ def close_gap(gap: int) -> int:
     else:
         return 0
 
-def move_tail(head, tail) -> tuple:
+def move_tail(head: tuple, tail:tuple):
     if abs(head[0]-tail[0]) > 1 or abs(head[1]-tail[1]) > 1:
         tail[0] += close_gap(head[0] - tail[0])
         tail[1] += close_gap(head[1] - tail[1])
@@ -41,10 +40,10 @@ def count_tail_visited_positions(head_movements: List) -> int:
         for _ in range(quantity):
             move_head(direction, head)
             move_tail(head, tail)
-            print("Head: " + str(head) + " Tail: " + str(tail))
+            # print("Head: " + str(head) + " Tail: " + str(tail))
             visited.add(tuple(tail))
 
-    print(visited)
+    # print(visited)
     return len(visited)
 
 
