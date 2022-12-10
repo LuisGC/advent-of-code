@@ -9,7 +9,6 @@ def execute_instructions(instructions: List, show_signal:bool=True) -> int:
     crt_line = ""
 
     for cycle in range(1, 241):
-        # measure if needed
         if cycle in MEASURE_CYCLES:
             signal_strenght += cycle * x_register
 
@@ -33,7 +32,6 @@ def execute_instructions(instructions: List, show_signal:bool=True) -> int:
             else:
                 queued_instructions = int(instruction[1])
 
-    # print(signal_strenght)
     return signal_strenght
 
 
