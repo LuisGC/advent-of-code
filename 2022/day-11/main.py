@@ -78,33 +78,58 @@ def parse_input(lines: List) -> List[Monkey]:
     # print(monkeys)
     return monkeys
 
-def observe_monkeys(monkeys: List[Monkey], rounds: int = 20):
+def print_monkey_items(monkeys: List[Monkey]):
+    for i in range (len(monkeys)):
+        print(f"  Monkey ", i , "[", monkeys[i].inspections, "]: ", monkeys[i].items)
 
-    for _ in range(rounds):
+def observe_monkeys(monkeys: List[Monkey], rounds: int = 20, basic_divide: bool = True):
+
+    lcd = monkeys[0].test
+    for i in range (1, len(monkeys)):
+        if lcd % monkeys[i].test != 0:
+            lcd *= monkeys[i].test
+
+    for round in range(rounds):
         for monkey in monkeys:
-            while len(monkey.items) > 0:
-                item = monkey.items.popleft()
-                worry_level = monkey.operation.execute(item)
-                worry_level = int(worry_level / 3)
+            num_items = len(monkey.items)
+            for _ in range(num_items):
+                worry_level = monkey.items.popleft()
+                worry_level = monkey.operation.execute(worry_level)
+                if basic_divide:
+                    worry_level = int(worry_level / 3)
+                else:
+                    worry_level = worry_level % lcd
+
                 if worry_level % monkey.test == 0:
                     monkeys[monkey.true_next].items.append(worry_level)
                 else:
                     monkeys[monkey.false_next].items.append(worry_level)
                 monkey.inspections += 1
 
-    # print(monkeys)
     monkeys.sort(key=lambda monkey: monkey.inspections, reverse=True)
     return monkeys[0].inspections * monkeys[1].inspections
 
+# REFACTOR IS NEEDED to avoid parsing the input each time
+
 with open("2022/day-11/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
-    monkey_operations = parse_input(input_lines)
 
-    assert 10605 == observe_monkeys(monkey_operations)
+    assert 10605 == observe_monkeys(parse_input(input_lines))
+    assert 6*4 == observe_monkeys(parse_input(input_lines), 1, False)
+    assert 103*99 == observe_monkeys(parse_input(input_lines), 20, False)
+    assert 5204*5192 == observe_monkeys(parse_input(input_lines), 1000, False)
+    assert 10419*10391 == observe_monkeys(parse_input(input_lines), 2000, False)
+    assert 15638*15593 == observe_monkeys(parse_input(input_lines), 3000, False)
+    assert 20858*20797 == observe_monkeys(parse_input(input_lines), 4000, False)
+    assert 26075*26000 == observe_monkeys(parse_input(input_lines), 5000, False)
+    assert 31294*31204 == observe_monkeys(parse_input(input_lines), 6000, False)
+    assert 36508*36400 == observe_monkeys(parse_input(input_lines), 7000, False)
+    assert 41728*41606 == observe_monkeys(parse_input(input_lines), 8000, False)
+    assert 46945*46807 == observe_monkeys(parse_input(input_lines), 9000, False)
+    assert 52166*52013 == observe_monkeys(parse_input(input_lines), 10000, False)
 
 with open("2022/day-11/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
-    monkey_operations = parse_input(input_lines)
 
-    print("Part 1: Monkey business level is:", observe_monkeys(monkey_operations))
-#     print("Part 2: Count of visited positions by 9th knot are:", count_tail_visited_positions(head_movements, 9))
+    print("Part 1: Monkey business level is:", observe_monkeys(parse_input(input_lines)))
+    print("Part 2: Monkey business in 10K rounds is:", observe_monkeys(parse_input(input_lines), 10000, False))
