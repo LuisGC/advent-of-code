@@ -39,9 +39,6 @@ class Monkey:
         self.operation.operand = new_operation.operand
         self.operation.right = new_operation.right
 
-    def get_inspections(self):
-        return self.inspections
-
 def parse_input(lines: List) -> List[Monkey]:
     monkeys = []
 
@@ -106,8 +103,8 @@ def observe_monkeys(monkeys: List[Monkey], rounds: int = 20, basic_divide: bool 
                     monkeys[monkey.false_next].items.append(worry_level)
                 monkey.inspections += 1
 
-    monkeys.sort(key=lambda monkey: monkey.inspections, reverse=True)
-    return monkeys[0].inspections * monkeys[1].inspections
+    monkeys.sort(key=lambda monkey: monkey.inspections)
+    return monkeys[-2].inspections * monkeys[-1].inspections
 
 # REFACTOR IS NEEDED to avoid parsing the input each time
 
