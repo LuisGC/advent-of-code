@@ -26,7 +26,8 @@ class Operation:
             raise ValueError("Invalid operation")
 
 @dataclass
-class Monkey: 
+class Monkey:
+    id: int 
     items: deque
     operation: Operation
     test: int
@@ -38,6 +39,9 @@ class Monkey:
         self.operation.left = new_operation.left
         self.operation.operand = new_operation.operand
         self.operation.right = new_operation.right
+    
+    def __str__(self):
+        return f"  Monkey {self.id} [{self.inspections}]: {self.items}"
 
 def parse_input(lines: List) -> List[Monkey]:
     monkeys = []
@@ -48,7 +52,8 @@ def parse_input(lines: List) -> List[Monkey]:
         parts = line.split(": ")
         # monkey = None
         if "Monkey" in parts[0]:
-            monkey = Monkey(deque(), Operation(-1, "", -1), -1, -1, -1, 0)
+            id = int(parts[0][6:-1])
+            monkey = Monkey(id, deque(), Operation(-1, "", -1), -1, -1, -1, 0)
             monkeys.append(monkey)
         elif "Starting" in parts[0]:
             items = parts[1].split(", ")
@@ -72,12 +77,7 @@ def parse_input(lines: List) -> List[Monkey]:
             parts = parts[1].split(" ")
             monkeys[-1].false_next = int(parts[3])
 
-    # print(monkeys)
     return monkeys
-
-def print_monkey_items(monkeys: List[Monkey]):
-    for i in range (len(monkeys)):
-        print(f"  Monkey ", i , "[", monkeys[i].inspections, "]: ", monkeys[i].items)
 
 def observe_monkeys(monkeys: List[Monkey], rounds: int = 20, basic_divide: bool = True):
 
@@ -103,10 +103,12 @@ def observe_monkeys(monkeys: List[Monkey], rounds: int = 20, basic_divide: bool 
                     monkeys[monkey.false_next].items.append(worry_level)
                 monkey.inspections += 1
 
+    # for monkey in monkeys:
+    #     print(monkey)
     monkeys.sort(key=lambda monkey: monkey.inspections)
     return monkeys[-2].inspections * monkeys[-1].inspections
 
-# REFACTOR IS NEEDED to avoid parsing the input each time
+# REFACTOR IS WELCOME to avoid parsing the input each time
 
 with open("2022/day-11/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
