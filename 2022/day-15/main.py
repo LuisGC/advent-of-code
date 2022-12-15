@@ -1,5 +1,4 @@
-from typing import List, Tuple
-from functools import reduce
+from typing import List
 import re
 
 def manhatan(coord_a: tuple, coord_b: tuple) -> int:
@@ -19,7 +18,7 @@ def parse_input(lines: List) -> List:
 
     return items
 
-def analyze_row(items: List, max: float, row: int) -> List:
+def analyze_row(items: List, row: int, limit: int = 0) -> List:
 
     impossible_ranges = []
     for item in items:
@@ -29,11 +28,15 @@ def analyze_row(items: List, max: float, row: int) -> List:
         if offset < 0: continue
 
         lowest_x, highest_x = s_x - offset, s_x + offset
+        if limit != 0:
+            lowest_x = max(0, lowest_x)
+            highest_x = min(highest_x, limit)
+
         impossible_ranges.append((lowest_x, highest_x))
 
     return impossible_ranges
 
-def merge_ranges(ranges):
+def merge_ranges(ranges: List) -> List:
     merged_ranges = []
     for start, end in sorted(ranges):
 
@@ -54,7 +57,7 @@ def merge_ranges(ranges):
 def positions_without_beacon(items: List, row: int) -> int:
 
     occupied = set()
-    impossible_ranges = analyze_row(items, float("inf"), row)
+    impossible_ranges = analyze_row(items, row)
     for item in items:
         b_x, b_y = item['beacon']
         if b_y == row:
@@ -63,14 +66,37 @@ def positions_without_beacon(items: List, row: int) -> int:
 
     return abs(merged_ranges[0][1] - merged_ranges[0][0]) - len(occupied) + 1
 
+def tuning_frequency(items: List, limit: int) -> int:
+    signal = None
+    idx_left = limit // 2
+    idx_right = limit // 2 + 1
+    y = 0
+    while idx_left >= 0 and idx_left <= limit:
+        if signal is not None: break
+
+        for index in [idx_left, idx_right]:
+            ranges = analyze_row(items, index, limit)
+            merged_ranges = merge_ranges(ranges)
+            if len(merged_ranges) > 1:
+                signal = merged_ranges
+                y = index
+                break
+
+        idx_left -= 1
+        idx_right += 1
+
+    return (signal[1][0] - signal[0][0] - 1) * 4000000 + y
+ 
 with open("2022/day-15/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     items = parse_input(input_lines)
     
     assert 26 == positions_without_beacon(items, 10)
+    assert 56000011 == tuning_frequency(items, 20)
 
 with open("2022/day-15/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     items = parse_input(input_lines)
     
     print("Part 1: Positions without beacon in line 10 are:", positions_without_beacon(items, 2000000))
+    print("Part 2: Tuning frequency is:", tuning_frequency(items, 4000000))
