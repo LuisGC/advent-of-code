@@ -40,6 +40,15 @@ def parse_input(lines: List[str]) -> dict:
     #     print(item)
     return valve_dict
 
+def complete_data(valves: dict) -> List:
+    non_zeros = []
+    for valve in valves.values():
+        fill_distances(valves, valve)
+        if valve.flow_rate != 0:
+            non_zeros.append(valve)
+
+    return non_zeros
+
 def fill_distances(valves: dict, valve = Valve):
     frontier = [valve.id]
     visited = [valve.id]
@@ -82,11 +91,7 @@ def pressure_in_path(valves: dict, current: str, path: List, time: int) -> int:
     return pressure
 
 def release_optimal_pressure(valves: dict, time: int = 30, current: str= 'AA') -> int:
-    non_zeros = []
-    for valve in valves.values():
-        fill_distances(valves, valve)
-        if valve.flow_rate != 0:
-            non_zeros.append(valve)
+    non_zeros = complete_data(valves)
 
     paths = get_paths(valves, current, non_zeros, time, [])
     paths = [path[:-1] for path in paths]
