@@ -25,11 +25,11 @@ def make_rock(type: int, pos: tuple) -> set:
 
     return set(rock)
 
-def add_pair(a: tuple, b: tuple) -> tuple:
-    return (a[0] + b[0], a[1] + b[1])
+def apply_direction(position: tuple, delta: tuple) -> tuple:
+    return (position[0] + delta[0], position[1] + delta[1])
 
-def move(rock: set, dir: tuple) -> set:
-    return {add_pair(x, dir) for x in rock}
+def move(rock: set, jet_direction: tuple) -> set:
+    return {apply_direction(x, jet_direction) for x in rock}
 
 def hits_wall(rock: set) -> bool:
     return (min(rock, key=lambda x: x[0])[0] < 0) or (max(rock, key=lambda x: x[0])[0] >= 7)
@@ -54,8 +54,8 @@ def make_rocks_fall(jets: List[tuple], rock_amount: int) -> int:
         while(True):
             jet = jets[i]
             i = (i + 1) % len(jets)
-            next = move(rock, jet)
 
+            next = move(rock, jet)
             if not hits_wall(next) and not next.intersection(grid):
                 rock = next
 
@@ -79,7 +79,6 @@ def make_rocks_fall(jets: List[tuple], rock_amount: int) -> int:
 
                 num_cycles = (rock_amount - fallen_rocks) // cycle_length
                 fallen_rocks = fallen_rocks + (cycle_length * num_cycles)
-
                 cycles_height = num_cycles * cycle_size
             else:
                 seen_states[entry_key] = (highest, fallen_rocks)
