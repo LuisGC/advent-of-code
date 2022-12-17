@@ -37,7 +37,7 @@ def hits_wall(rock: set) -> bool:
 def hits_floor(rock: set) -> bool:
     return min(rock, key=lambda x: x[1])[1] < 0
 
-def make_rocks_fall(jets: List[tuple], rock_amount: int = 2022) -> int:
+def make_rocks_fall(jets: List[tuple], rock_amount: int) -> int:
     grid = set()
     rock_type = 0
     highest = -1
@@ -92,11 +92,11 @@ with open("2022/day-17/example.txt", encoding="utf-8") as f:
     assert 1 == make_rocks_fall(jets, 1)
     assert 4 == make_rocks_fall(jets, 2)
     assert 6 == make_rocks_fall(jets, 3)
-    assert 3068 == make_rocks_fall(jets)
+    assert 3068 == make_rocks_fall(jets, 2022)
     assert 1514285714288 == make_rocks_fall(jets, 1000000000000)
 
 with open("2022/day-17/input.txt", encoding="utf-8") as f:
     jets = [jet[j] for j in f.read().strip()]
 
-    print("Part 1: Tower height is:", make_rocks_fall(jets))
-    print("Part 2: Tower height is:", make_rocks_fall(jets, 1000000000000))
+    print("Part 1: Tower height with 2022 rocks is:", make_rocks_fall(jets, 2022))
+    print("Part 2: Tower height with 1 trillion rocks is:", make_rocks_fall(jets, 1000000000000))
