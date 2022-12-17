@@ -36,8 +36,6 @@ def parse_input(lines: List[str]) -> dict:
         valve = Valve.parse_valve(line)
         valve_dict[valve.id] = valve
 
-    # for item in valve_dict.values():
-    #     print(item)
     return valve_dict
 
 def complete_data(valves: dict) -> List:
@@ -97,7 +95,6 @@ def release_optimal_pressure(valves: dict, time: int = 30, current: str= 'AA') -
     paths = [path[:-1] for path in paths]
     pressures = [pressure_in_path(valves, current, path, time) for path in paths]
 
-    # print(pressures)
     return max(pressures)
 
 def release_optimal_pressure_with_help(valves: dict, time: int = 26, current: str= 'AA') -> int:
@@ -115,7 +112,6 @@ def release_optimal_pressure_with_help(valves: dict, time: int = 26, current: st
                     if set(path).isdisjoint(path_2):
                         best_combination = max(best_combination, pressure + pressure_2)
 
-    # print(pressures)
     return best_combination
 
 with open("2022/day-16/example.txt", encoding="utf-8") as f:
