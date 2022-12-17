@@ -44,6 +44,10 @@ def make_rocks_fall(jets: List[tuple], rock_amount: int = 2022) -> int:
 
     fallen_rocks = 0
     i = 0
+
+    cycles_height = 0
+    seen_states = {}
+
     while fallen_rocks < rock_amount:
         rock = make_rock(rock_type, (2, highest + 4))
 
@@ -65,7 +69,22 @@ def make_rocks_fall(jets: List[tuple], rock_amount: int = 2022) -> int:
                 rock_type = (rock_type + 1) % 5
                 break
 
-    return highest + 1
+        if not cycles_height:
+            top_rows = {(x, highest - y) for (x, y) in grid if highest - y < 50}
+            entry_key = (rock_type, i, frozenset(top_rows))
+            if entry_key in seen_states:
+                starting_highest, starting_fallen_rocks = seen_states[entry_key]
+                cycle_length = fallen_rocks - starting_fallen_rocks
+                cycle_size = highest - starting_highest
+
+                num_cycles = (rock_amount - fallen_rocks) // cycle_length
+                fallen_rocks = fallen_rocks + (cycle_length * num_cycles)
+
+                cycles_height = num_cycles * cycle_size
+            else:
+                seen_states[entry_key] = (highest, fallen_rocks)
+
+    return highest + 1 + cycles_height
 
 with open("2022/day-17/example.txt", encoding="utf-8") as f:
     jets = [jet[j] for j in f.read().strip()]
@@ -74,10 +93,10 @@ with open("2022/day-17/example.txt", encoding="utf-8") as f:
     assert 4 == make_rocks_fall(jets, 2)
     assert 6 == make_rocks_fall(jets, 3)
     assert 3068 == make_rocks_fall(jets)
-#    assert 1514285714288 == make_rocks_fall(jets, 1000000000000)
+    assert 1514285714288 == make_rocks_fall(jets, 1000000000000)
 
 with open("2022/day-17/input.txt", encoding="utf-8") as f:
     jets = [jet[j] for j in f.read().strip()]
 
     print("Part 1: Tower height is:", make_rocks_fall(jets))
-#    print("Part 2: Tower height is:", make_rocks_fall(jets, 1000000000000))
+    print("Part 2: Tower height is:", make_rocks_fall(jets, 1000000000000))
