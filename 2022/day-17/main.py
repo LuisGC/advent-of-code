@@ -70,7 +70,7 @@ def make_rocks_fall(jets: List[tuple], rock_amount: int) -> int:
                 break
 
         if not cycles_height:
-            top_rows = {(x, highest - y) for (x, y) in grid if highest - y < 50}
+            top_rows = {(x, highest - y) for (x, y) in grid if highest - y < 40}
             entry_key = (rock_type, i, frozenset(top_rows))
             if entry_key in seen_states:
                 starting_highest, starting_fallen_rocks = seen_states[entry_key]
