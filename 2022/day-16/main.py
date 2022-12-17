@@ -100,16 +100,35 @@ def release_optimal_pressure(valves: dict, time: int = 30, current: str= 'AA') -
     # print(pressures)
     return max(pressures)
 
+def release_optimal_pressure_with_help(valves: dict, time: int = 26, current: str= 'AA') -> int:
+    non_zeros = complete_data(valves)
+
+    paths = get_paths(valves, current, non_zeros, time, [])
+    paths = [path[:-1] for path in paths]
+    pressures = [pressure_in_path(valves, current, path, time) for path in paths]
+
+    best_combination = 0
+    for path, pressure in zip(paths, pressures):
+        if len(path) <= len(non_zeros) / 2:
+            for path_2, pressure_2 in zip(paths, pressures):
+                if len(path_2) <= len(non_zeros) - len(path):
+                    if set(path).isdisjoint(path_2):
+                        best_combination = max(best_combination, pressure + pressure_2)
+
+    # print(pressures)
+    return best_combination
+
 with open("2022/day-16/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     input_valves = parse_input(input_lines)
     
     assert 1651 == release_optimal_pressure(input_valves)
-    # assert 1707 == release_optimal_pressure(input_valves, 26)
+    assert 1707 == release_optimal_pressure_with_help(input_valves)
 
 with open("2022/day-16/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     input_valves = parse_input(input_lines)
     
     print("Part 1: Optimal pressure is:", release_optimal_pressure(input_valves))
-    # print("Part 2: Optimal pressure with help is:", release_optimal_pressure(input_valves, 26))
+    # REFACTOR It takes too long to finish, but it finishes
+    print("Part 2: Optimal pressure with help is:", release_optimal_pressure_with_help(input_valves))
