@@ -165,14 +165,27 @@ def total_quality_level(blueprints: List[Blueprint]) -> int:
 
     return sum(qualities.values())
 
-with open("2022/day-19/example.txt", encoding="utf-8") as f:
-    input_lines = [line.strip() for line in f.readlines()]
-    blueprints = parse_input(input_lines)
+def top3_blueprints(blueprints: List[Blueprint]) -> int:
+    res = 1
+    for blueprint in blueprints:
+        geodes = mining(blueprint,max_time=32)
+
+        res *= geodes
+        print(f"Geodes of blueprint {blueprint.id} is {geodes}")
+
+    return res
+
+
+# with open("2022/day-19/example.txt", encoding="utf-8") as f:
+#     input_lines = [line.strip() for line in f.readlines()]
+#     blueprints = parse_input(input_lines)
     
-    assert 33 == total_quality_level(blueprints)
+    # assert 33 == total_quality_level(blueprints)
+    # assert 56*62 == top3_blueprints(blueprints[:3])
 
 with open("2022/day-19/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     blueprints = parse_input(input_lines)
     
-    print("Part 1: Total quality level is:", total_quality_level(blueprints))
+    # print("Part 1: Total quality level is:", total_quality_level(blueprints))
+    print("Part 2: Total geodes in first 3 is:", top3_blueprints(blueprints[:3]))
