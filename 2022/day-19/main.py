@@ -1,48 +1,39 @@
 from __future__ import annotations
+import functools
+import sys
 from typing import List
+from tqdm import tqdm
+import numpy as np
 import re
+
+sys.setrecursionlimit(100000000)
 
 class Blueprint:
     id: int
-    ore_cost: int
-    clay_cost: int
-    obsidian_cost: tuple
-    geode_cost: tuple
     ore: int
     clay: int
-    obsidian: int
-    geode: int
-
-    def __init__(self, id: int, ore_cost: int, clay_cost: int, obsidian_cost: tuple, geode_cost:tuple):
+    obsidian: tuple
+    geode: tuple
+    
+    def __init__(self, id: int, ore: int, clay: int, obsidian: tuple[int, int], geode:tuple[int, int]):
         self.id = id
-        self.ore_cost = ore_cost
-        self.clay_cost = clay_cost
-        self.obsidian_cost = obsidian_cost
-        self.geode_cost = geode_cost
-        self.ore = 0
-        self.clay = 0
-        self.obsidian = 0
-        self.geode = 0
+        self.ore = ore
+        self.clay = clay
+        self.obsidian = (obsidian[0], obsidian[1])
+        self.geode = (geode[0], geode[1])
+        self.max_ore_robots = max(ore, clay, obsidian[0], geode[0])
+        self.max_clay_robots = obsidian[1]
+        self.max_obsidian_robots = geode[1]
     
     def __str__(self) -> str:
-        return(f"Blueprint {self.id}:\n Each ore robot costs {self.ore_cost} ore.\n Each clay robot costs {self.clay_cost} ore.\n Each obsidian robot costs {self.obsidian_cost[0]} ore and {self.obsidian_cost[1]} clay.\n Each geode robot costs {self.geode_cost[0]} ore and {self.geode_cost[1]} obsidian.")
-
-    def quality_level(self) -> int:
-        return self.id * self.geode
+        return(f"Blueprint {self.id}:\n Each ore robot costs {self.ore} ore.\n Each clay robot costs {self.clay} ore.\n Each obsidian robot costs {self.obsidian[0]} ore and {self.obsidian[1]} clay.\n Each geode robot costs {self.geode[0]} ore and {self.geode[1]} obsidian.")
 
     @staticmethod
     def parse_blueprint(line: str) -> Blueprint:
         match = re.search(r"Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.", line)
-
         if match is None: raise Exception(f"no match with {line}")
-
-        id, ore_cost, clay_cost, obsidian_cost_ore, obsidian_cost_clay, geode_cost_ore, geode_cost_obsidian = match.groups()
-
-        return Blueprint(int(id), int(ore_cost), int(clay_cost), (int(obsidian_cost_ore), int(obsidian_cost_clay)), (int(geode_cost_ore), int(geode_cost_obsidian)))
-
-    def collect(self, duration: int):
-        pass
-
+        id, ore, clay, obsidian_cost_ore, obsidian_cost_clay, geode_cost_ore, geode_cost_obsidian = match.groups()
+        return Blueprint(int(id), int(ore), int(clay), (int(obsidian_cost_ore), int(obsidian_cost_clay)), (int(geode_cost_ore), int(geode_cost_obsidian)))
 
 def parse_input(lines: list[str]) -> List[Blueprint]:
     blueprints = []
@@ -52,13 +43,127 @@ def parse_input(lines: list[str]) -> List[Blueprint]:
     
     return blueprints
 
-def total_quality_level(blueprints: List[Blueprint]) -> int:
-    total = 0
-    for blueprint in blueprints:
-        blueprint.collect(24)
-        total += blueprint.quality_level()
+@functools.lru_cache(maxsize=None)
+def mining(
+    blueprint: Blueprint,
+    max_time: int,
+    minute: int = 1,
+    ore: int = 0,
+    clay: int = 0,
+    obsidian: int = 0,
+    geode: int = 0,
+    ore_robots: int = 1,
+    clay_robots: int = 0,
+    obsidian_robots: int = 0,
+    geode_robots: int = 0
+) -> int:
 
-    return total
+    if minute > max_time:
+        return geode
+
+    # limiting the state space using the max of each resource we could use
+    ore = min((max_time + 1 - minute) * blueprint.max_ore_robots, ore)
+    clay = min((max_time + 1 - minute) * blueprint.max_clay_robots, clay)
+    obsidian = min((max_time + 1 - minute) * blueprint.max_obsidian_robots, obsidian)
+
+    options = []
+
+    if ore >= blueprint.geode[0] and obsidian >= blueprint.geode[1]:
+        options.append(
+            mining(
+                blueprint,
+                max_time,
+                minute + 1,
+                ore + ore_robots - blueprint.geode[0],
+                clay + clay_robots,
+                obsidian + obsidian_robots - blueprint.geode[1],
+                geode + geode_robots,
+                ore_robots,
+                clay_robots,
+                obsidian_robots,
+                geode_robots + 1
+            )
+        )
+
+    if obsidian_robots < blueprint.max_obsidian_robots and ore >= blueprint.obsidian[0] and clay >= blueprint.obsidian[1]:
+        options.append(
+            mining(
+                blueprint,
+                max_time,
+                minute + 1,
+                ore + ore_robots - blueprint.obsidian[0],
+                clay + clay_robots - blueprint.obsidian[1],
+                obsidian + obsidian_robots,
+                geode + geode_robots,
+                ore_robots,
+                clay_robots,
+                obsidian_robots + 1,
+                geode_robots
+            )
+        )
+
+    if clay_robots < blueprint.max_clay_robots and ore >= blueprint.clay:
+        options.append(
+            mining(
+                blueprint,
+                max_time,
+                minute + 1,
+                ore + ore_robots - blueprint.clay,
+                clay + clay_robots,
+                obsidian + obsidian_robots,
+                geode + geode_robots,
+                ore_robots,
+                clay_robots + 1,
+                obsidian_robots,
+                geode_robots
+            )
+        )
+
+    if ore_robots < blueprint.max_ore_robots and ore >= blueprint.ore:
+        options.append(
+            mining(
+                blueprint,
+                max_time,
+                minute + 1,
+                ore + ore_robots - blueprint.ore,
+                clay + clay_robots,
+                obsidian + obsidian_robots,
+                geode + geode_robots,
+                ore_robots + 1,
+                clay_robots,
+                obsidian_robots,
+                geode_robots
+            )
+        )
+    
+    # There is always the option of not building anything
+    options.append(
+            mining(
+                blueprint,
+                max_time,
+                minute + 1,
+                ore + ore_robots,
+                clay + clay_robots,
+                obsidian + obsidian_robots,
+                geode + geode_robots,
+                ore_robots,
+                clay_robots,
+                obsidian_robots,
+                geode_robots
+            )
+        )
+
+    return max(options)
+
+def total_quality_level(blueprints: List[Blueprint]) -> int:
+    qualities = {}
+    for blueprint in blueprints:
+        geodes = mining(blueprint,max_time=24)
+
+        qualities[blueprint.id] = blueprint.id * geodes
+        print(f"Quality of blueprint {blueprint.id} is {blueprint.id * geodes}")
+
+    return sum(qualities.values())
 
 with open("2022/day-19/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
@@ -66,8 +171,8 @@ with open("2022/day-19/example.txt", encoding="utf-8") as f:
     
     assert 33 == total_quality_level(blueprints)
 
-# with open("2022/day-19/input.txt", encoding="utf-8") as f:
-#     input_lines = [line.strip() for line in f.readlines()]
-#     input_valves = parse_input(input_lines)
+with open("2022/day-19/input.txt", encoding="utf-8") as f:
+    input_lines = [line.strip() for line in f.readlines()]
+    blueprints = parse_input(input_lines)
     
-#     print("Part 1: Optimal pressure is:", release_optimal_pressure(input_valves))
+    print("Part 1: Total quality level is:", total_quality_level(blueprints))
