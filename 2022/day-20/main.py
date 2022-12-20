@@ -6,18 +6,18 @@ class Node:
         self.index = index
 
 def mix(numbers: List[Node], iterations: int = 1) -> List[Node]:
-    original = numbers.copy()
+    copy = numbers.copy()
 
     for _ in range(iterations):
-        for node in original:
-            index = numbers.index(node)
-            numbers.pop(index)
-            j = (index + node.value) % len(numbers)
+        for node in numbers:
+            index = copy.index(node)
+            copy.pop(index)
+            j = (index + node.value) % len(copy)
             if j == 0:
-                j = len(numbers)
-            numbers.insert(j, node)
+                j = len(copy)
+            copy.insert(j, node)
 
-    return numbers
+    return copy
 
 def coords_sum(nodes: List[Node]) -> int:
     zero_index = None
