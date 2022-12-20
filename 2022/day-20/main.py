@@ -5,16 +5,17 @@ class Node:
         self.value = value
         self.index = index
 
-def mix(numbers: List[Node]) -> List[Node]:
+def mix(numbers: List[Node], iterations: int = 1) -> List[Node]:
     original = numbers.copy()
 
-    for node in original:
-        index = numbers.index(node)
-        numbers.pop(index)
-        j = (index + node.value) % len(numbers)
-        if j == 0:
-            j = len(numbers)
-        numbers.insert(j, node)
+    for _ in range(iterations):
+        for node in original:
+            index = numbers.index(node)
+            numbers.pop(index)
+            j = (index + node.value) % len(numbers)
+            if j == 0:
+                j = len(numbers)
+            numbers.insert(j, node)
 
     return numbers
 
@@ -37,14 +38,19 @@ def coords_sum(nodes: List[Node]) -> int:
 with open("2022/day-20/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     numbers = [Node(int(x), i) for i, x in enumerate(input_lines)]
-
     mixed = mix(numbers)
     assert 3 == coords_sum(mixed)
+
+    numbers_with_key = [Node(int(x) * 811589153, i) for i, x in enumerate(input_lines)]
+    mixed = mix(numbers_with_key, 10)
+    assert 1623178306 == coords_sum(mixed)
 
 with open("2022/day-20/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     numbers = [Node(int(x), i) for i, x in enumerate(input_lines)]
-
     mixed = mix(numbers)
-    
+    print("Part 1: Sum of indexes is:", coords_sum(mixed))
+
+    numbers_with_key = [Node(int(x) * 811589153, i) for i, x in enumerate(input_lines)]
+    mixed = mix(numbers_with_key, 10)
     print("Part 1: Sum of indexes is:", coords_sum(mixed))
