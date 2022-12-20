@@ -184,4 +184,4 @@ with open("2022/day-19/input.txt", encoding="utf-8") as f:
     blueprints = parse_input(input_lines)
     
     print("Part 1: Total quality level is:", total_quality_level(blueprints, max_time=24))
-    print("Part 2: Total geodes in first 3 is:", total_quality_level(blueprints[:3], 32, quality_level=False))
+    print("Part 2: Total geodes in first 3 is:", total_quality_level(blueprints[:3], max_time=32, quality_level=False))
