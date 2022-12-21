@@ -30,41 +30,56 @@ def resolve(monkeys: dict, name: str) -> int:
 def hear_monkeys(monkeys: dict, leader: str='root') -> int:
     return resolve(monkeys, leader)
 
+def dependencies(monkeys: dict, name: str):
+    value = monkeys[name]
+    if len(value) == 1:
+        return set((name,))
+    left = dependencies(monkeys, value[0])
+    right = dependencies(monkeys, value[1])
+    return left | right
+
 def guess_my_number(monkeys: dict, leader: str='root', my_name: str='humn') -> int:
-    shouts = {}
-    leader_found = False
-    my_number = 0 # >63510129 for test and did not finish
+    my_number = 0
+    left = dependencies(monkeys, monkeys[leader][0])
+    right = dependencies(monkeys, monkeys[leader][1])
 
-    while not leader_found:
-        for monkey_name, monkey_value in monkeys.items():
-            if monkey_name == leader:
-                if monkey_value[0] in shouts and monkey_value[2] in shouts:
-                    if monkey_value[0] == monkey_value[2]:
-                        leader_found = True
-                        break
-                    else:
-                        shouts = {}
-                        my_number += 1
-            elif monkey_name == my_name:
-                shouts[monkey_name] = my_number
-            elif len(monkey_value) == 1:
-                shouts[monkey_name] = monkey_value[0]
-            else:
-                if monkey_value[0] in shouts and monkey_value[2] in shouts:
-                    if monkey_value[1] == '+':
-                        shouts[monkey_name] = shouts[monkey_value[0]] + shouts[monkey_value[2]]
-                    elif monkey_value[1] == '-':
-                        shouts[monkey_name] = shouts[monkey_value[0]] - shouts[monkey_value[2]]
-                    elif monkey_value[1] == '*':
-                        shouts[monkey_name] = shouts[monkey_value[0]] * shouts[monkey_value[2]]
-                    elif monkey_value[1] == '/':
-                        shouts[monkey_name] = shouts[monkey_value[0]] // shouts[monkey_value[2]]
-                    else:
-                        raise ValueError("Invalid operation")
+    root = leader
+    if my_name in left and my_name in right:
+        raise ValueError("Unexpected error")
+    elif my_name in left:
+        my_number = resolve(monkeys, monkeys[leader][1])
+        root = monkeys[leader][0]
+    else:
+        my_number = resolve(monkeys, monkeys[leader][0])
+        root = monkeys[leader][1]
 
-                    if monkey_name == leader:
-                        leader_found = True
-                        break
+    while root != my_name:
+        left = dependencies(monkeys, monkeys[root][0])
+        right = dependencies(monkeys, monkeys[root][1])
+        if my_name in left and my_name in right:
+            raise ValueError("Unexpected error")
+
+        # reverse the expression to solve for the variable
+        if my_name in left:  # solve for left operand
+            if monkeys[root][3] == '+':
+                my_number -= resolve(monkeys, monkeys[root][1])
+            elif monkeys[root][3] == '-':
+                my_number += resolve(monkeys, monkeys[root][1])
+            elif monkeys[root][3] == '*':
+                my_number //= resolve(monkeys, monkeys[root][1])
+            elif monkeys[root][3] == '/':
+                my_number *= resolve(monkeys, monkeys[root][1])
+            root = monkeys[root][0]
+        else:  # solve for right operand
+            if monkeys[root][3] == '+':
+                my_number -= resolve(monkeys, monkeys[root][0])
+            elif monkeys[root][3] == '-':
+                my_number = resolve(monkeys, monkeys[root][0]) - my_number
+            elif monkeys[root][3] == '*':
+                my_number //= resolve(monkeys, monkeys[root][0])
+            elif monkeys[root][3] == '/':
+                my_number = resolve(monkeys, monkeys[root][0]) // my_number
+            root = monkeys[root][1]
     
     return my_number
 
@@ -74,11 +89,11 @@ with open("2022/day-21/example.txt", encoding="utf-8") as f:
     monkeys = parse_input(lines)
 
     assert 152 == hear_monkeys(monkeys)
-    # assert 31 == guess_my_number(monkeys)
+    assert 301 == guess_my_number(monkeys)
 
 with open("2022/day-21/input.txt", encoding="utf-8") as f:
     lines = [line.strip() for line in f.readlines()]
     monkeys = parse_input(lines)
 
     print("Part 1: The number of root is:", hear_monkeys(monkeys))
-    # print("Part 2: The number of humn must be:", guess_my_number(monkeys))
+    print("Part 2: The number of humn must be:", guess_my_number(monkeys))
