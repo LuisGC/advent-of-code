@@ -2,10 +2,12 @@ from typing import List
 import re
 import operator
 
+OPERATIONS = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.floordiv}
+INVERSE_OPERATIONS = {'+': operator.sub, '-': operator.add, '*': operator.floordiv, '/': operator.mul}
+
 def parse_input(lines: List) -> dict:
     MONKEY_WITH_VALUE = re.compile(r'(\w{4}): (\d+)')
     MONKEY_WITH_OP = re.compile(r'(\w{4}): (\w{4}) ([-+*/]) (\w{4})')
-    OPERATIONS = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.floordiv}
 
     monkeys = {}
     for line in lines:
@@ -61,24 +63,13 @@ def guess_my_number(monkeys: dict, leader: str='root', my_name: str='humn') -> i
 
         # reverse the expression to solve for the variable
         if my_name in left:  # solve for left operand
-            if monkeys[root][3] == '+':
-                my_number -= resolve(monkeys, monkeys[root][1])
-            elif monkeys[root][3] == '-':
-                my_number += resolve(monkeys, monkeys[root][1])
-            elif monkeys[root][3] == '*':
-                my_number //= resolve(monkeys, monkeys[root][1])
-            elif monkeys[root][3] == '/':
-                my_number *= resolve(monkeys, monkeys[root][1])
+            my_number = INVERSE_OPERATIONS[monkeys[root][3]](my_number, resolve(monkeys, monkeys[root][1]))
             root = monkeys[root][0]
         else:  # solve for right operand
-            if monkeys[root][3] == '+':
-                my_number -= resolve(monkeys, monkeys[root][0])
-            elif monkeys[root][3] == '-':
-                my_number = resolve(monkeys, monkeys[root][0]) - my_number
-            elif monkeys[root][3] == '*':
-                my_number //= resolve(monkeys, monkeys[root][0])
-            elif monkeys[root][3] == '/':
-                my_number = resolve(monkeys, monkeys[root][0]) // my_number
+            if monkeys[root][3] == '+' or monkeys[root][3] == '*':
+                my_number = INVERSE_OPERATIONS[monkeys[root][3]](my_number, resolve(monkeys, monkeys[root][0]))
+            elif monkeys[root][3] == '-' or monkeys[root][3] == '/':
+                my_number = INVERSE_OPERATIONS[monkeys[root][3]](resolve(monkeys, monkeys[root][0]), my_number)
             root = monkeys[root][1]
     
     return my_number
