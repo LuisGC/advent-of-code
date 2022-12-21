@@ -5,10 +5,14 @@ def manhatan(coord_a: tuple, coord_b: tuple) -> int:
     return abs(coord_a[0]-coord_b[0]) + abs(coord_a[1]-coord_b[1])
 
 def parse_input(lines: List) -> List:
+
     items = []
     for line in lines:
-        chunks = re.split(',|=|:', line)
-        sensor, beacon = (int(chunks[1]), int(chunks[3])), (int(chunks[5]), (int(chunks[7])))
+        match = re.search(r"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)", line)
+        if match is None: raise Exception(f"no match with '{line}'")
+
+        chunks = match.groups()
+        sensor, beacon = (int(chunks[0]), int(chunks[1])), (int(chunks[2]), (int(chunks[3])))
         item = {
             "sensor" : sensor,
             "beacon" : beacon,
