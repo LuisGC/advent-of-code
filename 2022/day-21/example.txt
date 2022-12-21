@@ -1,4 +1,4 @@
-oot: pppw + sjmn
+root: pppw + sjmn
 dbpl: 5
 cczh: sllz + lgvd
 zczc: 2
