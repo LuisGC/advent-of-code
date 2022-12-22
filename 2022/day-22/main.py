@@ -1,5 +1,10 @@
 from typing import List
 
+RIGHT = 0
+DOWN = 1
+LEFT = 2
+UP = 3
+
 class Direction():
     def __init__(self, facing: int):
         self.facing = facing
@@ -13,17 +18,21 @@ class Direction():
         self.turn_right()
     
     def delta_row(self) -> int:
-        if self.facing == 0: return 0
-        elif self.facing == 1: return 1
-        elif self.facing == 2: return 0
-        else: return -1
+        if self.facing == RIGHT: return 0
+        elif self.facing == DOWN: return 1
+        elif self.facing == LEFT: return 0
+        else: return -1 # UP
     
     def delta_col(self) -> int:
-        if self.facing == 0: return 1
-        elif self.facing == 1: return 0
-        elif self.facing == 2: return -1
-        else: return 0
+        if self.facing == RIGHT: return 1
+        elif self.facing == DOWN: return 0
+        elif self.facing == LEFT: return -1
+        else: return 0 # UP
 
+DIR_UP = Direction(UP)
+DIR_DOWN = Direction(DOWN)
+DIR_LEFT = Direction(LEFT)
+DIR_RIGHT = Direction(RIGHT)
 
 class Maze():
     def __init__(self, lines: List) -> None:
@@ -65,10 +74,13 @@ def move_step(maze: Maze, position: tuple, direction: Direction) -> tuple:
     elif tile == '#':
         return position, True
 
+def calculate_password(position: tuple, direction: Direction) -> int:
+    return 1000 * (position[0] + 1) + 4*(position[1] + 1) + direction.facing
+
 def execute_movements(maze: Maze, movements: List) -> int:
     # print(maze)
     position = maze.starting_position()
-    direction = Direction(0)
+    direction = DIR_RIGHT
 
     for step in movements:
         if step == 'R': direction.turn_right()
@@ -78,8 +90,7 @@ def execute_movements(maze: Maze, movements: List) -> int:
                 position, wall = move_step(maze, position, direction)
                 if wall is True: break
     
-
-    return 1000 * (position[0] + 1) + 4*(position[1] + 1) + direction.facing
+    return calculate_password(position, direction)
 
 
 
