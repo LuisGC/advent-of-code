@@ -40,13 +40,13 @@ def move_blizzards(valley: List) -> List:
 
     return new_valley
 
-def walk(valley: List, start: tuple, goal: tuple, steps: int=0) -> int:
+def walk(valley: List, start: tuple, goal: tuple, steps: int=0) -> tuple:
     locations = set()
     locations.add(start)
 
     while True:
         if goal in locations:
-            return steps
+            return steps, valley
         steps += 1
         valley = move_blizzards(valley)
         next_locations = set()
@@ -55,7 +55,7 @@ def walk(valley: List, start: tuple, goal: tuple, steps: int=0) -> int:
                 next_locations.add((row, col))
             if row - 1 >= 0 and valley[row - 1][col] == 0:
                 next_locations.add((row - 1, col))
-            if row + 1 >= 0 and valley[row + 1][col] == 0:
+            if row + 1 < len(valley) and valley[row + 1][col] == 0:
                 next_locations.add((row + 1, col))
             if valley[row][col - 1] == 0:
                 next_locations.add((row, col - 1))
@@ -63,21 +63,31 @@ def walk(valley: List, start: tuple, goal: tuple, steps: int=0) -> int:
                 next_locations.add((row, col + 1))
         locations = next_locations
 
-def steps_to_cross_valley(valley: List) -> int:
+def steps_to_cross_valley(valley: List, returning: bool= False) -> int:
     start = (0,1)
     goal = (len(valley) - 1, len(valley[-1]) - 2)
 
-    steps = walk(valley, start, goal, 0)
+    if not returning:
+        steps, valley = walk(valley, start, goal, 0)
+    else:
+        steps, valley = walk(valley, start, goal, 0)
+        steps, valley = walk(valley, goal, start, steps)
+        steps, valley = walk(valley, start, goal, steps)
+
     return steps
 
 with open("2022/day-24/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     valley = parse_input(input_lines)
-
     assert 18 == steps_to_cross_valley(valley)
+
+    valley = parse_input(input_lines)
+    assert 54 == steps_to_cross_valley(valley, returning=True)
 
 with open("2022/day-24/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     valley = parse_input(input_lines)
-
     print("Part 1: Steps to cross the valley are:", steps_to_cross_valley(valley))
+
+    valley = parse_input(input_lines)
+    print("Part 2: Steps to cross the valley back and forth again are:", steps_to_cross_valley(valley, returning=True))
