@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/Stars%202020%20⭐-50-yellow)
 ![](https://img.shields.io/badge/Stars%202021%20⭐-50-yellow)
-![](https://img.shields.io/badge/Stars%202022%20⭐-0-yellow)
+![](https://img.shields.io/badge/Stars%202022%20⭐-50-yellow)
 ![](https://img.shields.io/badge/Stars%202023%20⭐-0-yellow)
 
 ![](https://img.shields.io/badge/2023%20day%20📅-0-blue)
