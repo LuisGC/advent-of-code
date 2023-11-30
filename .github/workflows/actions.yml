@@ -20,10 +20,10 @@ jobs:
           session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
 
           # Optional inputs  
-          year: 2022                                                                                            # The year for which stats should be retrieved
+          year: 2023                                                                                            # The year for which stats should be retrieved
           starsRegex: '(?<=https:\/\/img\.shields\.io\/badge\/Stars%202022%20⭐-)[0-9]+(?=-yellow)'             # Regular expression that finds the content of the stars badge in your file.
-          dayRegex: '(?<=https:\/\/img\.shields\.io\/badge\/2022%20day%20📅-)[0-9]+(?=-blue)'                   # Regular expression that finds the content of the day badge in your file.
-          daysCompletedRegex: '(?<=https:\/\/img\.shields\.io\/badge\/2022%20days%20completed-)[0-9]+(?=-red)'  # Regular expression that finds the content of the days completed badge iun your file.
+          dayRegex: '(?<=https:\/\/img\.shields\.io\/badge\/2023%20day%20📅-)[0-9]+(?=-blue)'                   # Regular expression that finds the content of the day badge in your file.
+          daysCompletedRegex: '(?<=https:\/\/img\.shields\.io\/badge\/2023%20days%20completed-)[0-9]+(?=-red)'  # Regular expression that finds the content of the days completed badge iun your file.
       
       - uses: stefanzweifel/git-auto-commit-action@v4     # Step that pushes these local changes back to your github repo
         with:
