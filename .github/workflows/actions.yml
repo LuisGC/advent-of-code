@@ -21,7 +21,7 @@ jobs:
 
           # Optional inputs  
           year: 2023                                                                                            # The year for which stats should be retrieved
-          starsRegex: '(?<=https:\/\/img\.shields\.io\/badge\/Stars%202022%20⭐-)[0-9]+(?=-yellow)'             # Regular expression that finds the content of the stars badge in your file.
+          starsRegex: '(?<=https:\/\/img\.shields\.io\/badge\/Stars%202023%20⭐-)[0-9]+(?=-yellow)'             # Regular expression that finds the content of the stars badge in your file.
           dayRegex: '(?<=https:\/\/img\.shields\.io\/badge\/2023%20day%20📅-)[0-9]+(?=-blue)'                   # Regular expression that finds the content of the day badge in your file.
           daysCompletedRegex: '(?<=https:\/\/img\.shields\.io\/badge\/2023%20days%20completed-)[0-9]+(?=-red)'  # Regular expression that finds the content of the days completed badge iun your file.
       
