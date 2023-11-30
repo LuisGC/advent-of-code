@@ -5,8 +5,8 @@
 ![](https://img.shields.io/badge/Stars%202022%20⭐-0-yellow)
 ![](https://img.shields.io/badge/Stars%202023%20⭐-0-yellow)
 
-![](https://img.shields.io/badge/2023%20day%20📅-25-blue)
-![](https://img.shields.io/badge/2023%20days%20completed-25-red)
+![](https://img.shields.io/badge/2023%20day%20📅-0-blue)
+![](https://img.shields.io/badge/2023%20days%20completed-0-red)
 
 
 This repo is meant to host my coding solutions for [Advent of Code](https://adventofcode.com/). Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like.
