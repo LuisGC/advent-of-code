@@ -14,7 +14,6 @@ with open("2023/day-01/example.txt", encoding="utf-8") as f:
     total = 0
     for line in input_lines:
         total += first_and_last_digits(line)
-        print(total)
 
     assert 142 == total
 
@@ -23,6 +22,5 @@ with open("2023/day-01/input.txt", encoding="utf-8") as f:
     total = 0
     for line in input_lines:
         total += first_and_last_digits(line)
-        print(total)
-        
+
     print("Part 1:", total)
