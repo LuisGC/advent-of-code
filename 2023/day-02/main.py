@@ -1,14 +1,18 @@
-def verify_game(line: str, max_red: int = 12, max_green: int = 13, max_blue: int = 14) -> bool:
+RED = {"name": "red", "max": 12}
+GREEN = {"name": "green", "max": 13}
+BLUE = {"name": "blue", "max": 14}
+
+def verify_game(line: str) -> bool:
     games = line.split(": ")[1].split("; ")
     for game in games:
         draws = game.split(", ")
         for draw in draws:
             amount, color = draw.split(" ")
-            if color == "red" and int(amount) > max_red:
+            if color == RED["name"] and int(amount) > RED["max"]:
                 return False
-            if color == "green" and int(amount) > max_green:
+            if color == GREEN["name"] and int(amount) > GREEN["max"]:
                 return False
-            if color == "blue" and int(amount) > max_blue:
+            if color == BLUE["name"] and int(amount) > BLUE["max"]:
                 return False
 
     return True
@@ -20,11 +24,11 @@ def min_possible_cubes_power(line: str) -> int:
         draws = game.split(", ")
         for draw in draws:
             amount, color = draw.split(" ")
-            if color == "red" and int(amount) > min_red:
+            if color == RED["name"] and int(amount) > min_red:
                 min_red = int(amount)
-            if color == "green" and int(amount) > min_green:
+            if color == GREEN["name"] and int(amount) > min_green:
                 min_green = int(amount)
-            if color == "blue" and int(amount) > min_blue:
+            if color == BLUE["name"] and int(amount) > min_blue:
                 min_blue = int(amount)
 
     return min_red * min_green * min_blue
