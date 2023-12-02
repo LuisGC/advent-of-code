@@ -1,4 +1,4 @@
-def verify_game(line: str, max_red: int, max_green: int, max_blue:int) -> bool:
+def verify_game(line: str, max_red: int = 12, max_green: int = 13, max_blue: int = 14) -> bool:
     games = line.split(": ")[1].split("; ")
     for game in games:
         draws = game.split(", ")
@@ -33,7 +33,7 @@ with open("2023/day-02/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     total = total_power = 0
     for i,line in enumerate(input_lines):
-        if verify_game(line, 12, 13, 14):
+        if verify_game(line):
             total += i+1
         total_power += min_possible_cubes_power(line)
 
@@ -44,7 +44,7 @@ with open("2023/day-02/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     total = total_power = 0
     for i,line in enumerate(input_lines):
-        if verify_game(line, 12, 13, 14):
+        if verify_game(line):
             total += i+1
         total_power += min_possible_cubes_power(line)
 
