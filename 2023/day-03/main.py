@@ -41,7 +41,7 @@ def get_part_numbers(lines: list) -> Tuple[int,int]:
                     near_part = False
                     gears = set()
 
-    return total, sum(prod(elts) for elts in all_gears.values() if len(elts) >= 2)
+    return total, sum(prod(gears) for gears in all_gears.values() if len(gears) >= 2)
 
 
 with open("2023/day-03/example.txt", encoding="utf-8") as f:
