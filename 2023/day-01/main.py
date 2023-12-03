@@ -38,5 +38,5 @@ with open("2023/day-01/input.txt", encoding="utf-8") as f:
         new_line = numify_line(line, True)
         total2 += int(new_line[0] + new_line[-1]) if len(new_line) > 0 else 0
 
-    print("Part 1: Sum of all calibrations is ", total)
-    print("Part 2: Sum of all calibrations (nums in letters are valid) is ", total2)
+    print(f"Part 1: Sum of all calibrations is {total}")
+    print(f"Part 2: Sum of all calibrations (nums in letters are valid) is {total2}")
