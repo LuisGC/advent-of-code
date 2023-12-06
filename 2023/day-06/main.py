@@ -24,11 +24,11 @@ def distance_travelled(max_time: int, button_holding_time: int) -> int:
     distance = (max_time - button_holding_time) * button_holding_time
     return distance
 
-def beat_record(time: int, distance: int) -> int:
+def beat_record(time: int, record: int) -> int:
     records = 0
 
     for i in range(1, time):
-        if distance_travelled(time, i) > distance:
+        if distance_travelled(time, i) > record:
             records += 1
     return records
 
