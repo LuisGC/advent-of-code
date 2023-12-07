@@ -28,15 +28,15 @@ def categorize_hand(hand: Tuple) -> int:
   return 1
 
 def compare_hands(a: Tuple, b: Tuple) -> int:
-    a,_ = a
-    b,_ = b
-    cha = categorize_hand(a)
-    chb = categorize_hand(b)
+    hand_a,_ = a
+    hand_b,_ = b
+    cha = categorize_hand(hand_a)
+    chb = categorize_hand(hand_b)
     if cha > chb:
       return 1
     elif cha < chb:
       return -1
-    for ca, cb in zip(a,b):
+    for ca, cb in zip(hand_a, hand_b):
       if CARDS.index(ca) > CARDS.index(cb):
         return 1
       elif CARDS.index(ca) < CARDS.index(cb):
@@ -45,23 +45,23 @@ def compare_hands(a: Tuple, b: Tuple) -> int:
 
 def categorize_hand_with_joker(hand: Tuple):
   max_value = None
-  for c in CARDS_WITH_JOKER:
-    replaced_hand = hand.replace('J',c)
+  for card in CARDS_WITH_JOKER:
+    replaced_hand = hand.replace('J',card)
     replaced_value = categorize_hand(replaced_hand)
     if max_value is None or replaced_value > max_value:
       max_value = replaced_value
   return max_value
 
 def compare_hands_with_jokers(a: Tuple, b: Tuple) -> int:
-    a,_ = a
-    b,_ = b
-    cha = categorize_hand_with_joker(a)
-    chb = categorize_hand_with_joker(b)
+    hand_a,_ = a
+    hand_b,_ = b
+    cha = categorize_hand_with_joker(hand_a)
+    chb = categorize_hand_with_joker(hand_b)
     if cha > chb:
       return 1
     elif cha < chb:
       return -1
-    for ca, cb in zip(a,b):
+    for ca, cb in zip(hand_a,hand_b):
       if CARDS_WITH_JOKER.index(ca) > CARDS_WITH_JOKER.index(cb):
         return 1
       elif CARDS_WITH_JOKER.index(ca) < CARDS_WITH_JOKER.index(cb):
@@ -75,7 +75,7 @@ def total_winnings(hands: List[Tuple], jokers: bool= False) -> int:
         hands.sort(key=cmp_to_key(compare_hands))
 
     winnings = 0
-    for i, (h, bid) in enumerate(hands):
+    for i, (_, bid) in enumerate(hands):
         winnings += int(bid)*(i+1)
 
     return winnings
