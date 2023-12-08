@@ -11,12 +11,11 @@ def parse_input (lines: List[str]) -> dict:
 
 def steps_required(instructions: str, nodes: dict) -> int:
     next_node = "AAA"
-    last_node = "ZZZ"
 
     i = 0
     steps = 0
 
-    while next_node != last_node:
+    while "ZZZ" != next_node:
         if i >= len(instructions):
             i = 0
 
