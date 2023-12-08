@@ -20,9 +20,8 @@ def steps_required(instructions: str, nodes: dict) -> int:
         if i >= len(instructions):
             i = 0
 
-        instruction = instructions[i]
         node = nodes[next_node]
-        next_node = node[instruction == "R"]
+        next_node = node[instructions[i] == "R"]
 
         steps += 1
         i += 1
@@ -41,9 +40,8 @@ def steps_required_for_ghosts(instructions: str, nodes: dict) -> int:
             if i >= len(instructions):
                 i = 0
 
-            instruction = instructions[i]
             node = nodes[next_node]
-            next_node = node[instruction == "R"]
+            next_node = node[instructions[i] == "R"]
 
             steps += 1
             i += 1
@@ -74,7 +72,6 @@ with open("2023/day-08/example_3.txt", encoding="utf-8") as f:
 
     assert 6 == steps_required_for_ghosts(instructions, nodes)
     
-
 with open("2023/day-08/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     instructions = input_lines[0]
