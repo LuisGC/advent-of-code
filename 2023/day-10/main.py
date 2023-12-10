@@ -66,6 +66,7 @@ def tiles_enclosed(maze: dict, rows: int, cols: int) -> int:
                     assert pipe in ("J", "7")
                     this_corner = "N" if pipe in ("L", "J") else "S"
                     if last_corner != this_corner:
+                        # equivalent to another |
                         inside = not inside
                     last_corner = None
 
