@@ -14,7 +14,6 @@ def distance(maze: List[str], start: complex, initial_direction: int = 1) -> int
     dir = initial_direction
 
     pos = start + dir
-    t = [pos]
     s = 1
 
     while pos != start:
@@ -23,7 +22,6 @@ def distance(maze: List[str], start: complex, initial_direction: int = 1) -> int
             dir = MAZE_RULES[(maze[y][x], dir)]
         
         pos += dir
-        t.append(pos)
         s += 1
 
     return (s // 2)
