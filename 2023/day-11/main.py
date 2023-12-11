@@ -1,7 +1,7 @@
 from typing import List, Tuple
 from math import comb
 
-def get_locations(map: List[str]) -> List[Tuple]:
+def get_locations(map: List[str]) -> List[Tuple[int, int]]:
     return [
         (x, y)
         for y, row in enumerate(map)
@@ -9,7 +9,7 @@ def get_locations(map: List[str]) -> List[Tuple]:
         if char == "#"
     ]
 
-def unocuppied_space(map: List[str], galaxies: List[Tuple]) -> Tuple[List, List]:
+def unocuppied_space(map: List[str], galaxies: List[Tuple]) -> Tuple[List[int], List[int]]:
     empty_x = [
         x for x in range(len(map[0]))
         if x not in [gx for gx,_ in galaxies]
@@ -26,7 +26,7 @@ def manhattan_distance(a: Tuple[int, int], b: Tuple[int, int]) -> int:
 def is_between(a: int, b: int, x: int) -> bool:
     return min(a, b) < x < max(a, b)
 
-def galaxies_distance(a, b, unocuppied: Tuple[List, List], gap_offset: int) -> List[int]:
+def galaxies_distance(a: Tuple[int, int], b: Tuple[int, int], unocuppied: Tuple[List, List], gap_offset: int) -> List[int]:
     def offset(axis: str) -> int:
         return sum(
             (gap_offset - 1) if is_between(a[axis == "y"], b[axis == "y"], gap) else 0
