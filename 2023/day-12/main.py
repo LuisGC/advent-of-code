@@ -1,3 +1,4 @@
+from functools import cache
 from typing import List, Tuple
 
 def parse_input (lines: List[str]) -> List:
@@ -8,6 +9,7 @@ def parse_input (lines: List[str]) -> List:
         rows.append([pattern, splits])
     return rows
 
+@cache
 def count_permutations(pattern: str, splits: List[int]) -> int:
     if len(splits) == 0:
         if all(char in '.?' for char in pattern):
@@ -28,9 +30,12 @@ def count_permutations(pattern: str, splits: List[int]) -> int:
             )
     return count
 
-def sum_all_permutations(rows: List) -> int:
+def sum_all_permutations(rows: List, unfolding: bool = False) -> int:
     count = 0
     for pattern, splits in rows:
+        if unfolding:
+            pattern = '?'.join((pattern,) * 5)
+            splits = splits * 5
         count += count_permutations(pattern, splits)
     return count
 
@@ -39,6 +44,7 @@ with open("2023/day-12/example.txt", encoding="utf-8") as f:
     rows = parse_input(input_lines)
 
     assert 21 == sum_all_permutations(rows)
+    assert 525152 == sum_all_permutations(rows, unfolding=True)
 
 
 with open("2023/day-12/input.txt", encoding="utf-8") as f:
@@ -46,3 +52,4 @@ with open("2023/day-12/input.txt", encoding="utf-8") as f:
     rows = parse_input(input_lines)
     
     print("Part 1: The sum of all options is ", sum_all_permutations(rows))
+    print("Part 2: The sum of all options after unfolding is ", sum_all_permutations(rows, unfolding=True))
