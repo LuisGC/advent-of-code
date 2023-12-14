@@ -80,11 +80,10 @@ def get_hash(platform: List[List[str]]) -> str:
     platform_to_text = "".join([''.join(line) for line in platform])
     return hashlib.sha1(platform_to_text.encode("utf-8")).hexdigest()[:20]
 
-def spin_cycle(platform: List[List[str]]) -> int:
+def spin_cycle(platform: List[List[str]], cycles: int = 1000000000) -> int:
     cache = {}
     results = []
-    i = 0
-    while True:
+    for cycle in range(cycles):
         platform = move_north(platform)
         platform = move_west(platform)
         platform = move_south(platform)
@@ -92,18 +91,21 @@ def spin_cycle(platform: List[List[str]]) -> int:
         key = get_hash(platform)
         if key in cache.keys():
             first = cache[key][1]
-            diff = i - first
-            return results[(1000000000 - first - 1) % diff + first]
+            diff = cycle - first
+            return results[(cycles - first - 1) % diff + first]
         weight = load(platform)
-        cache[key] = (weight, i)
+        cache[key] = (weight, cycle)
         results.append(weight)
-        i += 1
+    return results[-1]
 
 
 with open("2023/day-14/example.txt", encoding="utf-8") as f:
     platform = [list(line.strip()) for line in f.readlines()]
 
     assert 136 == tilt_and_weight(platform)
+    # assert 87 == spin_cycle(platform, 1)
+    # assert 69 == spin_cycle(platform, 2)
+    # assert 69 == spin_cycle(platform, 3)
     assert 64 == spin_cycle(platform)
 
 with open("2023/day-14/input.txt", encoding="utf-8") as f:
