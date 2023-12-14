@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 import hashlib
 
 def load(platform: List[List[str]]) -> int:
@@ -102,14 +102,12 @@ def spin_cycle(platform: List[List[str]]) -> int:
 
 with open("2023/day-14/example.txt", encoding="utf-8") as f:
     platform = [list(line.strip()) for line in f.readlines()]
-    # rocks = parse_input(platform)
 
     assert 136 == tilt_and_weight(platform)
     assert 64 == spin_cycle(platform)
 
 with open("2023/day-14/input.txt", encoding="utf-8") as f:
     platform = [list(line.strip()) for line in f.readlines()]
-    # rocks = parse_input(platform)
     
     print("Part 1: The load on the north is ", tilt_and_weight(platform))
     print("Part 2: The load on the north after 1B tilts is ", spin_cycle(platform))
