@@ -1,33 +1,115 @@
 from typing import List, Tuple
+import hashlib
 
-def parse_input (platform: List[str]) -> List[Tuple[int, int]]:
-    return [(i, j) for i in range(len(platform)) for j in range(len(platform[0])) if platform[i][j] == 'O']
+def load(platform: List[List[str]]) -> int:
+    weigth = 0
+    for i, line in enumerate(platform):
+        weigth += (len(platform)-i) * line.count('O')
+    return weigth
 
-def tilt_and_weight(platform: List[str], rocks: List[Tuple[int, int]]) -> int:
-    weight = 0
-    for rock in rocks:
-        row, col = rock[0], rock[1]
-        weight += len(platform) - row
-        if row > 0:
-            for i, upper_row in enumerate(platform[:row][::-1], 1):
-                if upper_row[col] == '.':
-                    weight += 1
-                    platform[row - i][col]  = 'O'
-                    platform[row - i + 1][col]  = '.'
-                else:
-                    break
+def move_north(platform: List[List[str]]) -> List[List[str]]:
+    while True:
+        new_platform = platform.copy()
+        moves = 0
+        for i in range(1, len(platform)):
+            for j, c in enumerate(platform[i]):
+                if c == 'O' and platform[i - 1][j] == '.':
+                    new_platform[i - 1][j] = 'O'
+                    new_platform[i][j] = '.'
+                    moves += 1
+        platform = new_platform.copy()
+        if moves == 0:
+            break
 
-    return weight
+    return platform
+
+def move_west(platform: List[List[str]]) -> List[List[str]]:
+    while True:
+        new_platform = platform.copy()
+        moves = 0
+        for i in range(len(platform)):
+            for j in range(1, len(platform[i])):
+                c = platform[i][j]
+                if c == 'O' and platform[i][j - 1] == '.':
+                    new_platform[i][j - 1] = 'O'
+                    new_platform[i][j] = '.'
+                    moves += 1
+        platform = new_platform.copy()
+        if moves == 0:
+            break
+
+    return platform
+
+def move_south(platform: List[List[str]]) -> List[List[str]]:
+    while True:
+        new_platform = platform.copy()
+        moves = 0
+        for i in range(len(platform) - 1):
+            for j, c in enumerate(platform[i]):
+                if c == 'O' and platform[i + 1][j] == '.':
+                    new_platform[i + 1][j] = 'O'
+                    new_platform[i][j] = '.'
+                    moves += 1
+        platform = new_platform.copy()
+        if moves == 0:
+            break
+
+    return platform
+
+def move_east(platform: List[List[str]]) -> List[List[str]]:
+    while True:
+        new_platform = platform.copy()
+        moves = 0
+        for i in range(len(platform)):
+            for j, c in enumerate(platform[i][:-1]):
+                if c == 'O' and platform[i][j + 1] == '.':
+                    new_platform[i][j + 1] = 'O'
+                    new_platform[i][j] = '.'
+                    moves += 1
+        platform = new_platform.copy()
+        if moves == 0:
+            break
+
+    return platform
+
+def tilt_and_weight(platform: List[List[str]]) -> int:
+    platform = move_north(platform)
+    return load(platform)
+
+def get_hash(platform: List[List[str]]) -> str:
+    platform_to_text = "".join([''.join(line) for line in platform])
+    return hashlib.sha1(platform_to_text.encode("utf-8")).hexdigest()[:20]
+
+def spin_cycle(platform: List[List[str]]) -> int:
+    cache = {}
+    results = []
+    i = 0
+    while True:
+        platform = move_north(platform)
+        platform = move_west(platform)
+        platform = move_south(platform)
+        platform = move_east(platform)
+        key = get_hash(platform)
+        if key in cache.keys():
+            first = cache[key][1]
+            diff = i - first
+            return results[(1000000000 - first - 1) % diff + first]
+        weight = load(platform)
+        cache[key] = (weight, i)
+        results.append(weight)
+        i += 1
 
 
 with open("2023/day-14/example.txt", encoding="utf-8") as f:
     platform = [list(line.strip()) for line in f.readlines()]
-    rocks = parse_input(platform)
+    # rocks = parse_input(platform)
 
-    assert 136 == tilt_and_weight(platform, rocks)
+    assert 136 == tilt_and_weight(platform)
+    assert 64 == spin_cycle(platform)
 
 with open("2023/day-14/input.txt", encoding="utf-8") as f:
     platform = [list(line.strip()) for line in f.readlines()]
-    rocks = parse_input(platform)
+    # rocks = parse_input(platform)
     
-    print("Part 1: The sum of all mirrors is ", tilt_and_weight(platform, rocks))
+    print("Part 1: The load on the north is ", tilt_and_weight(platform))
+    print("Part 2: The load on the north after 1B tilts is ", spin_cycle(platform))
