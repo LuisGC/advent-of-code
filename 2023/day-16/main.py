@@ -61,7 +61,7 @@ def energize(contraption: List[str], start_x: int, start_y: int, start_dir: int)
             elif beam_dir == 3:
                 beam_dir = 0
         else:
-            print("Unexpected tile", tile)
+            raise Exception("Unexpected tile")
 
         beams.append((next_x, next_y, beam_dir))
 
