@@ -7,14 +7,14 @@ directions = {
     3: (-1,0)   # W
 }
 
-def energize(contraption: List[str]) -> int:
+def energize(contraption: List[str], start_x: int, start_y: int, start_dir: int) -> int:
     heigth = len(contraption)
     width = len(contraption[0])
 
     energized = set()
     seen = set()
 
-    beams = [(-1, 0, 1)] # x, y, dir
+    beams = [(start_x, start_y, start_dir)]
 
     while beams:
         beam = beams.pop()
@@ -68,12 +68,29 @@ def energize(contraption: List[str]) -> int:
 
     return len(energized)
 
+def max_energize(contraption: List[str]) -> int:
+    heigth = len(contraption)
+    width = len(contraption[0])
+
+    energized_options = []
+    for y in range(heigth):
+        energized_options.append(energize(contraption, start_x = -1, start_y = y, start_dir = 1))
+        energized_options.append(energize(contraption, start_x = width, start_y = y, start_dir = 3))
+    for x in range(width):
+        energized_options.append(energize(contraption, start_x = x, start_y = -1, start_dir = 2))
+        energized_options.append(energize(contraption, start_x = x, start_y = heigth, start_dir = 0))
+
+    return max(energized_options)
+        
+
 with open("2023/day-16/example.txt", encoding="utf-8") as f:
     contraption = [line.strip() for line in f.readlines()]
 
-    assert 46 == energize(contraption)
+    assert 46 == energize(contraption, start_x = -1, start_y = 0, start_dir = 1)
+    assert 51 == max_energize(contraption)
 
 with open("2023/day-16/input.txt", encoding="utf-8") as f:
     contraption = [line.strip() for line in f.readlines()]
     
-    print("Part 1: The amount of energized tiles is ", energize(contraption))
+    print("Part 1: The amount of energized tiles is ", energize(contraption, start_x = -1, start_y = 0, start_dir = 1))
+    print("Part 2: The max amount of energized tiles is ", max_energize(contraption))
