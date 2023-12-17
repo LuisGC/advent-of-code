@@ -47,6 +47,11 @@ with open("2023/day-17/example.txt", encoding="utf-8") as f:
     assert 102 == min_heat_loss(city_map, 1, 3)
     assert 94 == min_heat_loss(city_map, 4, 10)
 
+with open("2023/day-17/example-2.txt", encoding="utf-8") as f:
+    city_map = [list(line.strip()) for line in f.readlines()]
+
+    assert 71 == min_heat_loss(city_map, 4, 10)
+
 with open("2023/day-17/input.txt", encoding="utf-8") as f:
     city_map = [list(line.strip()) for line in f.readlines()]
     
