@@ -8,7 +8,7 @@ directions = {
     3: (-1,0)   # W
 }
 
-def min_heat_loss(city_map: List, max_distance: int) -> int:
+def min_heat_loss(city_map: List, min_distance: int, max_distance: int) -> int:
     heap = [(0, 0, 0, -1)] # loss, row, col, direction
     seen = set()
     losses = {}
@@ -33,18 +33,22 @@ def min_heat_loss(city_map: List, max_distance: int) -> int:
                     if not (0 <= new_row < heigth and 0 <= new_col < width):
                         break
                     additional_loss += int(city_map[new_row][new_col])
-                    new_loss = loss + additional_loss
-                    if losses.get((new_row, new_col, new_direction), float("inf")) > new_loss:
-                        losses[(new_row, new_col, new_direction)] = new_loss
-                        heappush(heap, (new_loss, new_row, new_col, new_direction))
+                    if distance >= min_distance:
+                        new_loss = loss + additional_loss
+
+                        if losses.get((new_row, new_col, new_direction), float("inf")) > new_loss:
+                            losses[(new_row, new_col, new_direction)] = new_loss
+                            heappush(heap, (new_loss, new_row, new_col, new_direction))
 
 
 with open("2023/day-17/example.txt", encoding="utf-8") as f:
     city_map = [list(line.strip()) for line in f.readlines()]
 
-    assert 102 == min_heat_loss(city_map, 3)
+    assert 102 == min_heat_loss(city_map, 1, 3)
+    assert 94 == min_heat_loss(city_map, 4, 10)
 
 with open("2023/day-17/input.txt", encoding="utf-8") as f:
     city_map = [list(line.strip()) for line in f.readlines()]
     
-    print("Part 1: The minimum heat loss is ", min_heat_loss(city_map, 3))
+    print("Part 1: The minimum heat loss is ", min_heat_loss(city_map, 1, 3))
+    print("Part 2: The minimum heat loss with ultra crucible is ", min_heat_loss(city_map, 4, 10))    
