@@ -40,9 +40,10 @@ def lava_capacity(dig_plan: List[str]) -> int:
     trench_set = set(trench)
 
     # Filling from the outside
-    min_y, min_x = trench[0]
-    max_y, max_x = trench[0]
-    for y, x in trench_set:
+    min_x, min_y = trench[0]
+    max_x, max_y = trench[0]
+
+    for x, y in trench_set:
         min_y = min(min_y, y)
         min_x = min(min_x, x)
         max_y = max(max_y, y)
@@ -54,12 +55,12 @@ def lava_capacity(dig_plan: List[str]) -> int:
     outside_max_x = max_x + 1
 
     seen = set()
-    flood = [(outside_max_y, outside_min_x)]
+    flood = [(outside_max_x, outside_min_y)]
     while flood:
-        y, x = flood.pop()
-        if (y, x) in seen:
+        x, y = flood.pop()
+        if (x, y) in seen:
             continue
-        if (y, x) in trench_set:
+        if (x, y) in trench_set:
             continue
         if (
             y < outside_min_y or
@@ -69,11 +70,11 @@ def lava_capacity(dig_plan: List[str]) -> int:
         ):
             continue
 
-        seen.add((y, x))
-        flood.append(((y - 1, x)))
-        flood.append(((y + 1, x)))
-        flood.append(((y    , x - 1)))
-        flood.append(((y    , x + 1)))
+        seen.add((x, y))
+        flood.append(((x    , y - 1)))
+        flood.append(((x    , y + 1)))
+        flood.append(((x - 1, y)))
+        flood.append(((x + 1, y)))
     
     box_size = (outside_max_y - outside_min_y + 1) * (outside_max_x - outside_min_x + 1)
     enclosed = box_size - len(seen)
