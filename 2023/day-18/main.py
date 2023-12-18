@@ -1,0 +1,73 @@
+from typing import List, Tuple
+
+directions = {
+    'U': (0, -1), # Up
+    'R': (1, 0),  # Right
+    'D': (0, 1),  # Down
+    'L': (-1,0)   # Left
+}
+
+def parse_input (lines: List[str]) -> List[Tuple[str, int]]:
+    return [(line.split()[0], int(line.split()[1])) for line in lines]
+
+def lava_capacity(dig_plan: List[str]) -> int:
+    dig_plan = parse_input(dig_plan)
+
+    trench = [(0, 0)]
+    for dir, size in dig_plan:
+        delta = directions[dir]
+        for _ in range(size):
+            trench.append((trench[-1][0] + delta[0], trench[-1][1] + delta[1]))
+
+    trench_set = set(trench)
+
+    # Filling from the outside
+    min_y, min_x = trench[0]
+    max_y, max_x = trench[0]
+    for y, x in trench_set:
+        min_y = min(min_y, y)
+        min_x = min(min_x, x)
+        max_y = max(max_y, y)
+        max_x = max(max_x, x)
+
+    outside_min_y = min_y - 1
+    outside_min_x = min_x - 1
+    outside_max_y = max_y + 1
+    outside_max_x = max_x + 1
+
+    seen = set()
+    flood = [(outside_max_y, outside_min_x)]
+    while flood:
+        y, x = flood.pop()
+        if (y, x) in seen:
+            continue
+        if (y, x) in trench_set:
+            continue
+        if (
+            y < outside_min_y or
+            y > outside_max_y or
+            x < outside_min_x or
+            x > outside_max_x
+        ):
+            continue
+
+        seen.add((y, x))
+        flood.append(((y - 1, x)))
+        flood.append(((y + 1, x)))
+        flood.append(((y    , x - 1)))
+        flood.append(((y    , x + 1)))
+    
+    box_size = (outside_max_y - outside_min_y + 1) * (outside_max_x - outside_min_x + 1)
+    enclosed = box_size - len(seen)
+
+    return enclosed
+
+with open("2023/day-18/example.txt", encoding="utf-8") as f:
+    dig_plan = [line.strip() for line in f.readlines()]
+
+    assert 62 == lava_capacity(dig_plan)
+
+with open("2023/day-18/input.txt", encoding="utf-8") as f:
+    dig_plan = [line.strip() for line in f.readlines()]
+    
+    print("Part 1: The amount of lava is ", lava_capacity(dig_plan))
