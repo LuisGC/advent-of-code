@@ -7,10 +7,28 @@ directions = {
     'L': (-1,0)   # Left
 }
 
-def parse_input (lines: List[str]) -> List[Tuple[str, int]]:
+hex_int_to_dir = {
+    "0": "R",
+    "1": "D",
+    "2": "L",
+    "3": "U",
+}
+
+def parse_input(lines: List[str]) -> List[Tuple[str, int]]:
     return [(line.split()[0], int(line.split()[1])) for line in lines]
 
+def parse_input_hex(lines: List[str]) -> List[Tuple[str, int]]:
+    hex_plan = []
+    for line in lines:
+        hex_part = line.split()[2]
+        dir = hex_int_to_dir[hex_part[-2]]
+        size = int(hex_part[2:-2], 16)
+        hex_plan.append((dir, size))
+
+    return hex_plan
+
 def lava_capacity(dig_plan: List[str]) -> int:
+
     dig_plan = parse_input(dig_plan)
 
     trench = [(0, 0)]
@@ -62,12 +80,42 @@ def lava_capacity(dig_plan: List[str]) -> int:
 
     return enclosed
 
+def decode(color:str) -> Tuple:
+    color = color[2:-1]
+    distance = int(color[:5], 16)
+    direction = hex_int_to_dir[color[-1]]
+    return distance, direction
+
+def move(x, y, direction, distance, area, position):
+    delta_x, delta_y = directions[direction]
+    new_x = x + delta_x * distance
+    new_y = y + delta_y * distance
+    area += (x + new_x) * (new_y - y)
+    return new_x, new_y, area, position + distance
+
+def shoelace(dig_plan: List[str], hex_mode: bool=False) -> int:
+    x, y, area, position = 0, 0, 0, 0
+    for line in dig_plan:
+        direction, distance, color = line.split()
+        distance = int(distance)
+        if hex_mode:
+            _, _, color = line.split()
+            distance, direction = decode(color)
+
+        x, y, area, position = move(x, y, direction, distance, area, position)
+
+    return abs(area//2) + position//2 + 1
+
+
 with open("2023/day-18/example.txt", encoding="utf-8") as f:
     dig_plan = [line.strip() for line in f.readlines()]
 
     assert 62 == lava_capacity(dig_plan)
+    assert 62 == shoelace(dig_plan)    
+    assert 952408144115 == shoelace(dig_plan, hex_mode=True)    
 
 with open("2023/day-18/input.txt", encoding="utf-8") as f:
     dig_plan = [line.strip() for line in f.readlines()]
     
     print("Part 1: The amount of lava is ", lava_capacity(dig_plan))
+    print("Part 2: The amount of lava in hex mode is ", shoelace(dig_plan, hex_mode=True))
