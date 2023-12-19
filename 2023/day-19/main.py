@@ -1,5 +1,8 @@
 from typing import List, Tuple, Mapping, Dict
 
+ACCEPTED = "A"
+REJECTED = "R"
+
 def parse_input(blocks: List[str]) -> Tuple[dict, List[Mapping]]:
     workflows = {}
     for line in blocks[0].split("\n"):
@@ -20,7 +23,7 @@ def parse_input(blocks: List[str]) -> Tuple[dict, List[Mapping]]:
 def part_is_accepted(workflows: dict, part: Mapping[str, int]) -> int:
     current = "in"
 
-    while current not in ["A", "R"]:
+    while current not in [ACCEPTED, REJECTED]:
         rules = workflows[current]
         for rule, next in rules[:-1]:
             if rule[1] == "<":
@@ -36,7 +39,7 @@ def part_is_accepted(workflows: dict, part: Mapping[str, int]) -> int:
         else:
             current = rules[-1][0]
 
-    return current == "A"
+    return current == ACCEPTED
 
 def process_parts(workflows: dict, part_ratings: List[Mapping]) -> int:
     total = 0
@@ -48,30 +51,30 @@ def process_parts(workflows: dict, part_ratings: List[Mapping]) -> int:
 
 def solve(workflows: dict, valid_ranges: Dict[str, Tuple[int, int]], current: str, valid_solutions: List[Dict]):
 
-    if current == "R":
+    if current == REJECTED:
         return
-    if current == "A":
+    if current == ACCEPTED:
         valid_solutions.append(valid_ranges)
         return
     
     for rule, next in workflows[current][:-1]:
         if rule[1] == "<":
-            temp = valid_ranges.copy()
+            ranges_copy = valid_ranges.copy()
             letter, value = rule.split("<")
-            old = temp[letter]
-            temp[letter] = old[0], min(int(value) - 1, old[1])
+            old = ranges_copy[letter]
+            ranges_copy[letter] = old[0], min(int(value) - 1, old[1])
 
             valid_ranges[letter] = int(value), old[1]
-            solve(workflows, temp, next, valid_solutions)
+            solve(workflows, ranges_copy, next, valid_solutions)
 
         elif rule[1] == ">":
-            temp = valid_ranges.copy()
+            ranges_copy = valid_ranges.copy()
             letter, value = rule.split(">")
-            old = temp[letter]
-            temp[letter] = max(int(value) + 1, old[0]), old[1]
+            old = ranges_copy[letter]
+            ranges_copy[letter] = max(int(value) + 1, old[0]), old[1]
 
             valid_ranges[letter] = old[0], int(value)
-            solve(workflows, temp, next, valid_solutions)
+            solve(workflows, ranges_copy, next, valid_solutions)
     
     solve(workflows, valid_ranges, workflows[current][-1][0], valid_solutions)
 
