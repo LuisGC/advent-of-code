@@ -1,7 +1,17 @@
 from typing import List, Tuple, Mapping, Dict
+from time import perf_counter
 
 ACCEPTED = "A"
 REJECTED = "R"
+
+def profiler(method):
+    def wrapper_method(*arg, **kw):
+        t = perf_counter()
+        ret = method(*arg, **kw)
+        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
+        return ret
+    
+    return wrapper_method
 
 def parse_input(blocks: List[str]) -> Tuple[dict, List[Mapping]]:
     workflows = {}
@@ -41,6 +51,7 @@ def part_is_accepted(workflows: dict, part: Mapping[str, int]) -> int:
 
     return current == ACCEPTED
 
+@profiler
 def process_parts(workflows: dict, part_ratings: List[Mapping]) -> int:
     total = 0
     for part in part_ratings:
@@ -78,6 +89,7 @@ def solve(workflows: dict, valid_ranges: Dict[str, Tuple[int, int]], current: st
     
     solve(workflows, valid_ranges, workflows[current][-1][0], valid_solutions)
 
+@profiler
 def valid_ranges(workflows: dict) -> int:
     total = 0
     ranges = {letter: (1, 4000) for letter in "xmas"}
