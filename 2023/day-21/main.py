@@ -27,7 +27,6 @@ def walk_garden(grid: List[str], steps: int, infinite_garden: bool = False) -> i
     heigth = len(grid)
 
     seen = set()
-    garden = defaultdict(set)
     queue = deque()
 
     for y in range(heigth):
