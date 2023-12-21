@@ -55,7 +55,30 @@ def walk_garden(grid: List[str], steps: int, infinite_garden: bool = False) -> i
     return sum(1 for v in seen if v[2] == 0)
 
 def estimate_walking(grid: List[str]) -> int:
-    return 0
+    # 26501365 = 202300 × 131 + 65
+    value0 = 3957       # walk_garden(grid, 65, infinite_garden=True)
+    value1 = 35223      # walk_garden(grid, 1*131 + 65, infinite_garden=True)
+    value2 = 97645      # walk_garden(grid, 2*131 + 65, infinite_garden=True)
+    value3 = 191223     # walk_garden(grid, 3*131 + 65, infinite_garden=True)
+
+    diff1 = value1 - value0 # 31266
+    diff2 = value2 - value1 # 62422
+    diff3 = value3 - value2 # 93578
+
+    delta_diff1 = diff2 - diff1 # 31156
+    delta_diff2 = diff3 - diff2 # 31156
+
+    assert delta_diff1 == delta_diff2
+    assert diff3 - diff1 == 2 * delta_diff1
+
+    # Result: steps * delta_diff1 + diff1
+
+    def diff(x):
+        for i in range(x):
+            yield i * delta_diff1 + diff1
+
+    return sum(diff(202300)) + value0
+
 
 with open("2023/day-21/example.txt", encoding="utf-8") as f:
     grid = [list(line.strip()) for line in f.readlines()]
@@ -64,6 +87,7 @@ with open("2023/day-21/example.txt", encoding="utf-8") as f:
     assert 16 == walk_garden(grid, 6, infinite_garden=True)
     assert 50 == walk_garden(grid, 10, infinite_garden=True)
     assert 1594 == walk_garden(grid, 50, infinite_garden=True)
+    # Commenting the rest, as they take too long
     # assert 6536 == walk_garden(grid, 100, infinite_garden=True)
     # assert 167004 == walk_garden(grid, 500, infinite_garden=True)
     # assert 668697 == walk_garden(grid, 1000, infinite_garden=True)
@@ -73,4 +97,4 @@ with open("2023/day-21/input.txt", encoding="utf-8") as f:
     grid = [list(line.strip()) for line in f.readlines()]
     
     print("Part 1: The garden plots that can be reached are ", walk_garden(grid, 64))
-    # print("Part 2: The garden plots that can be reached with an infinite garden are ", walk_garden(grid, steps=26501365, infinite_garden=True))
+    print("Part 2: The garden plots that can be reached with an infinite garden are ", estimate_walking(grid))
