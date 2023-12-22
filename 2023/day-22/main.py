@@ -1,4 +1,15 @@
 from typing import List
+from time import perf_counter
+
+def profiler(method):
+    def wrapper_method(*arg, **kw):
+        t = perf_counter()
+        ret = method(*arg, **kw)
+        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
+        return ret
+    
+    return wrapper_method
+
 
 class Brick:
     def __init__(self, start, end):
@@ -36,6 +47,7 @@ def parse_input(input_lines: List[str]) -> List[Brick]:
     bricks.sort(key=Brick.key_z)
     return bricks
 
+@profiler
 def settle_bricks(bricks: List[Brick]) -> int:
     for i in range(len(bricks)):
         while True:
@@ -75,6 +87,7 @@ def count_falls(bricks: List[Brick], brick: Brick, fallen: set= None) -> int:
             count_falls(bricks, upper_brick, fallen)
     return len(fallen) - 1 # the removed block
 
+@profiler
 def count_fallen_bricks(bricks: List[Brick]) -> int:
     return sum(count_falls(bricks, brick) for brick in bricks)
 
