@@ -7,4 +7,4 @@
 | 20 | 0.03636 sec | 0.16358 sec |
 | 22 | 41.31597 sec | 0.1163 sec |
 
-More stats in https://adventofcode.com/2023/leaderboard/self
+More stats in [Advent of Code Personal Times](https://adventofcode.com/2023/leaderboard/self)
