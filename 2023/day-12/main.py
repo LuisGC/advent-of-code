@@ -1,5 +1,16 @@
 from functools import cache
 from typing import List, Tuple
+from time import perf_counter
+
+def profiler(method):
+    def wrapper_method(*arg, **kw):
+        t = perf_counter()
+        ret = method(*arg, **kw)
+        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
+        return ret
+    
+    return wrapper_method
+
 
 def parse_input (lines: List[str]) -> List[Tuple[str, List[int]]]:
     rows = []
@@ -27,6 +38,7 @@ def count_permutations(pattern: str, splits: List[int]) -> int:
             count += count_permutations(pattern[len(candidate):], remaining_splits)
     return count
 
+@profiler
 def sum_all_permutations(rows: List, unfolding: bool = False) -> int:
     count = 0
     for pattern, splits in rows:
