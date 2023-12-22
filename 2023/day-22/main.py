@@ -66,16 +66,29 @@ def settle_bricks(bricks: List[Brick]) -> int:
 
     return sum(all(len(top.supported_by)>1 for top in brick.supports) for brick in bricks)
 
+def count_falls(bricks: List[Brick], brick: Brick, fallen: set= None) -> int:
+    if fallen is None:
+        fallen = set()
+    fallen.add(brick)
+    for upper_brick in brick.supports:
+        if not (set(upper_brick.supported_by) - fallen):
+            count_falls(bricks, upper_brick, fallen)
+    return len(fallen) - 1 # the removed block
+
+def count_fallen_bricks(bricks: List[Brick]) -> int:
+    return sum(count_falls(bricks, brick) for brick in bricks)
+
 
 with open("2023/day-22/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     bricks = parse_input(input_lines)
     
     assert 5 == settle_bricks(bricks)
+    assert 7 == count_fallen_bricks(bricks)
 
 with open("2023/day-22/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     bricks = parse_input(input_lines)
     
     print("Part 1: The amount of bricks that can be removed is ", settle_bricks(bricks))
-    
+    print("Part 2: The amount of fallen bricks is ", count_fallen_bricks(bricks))
