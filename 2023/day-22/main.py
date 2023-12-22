@@ -36,7 +36,7 @@ def parse_input(input_lines: List[str]) -> List[Brick]:
     bricks.sort(key=Brick.key_z)
     return bricks
 
-def settle_bricks(bricks: List[Brick]):
+def settle_bricks(bricks: List[Brick]) -> int:
     for i in range(len(bricks)):
         while True:
             brick = bricks[i]
@@ -64,17 +64,18 @@ def settle_bricks(bricks: List[Brick]):
                 other.supports.append(brick)
                 brick.supported_by.append(other)
 
+    return sum(all(len(top.supported_by)>1 for top in brick.supports) for brick in bricks)
+
 
 with open("2023/day-22/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     bricks = parse_input(input_lines)
-
-    settle_bricks(bricks)
-    assert 5 == sum(all(len(top.supported_by)>1 for top in brick.supports) for brick in bricks)
+    
+    assert 5 == settle_bricks(bricks)
 
 with open("2023/day-22/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     bricks = parse_input(input_lines)
     
-    settle_bricks(bricks)    
-    print("Part 1: The amount of bricks that can be removed is ", sum(all(len(top.supported_by)>1 for top in brick.supports) for brick in bricks))
+    print("Part 1: The amount of bricks that can be removed is ", settle_bricks(bricks))
+    
