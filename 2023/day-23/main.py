@@ -8,7 +8,7 @@ DIRECTIONS = {
     3: (-1,  0)   # N
 }
 
-def longest_hike(input_lines: List[str], with_slopes: bool = True) -> int:
+def longest_hike(input_lines: List[str]) -> int:
 
     memo = defaultdict(lambda: -1)
 
@@ -23,13 +23,13 @@ def longest_hike(input_lines: List[str], with_slopes: bool = True) -> int:
 
         dirs = [dir for dir in DIRECTIONS.values()]
 
-        if with_slopes and input_lines[row][col] == ">":
+        if input_lines[row][col] == ">":
             dirs = [DIRECTIONS[2]]
-        elif with_slopes and input_lines[row][col] == "<":
+        elif input_lines[row][col] == "<":
             dirs = [DIRECTIONS[0]]
-        elif with_slopes and input_lines[row][col] == "^":
+        elif input_lines[row][col] == "^":
             dirs = [DIRECTIONS[3]]
-        elif with_slopes and input_lines[row][col] == "v":
+        elif input_lines[row][col] == "v":
             dirs = [DIRECTIONS[1]]
         
         for new_dir in dirs:
@@ -48,11 +48,8 @@ with open("2023/day-23/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     
     assert 94 == longest_hike(input_lines)
-    assert 154 == longest_hike(input_lines, with_slopes=False)
 
 with open("2023/day-23/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     
     print("Part 1: The longest hike is ", longest_hike(input_lines))
-    print("Part 2: The longest hike without slopes is ", longest_hike(input_lines, with_slopes=False))
-    
