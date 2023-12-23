@@ -2,6 +2,16 @@ from typing import List
 from collections import defaultdict
 from enum import Enum
 from dataclasses import dataclass
+from time import perf_counter
+
+def profiler(method):
+    def wrapper_method(*arg, **kw):
+        t = perf_counter()
+        ret = method(*arg, **kw)
+        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
+        return ret
+    
+    return wrapper_method
 
 @dataclass(frozen=True)
 class Position2D:
@@ -38,6 +48,7 @@ class Direction(Enum):
     UP = Position2D(-1, 0)
     DOWN = Position2D(1, 0)
 
+@profiler
 def longest_hike(input_lines: List[str]) -> int:
 
     memo = defaultdict(lambda: -1)
@@ -72,6 +83,7 @@ def longest_hike(input_lines: List[str]) -> int:
 
     return memo[Position2D((len(input_lines)-1), len(input_lines[-1])-2)]
 
+@profiler
 def longest_hike_without_slopes(input_lines: List[str]) -> int:
 
     start = Position2D(0, 1)
