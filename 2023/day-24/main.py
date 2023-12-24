@@ -1,5 +1,6 @@
 from typing import List
 from itertools import combinations
+from z3 import Real, Solver, sat
 from time import perf_counter
 
 def profiler(method):
@@ -44,12 +45,33 @@ def count_collisions(input_lines: List[str], min: int, max: int) -> int:
 
     return count
 
+@profiler
+def sum_terminator_rock_coords(input_lines: List[str]) -> int:
+    rock_pos = [Real('r%s' % i) for i in range(3)]
+    rock_vel = [Real('rv%s' % i) for i in range(3)]
+    s = Solver()
+
+    for i in range(len(input_lines)):
+        stone = input_lines[i].replace(" @", ", ").split(", ")
+        t = Real('t%s' % i)
+        for c in range(3):
+            s.add(rock_pos[c] + t * rock_vel[c] == stone[c] + t * stone[3 + c])
+
+    if s.check() == sat:
+        m = s.model()
+        return sum([int(str(m.evaluate(v))) for v in rock_pos])
+    else:
+        return None
+
+
 with open("2023/day-24/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     
     assert 2 == count_collisions(input_lines, min=7, max=27)
+    assert 47 == sum_terminator_rock_coords(input_lines)
 
 with open("2023/day-24/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     
     print("Part 1: The amount of collisions is ", count_collisions(input_lines, min=200000000000000, max=400000000000000))
+    print("Part 2: The sum of coords of the Terminator rock is ", sum_terminator_rock_coords(input_lines))
