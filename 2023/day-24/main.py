@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from itertools import combinations
 from z3 import Real, Solver, sat
 from time import perf_counter
@@ -12,11 +12,14 @@ def profiler(method):
     
     return wrapper_method
 
+def parse_stone(line: str) -> Tuple[int]:
+    return tuple(map(int, line.replace(" @",",").split(', ')))
+
 def intersect(stone1: List[int], stone2: List[int]) -> int:
-    x1, y1 = int(stone1[0]), int(stone1[1])
-    vx1, vy1 = int(stone1[3]), int(stone1[4])
-    x2, y2 = int(stone2[0]), int(stone2[1])
-    vx2, vy2 = int(stone2[3]), int(stone2[4])
+    x1, y1 = stone1[0], stone1[1]
+    vx1, vy1 = stone1[3], stone1[4]
+    x2, y2 = stone2[0], stone2[1]
+    vx2, vy2 = stone2[3], stone2[4]
 
     try:
         u = (vy1 * (x1 - x2) - vx1 * (y1 - y2)) / (vx2 * vy1 - vx1 * vy2)
@@ -35,11 +38,7 @@ def count_collisions(input_lines: List[str], min: int, max: int) -> int:
     count = 0
     for pair in combinations(input_lines, 2):
         one, two = pair
-        
-        stone1 = one.replace(" @", ", ").split(", ")
-        stone2 = two.replace(" @", ", ").split(", ")
-
-        p = intersect(stone1, stone2)
+        p = intersect(parse_stone(one), parse_stone(two))
         if p and all(c > min and c <= max for c in p):
             count += 1
 
@@ -47,12 +46,12 @@ def count_collisions(input_lines: List[str], min: int, max: int) -> int:
 
 @profiler
 def sum_terminator_rock_coords(input_lines: List[str]) -> int:
-    rock_pos = [Real('r%s' % i) for i in range(3)]
+    rock_pos = [Real('rp%s' % i) for i in range(3)]
     rock_vel = [Real('rv%s' % i) for i in range(3)]
     s = Solver()
 
     for i in range(len(input_lines)):
-        stone = input_lines[i].replace(" @", ", ").split(", ")
+        stone = parse_stone(input_lines[i])
         t = Real('t%s' % i)
         for c in range(3):
             s.add(rock_pos[c] + t * rock_vel[c] == stone[c] + t * stone[3 + c])
