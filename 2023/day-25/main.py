@@ -12,7 +12,6 @@ def profiler(method):
     
     return wrapper_method
 
-
 def parse_input(lines: List[str]) -> Graph:
     g = Graph()
     for line in lines:
@@ -24,10 +23,11 @@ def parse_input(lines: List[str]) -> Graph:
 
 @profiler
 def disconnect_half_equipment(lines: List[str]) -> int:
-    graph = parse_input(input_lines)
+    graph = parse_input(lines)
     graph.remove_edges_from(minimum_edge_cut(graph))
 
     return prod(len(comp) for comp in connected_components(graph))
+
 
 with open("2023/day-25/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
