@@ -7,6 +7,6 @@ I have participated in:
 * [Advent of Code 2021](https://adventofcode.com/2021/) ![](https://img.shields.io/badge/Stars%202021%20⭐-50-yellow)
 * [Advent of Code 2022](https://adventofcode.com/2022/) ![](https://img.shields.io/badge/Stars%202022%20⭐-50-yellow)
 * [Advent of Code 2023](https://adventofcode.com/2023/) ![](https://img.shields.io/badge/Stars%202023%20⭐-50-yellow)
-* [Advent of Code 2024](https://adventofcode.com/2024/) ![](https://img.shields.io/badge/Stars%202024%20⭐-0-yellow) ![](https://img.shields.io/badge/2024%20day%20📅-3-blue) ![](https://img.shields.io/badge/2024%20days%20completed-0-red)
+* [Advent of Code 2024](https://adventofcode.com/2024/) ![](https://img.shields.io/badge/Stars%202024%20⭐-1-yellow) ![](https://img.shields.io/badge/2024%20day%20📅-3-blue) ![](https://img.shields.io/badge/2024%20days%20completed-0-red)
 
 Check out my code and please give me feedback, it's been a while since the last time I coded that much in Python.
