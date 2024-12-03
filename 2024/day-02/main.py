@@ -18,22 +18,30 @@ def is_valid_line(line: str) -> bool:
 
     return is_valid
 
-def safe_lines(list: List) -> int:
+def safe_lines(list: List, tolerate_bad: bool = False) -> int:
 
     safe_count = 0
     for line in list:
         nums = [int(x) for x in line.split(" ")]
         if is_valid_line(nums):
             safe_count += 1
+        elif tolerate_bad:
+            for i in range(len(nums)):
+                fixed = nums.copy()
+                del fixed[i]
+                if is_valid_line(fixed):
+                    safe_count += 1
+                    break
             
     return safe_count
 
 with open("2024/day-02/example.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     assert 2 == safe_lines(input_lines)
+    assert 4 == safe_lines(input_lines, tolerate_bad = True)
 
 with open("2024/day-02/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
 
     print(f"Part 1: Amount of safe lines is {safe_lines(input_lines)}")
-#    print(f"Part 2: Sum of all sim scores is {sim_score(input_lines)}")
+    print(f"Part 2: Amount of safe lines with tolerance is {safe_lines(input_lines, tolerate_bad = True)}")
