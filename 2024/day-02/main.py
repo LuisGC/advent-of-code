@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import List
 
 def is_valid_line(line: str) -> bool:
     descending = False
