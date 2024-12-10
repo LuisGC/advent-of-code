@@ -5,7 +5,7 @@ def adding_muls(lines: str, with_flags: bool= False) -> int:
     total = 0
     if with_flags:
         enabled = True
-        matches = re.findall(r"(mul\((\d+),(\d+)\)|do\(\)|don\'t(\))", lines)
+        matches = re.findall(r'(mul\((\d+),(\d+)\)|do\(\)|don\'t\(\))', lines)
         for m in matches:
             if m[0] == 'don\'t()':
                 enabled = False
@@ -23,6 +23,9 @@ def adding_muls(lines: str, with_flags: bool= False) -> int:
 with open("2024/day-03/example.txt", encoding="utf-8") as f:
     input_lines = f.read()
     assert 161 == adding_muls(input_lines)
+
+with open("2024/day-03/example-2.txt", encoding="utf-8") as f:
+    input_lines = f.read()
     assert 48 == adding_muls(input_lines, with_flags=True)
 
 with open("2024/day-03/input.txt", encoding="utf-8") as f:
