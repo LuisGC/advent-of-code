@@ -1,4 +1,15 @@
 import functools
+from time import perf_counter
+
+def profiler(method):
+    def wrapper_method(*arg, **kw):
+        t = perf_counter()
+        ret = method(*arg, **kw)
+        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
+        return ret
+    
+    return wrapper_method
+
 
 @functools.lru_cache(maxsize=None)
 def stones_produced_by_stone(stone: int, num_of_blinks: int) -> int:
@@ -17,6 +28,7 @@ def stones_produced_by_stone(stone: int, num_of_blinks: int) -> int:
 
     return stones_produced_by_stone(2024 * stone, num_of_blinks - 1)
 
+@profiler
 def stones_produced(stones: list[int], num_of_blinks: int) -> int:
     return sum(stones_produced_by_stone(_, num_of_blinks) for _ in stones)
 
