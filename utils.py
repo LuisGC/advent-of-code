@@ -28,6 +28,7 @@ class Vector:
     def equals(self, other):
         return self.pos.equals(other.pos) and self.dir.equals(other.dir)
 
+DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 vector_directions = {
     'n': Coord(0, -1),
