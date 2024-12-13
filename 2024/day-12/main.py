@@ -1,17 +1,7 @@
 import sys
 from typing import List, Tuple
-from time import perf_counter
 sys.path.insert(0, './')
-from utils import DIRECTIONS
-
-def profiler(method):
-    def wrapper_method(*arg, **kw):
-        t = perf_counter()
-        ret = method(*arg, **kw)
-        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
-        return ret
-    
-    return wrapper_method
+from utils import DIRECTIONS, profiler
 
 def calculate_full_price(regions: List) -> int:
     price = 0
