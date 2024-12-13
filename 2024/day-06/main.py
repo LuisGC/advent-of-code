@@ -1,18 +1,8 @@
 import sys
 import numpy as np
 from typing import List
-from time import perf_counter
 sys.path.insert(0, './')
-from utils import DIRECTIONS
-
-def profiler(method):
-    def wrapper_method(*arg, **kw):
-        t = perf_counter()
-        ret = method(*arg, **kw)
-        print("Method " + method.__name__ + " took: " + "{:2.5f}".format(perf_counter() - t) + " sec") 
-        return ret
-    
-    return wrapper_method
+from utils import DIRECTIONS, profiler
 
 sys.setrecursionlimit(10**6)
 
@@ -29,14 +19,7 @@ def visited_positions(lines: List) -> int:
     map = []
     map = np.array(lines)
 
-    rows = len(lines)
-    cols = len(lines[0])
-    for r in range(rows):
-        for c in range(cols):
-            if lines[r][c] == direction:
-                row, col = r, c
-                break
-
+    row, col = np.argwhere(map == '^')[0]
     map[row][col] = 'X'
 
     while True:
@@ -50,7 +33,7 @@ def visited_positions(lines: List) -> int:
                 map[row][col] = 'X'
                 row -= 1
         elif direction == '>':
-            if col + 1 >= cols:
+            if col + 1 >= map.shape[1]:
                 map[row][col] = 'X'
                 break
             elif map[row][col + 1] == "#":
@@ -59,7 +42,7 @@ def visited_positions(lines: List) -> int:
                 map[row][col] = 'X'
                 col += 1
         elif direction == 'v':
-            if row + 1 >= rows:
+            if row + 1 >= map.shape[0]:
                 map[row][col] = 'X'
                 break
             elif map[row + 1][col] == "#":
