@@ -41,6 +41,13 @@ class Vector:
 
 DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
+arrow_dir = {
+  '^': (-1, 0), # up
+  'v': (1, 0), # down
+  '<': (0, -1), # left
+  '>': (0, 1) # right
+}
+
 vector_directions = {
     'n': Coord(0, -1),
     'e': Coord(1, 0),
