@@ -61,5 +61,7 @@ with open("2024/day-18/input.txt", encoding="utf-8") as f:
     input_lines = [line.strip() for line in f.readlines()]
     grid, falling_bytes = parse_input(input_lines, 70, 1024)
 
+    print(f"Part 1: Minimum number of steps is {shortest_path(grid, 70)}")
+
     first = first_blocking_byte(grid, falling_bytes, 70, 1024)
-    print(f"Part 1: Minimum number of steps is {",".join(map(str, first))}")
+    print(f"Part 2: Fist blocking byte is {",".join(map(str, first))}")
