@@ -27,7 +27,6 @@ def run_program(program: List[int], registers: List[int]) -> str:
 
 def execute(op_code: int, combo_op: int, output: List[int], registers: List[int], pointer: int) -> Tuple[int, dict]:
     op_value = combo_op_value(combo_op, registers)
-    reg_a, reg_b, reg_c = registers
 
     if op_code == 0:
         registers[0] = registers[0] // (2 ** op_value)
