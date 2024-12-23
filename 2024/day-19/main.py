@@ -20,22 +20,28 @@ def check(design: str, patterns: List[str], checkedDesign: dict) -> int:
     checkedDesign[design] = options
     return options
 
-def possible_designs(patterns: List[str], designs: List[str]) -> int:
+def possible_designs(patterns: List[str], designs: List[str]) -> Tuple[int, int]:
     checkedDesign = {}
     possible = 0
+    different = 0
     for design in designs:
         options = check(design, patterns, checkedDesign)
         possible += 1 if options > 0 else 0
+        different += options
         
-    return possible
+    return possible, different
 
 
 with open("2024/day-19/example.txt", encoding="utf-8") as f:
     patterns, designs = parse_input(f.read())
 
-    assert 6 == possible_designs(patterns, designs)
+    possible, options = possible_designs(patterns, designs)
+    assert 6 == possible
+    assert 16 == options
 
 with open("2024/day-19/input.txt", encoding="utf-8") as f:
     patterns, designs = parse_input(f.read())
 
-    print(f"Part 1: Sum of possible designs is {possible_designs(patterns, designs)}")
+    possible, options = possible_designs(patterns, designs)
+    print(f"Part 1: Sum of possible designs is {possible}")
+    print(f"Part 2: Sum of different designs is {options}")
