@@ -12,5 +12,6 @@
 | 20 | 0.16352 sec | 9.02489 sec |
 | 21 | 0.00947 sec | 0.03461 sec |
 | 22 | 4.46105 sec | 8.02275 sec |
+| 24 | 0.00038 sec | 6.38525 sec |
 
 More stats in [Advent of Code Personal Times](https://adventofcode.com/2024/leaderboard/self)
