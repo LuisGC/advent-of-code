@@ -40,6 +40,8 @@ class Vector:
         return self.pos.equals(other.pos) and self.dir.equals(other.dir)
 
 DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+DIRECTIONS_DIAGONAL = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+DIRECTIONS_ALL = DIRECTIONS + DIRECTIONS_DIAGONAL
 
 arrow_dir = {
   '^': (-1, 0), # up
