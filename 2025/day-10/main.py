@@ -6,10 +6,9 @@ class Machine:
         end_state = config.split(" ")[0][1:-1]
         self.end_state = tuple(c == "#" for c in end_state)
         buttons = re.findall(r"\((?:\d+,?)+\)", config)
-        self.buttons = [tuple([int(x) for x in re.findall(r"-?\d+", s)] for s in buttons)]
+        self.buttons = tuple([int(x) for x in re.findall(r"-?\d+", s)] for s in buttons)
 
     def fewest_button_presses(self) -> int:
-
         initial_state = tuple([False] * len(self.end_state))
         seen = {initial_state}
         queue = deque([(initial_state, 0)])
@@ -20,7 +19,7 @@ class Machine:
             if state == self.end_state:
                 return presses
 
-            for button in self.buttons[0]:
+            for button in self.buttons:
                 new_state = list(state)
 
                 for index in button:
