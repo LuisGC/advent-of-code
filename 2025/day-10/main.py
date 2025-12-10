@@ -1,5 +1,5 @@
 import re
-import z3
+import z3 #z3-solver
 from collections import deque
 
 class Machine:
@@ -44,9 +44,7 @@ class Machine:
             s.add(press >= 0)
 
         for i, jolt_level in enumerate(self.joltage):
-            usable_presses = [
-                presses[j] for j, button in enumerate(self.buttons) if i in button
-            ]
+            usable_presses = [presses[j] for j, button in enumerate(self.buttons) if i in button]
             s.add(sum(usable_presses) == jolt_level)
         s.minimize(sum(presses))
         s.check()
