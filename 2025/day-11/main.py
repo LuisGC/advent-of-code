@@ -17,6 +17,7 @@ def parse_input(lines: list[str]) -> dict[str, list[str]]:
 def paths_between_nodes(graph: dict[str, list[str]], start: str, end: str) -> int:
     paths = 0
 
+    # DFS to count paths
     def dfs(node: str):
         nonlocal paths
         if node == end:
@@ -32,6 +33,7 @@ def paths_with_stages(graph: dict[str, list[str]], start: str, end: str, stages:
     
     def count_paths(graph: dict[str, list[str]], start: str, end: str) -> int:
 
+        # DFS with memoization to count paths
         @lru_cache(None)
         def dfs(node: str) -> int:
             if node == end:
